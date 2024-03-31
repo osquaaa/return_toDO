@@ -1,7 +1,7 @@
 html, body {
   min-height: 100vh;
   font-family: "Exo 2", sans-serif;
-  background-image: url('/img/rm222-mind-22.jpg');
+  background-image: url('./../img/rm222-mind-22.jpg');
   background-repeat: no-repeat;
   background-size: cover  ;
 }
@@ -174,4 +174,14 @@ body {
   #emailHelp{
     display: none;
   }
+}
+.footer{
+  color: rgba(255, 255, 255, 0.887);
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  font-size: 17px;
+  font-weight: 500;
 }
