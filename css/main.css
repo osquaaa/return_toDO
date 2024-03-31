@@ -1,0 +1,177 @@
+html, body {
+  min-height: 100vh;
+  font-family: "Exo 2", sans-serif;
+  background-image: url('/img/rm222-mind-22.jpg');
+  background-repeat: no-repeat;
+  background-size: cover  ;
+}
+
+
+body {
+  background-color: #E4E5E7;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.container{
+}
+.aside {
+  height: 400px;
+}
+.main {
+  height: 400px;
+}
+.d-flex {
+  display: flex;
+}
+.task-title {
+  font-weight: 400;
+  padding-top: 5px;
+  color: rgba(142, 28, 142, 0.877);
+}
+.gray {
+  color: #BDBDBD;
+}
+.logo{
+  font-weight: 700;
+  background: linear-gradient(45deg, #8220bf 33%, #0D61BC 66%, #8AA9D6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #0B2349;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding-bottom: 40px;
+}
+.task-title--done {
+  text-decoration: line-through;
+  color: #CDCDCD;
+}
+.task-item__buttons {
+  display: flex;
+  column-gap: 5px;
+}
+.notify-holder {
+  height: 60px;
+  margin-bottom: 20px;
+}
+.empty-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.empty-list__title {
+  font-size: 28px;
+  margin-bottom: 15px;
+  font-weight: 300;
+}
+.empty-list__icon {
+  color: #42BE2A;
+  font-size: 32px;
+}
+.btn-action {
+    background-color: rgba(233, 162, 233, 0.546);
+    padding: 10px 10px;
+    cursor: pointer;
+    border: 0;
+    border-radius: 4px;
+    transition: opacity 0.2s ease-in;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.btn-action:hover {
+    background-color: #e0e5ea;
+    opacity: 1;
+}
+
+.btn-action img {
+  pointer-events: none;
+}
+
+.none {
+  display: none !important;
+}
+
+.float-right {
+  float: right;
+}
+.copyright {
+  margin-top: 40px;
+  font-size: 14px;
+  color: gray;
+  text-align: center;
+  margin-bottom: 30px;
+  /* position: absolute; */
+  /* bottom: 30px; */
+  /* left: 0; */
+  /* right: 0; */
+}
+
+#btn-add{
+  display: flex;
+  background-color: rgba(254, 250, 255, 0.836);
+  border: none;
+  font-weight: 400;
+  border-radius: 10px;
+  color: #8220bf;
+}
+#btn-add:hover{
+  background-color: rgba(255, 255, 255, 0.709);
+}
+.card-body{
+  background: linear-gradient(45deg, #8220bf 33%, purple 66%);
+  border-radius: 0px 0px 25px 25px;
+
+}
+
+.card-header{
+  font-size: 20px;
+  font-weight: 500;
+  background-color: rgba(136, 25, 136, 0);
+  border-radius: 25px;
+}
+
+#card__active{
+  border-radius: 25px;
+  border: none;
+}
+.form-control{
+  border-radius: 10px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.542);
+  backdrop-filter: blur(40px);
+}
+.form-control::placeholder{
+  color: #ffffffe3;
+}
+.form-control:focus{
+  background-color: rgba(255, 255, 255, 0.672);
+  border: none;
+}
+#emailHelp{
+  color: #ffffffdf;
+}
+
+.card{
+  border: none;
+}
+@media (max-width: 500px){
+  #btn-add{
+
+    margin: 0 auto;
+  }
+}
+@media (max-width: 470px){
+  #emailHelp{
+    display: none;
+  }
+}
