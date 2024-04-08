@@ -1,9 +1,9 @@
 html, body {
   min-height: 100vh;
   font-family: "Exo 2", sans-serif;
-  background-image: url('./../img/rm222-mind-22.jpg');
+  background-image: url('./../img/bg3.jpg');
   background-repeat: no-repeat;
-  background-size: cover  ;
+  background-size: cover;
 }
 
 
@@ -28,14 +28,14 @@ body {
 .task-title {
   font-weight: 400;
   padding-top: 5px;
-  color: rgba(142, 28, 142, 0.877);
+  color: #24a558;
 }
 .gray {
   color: #BDBDBD;
 }
 .logo{
   font-weight: 700;
-  background: linear-gradient(45deg, #8220bf 33%, #0D61BC 66%, #8AA9D6);
+  background: linear-gradient(45deg, #50c878	 33%, #76ec99	 89%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #0B2349;
@@ -44,6 +44,11 @@ body {
   text-align: center;
   justify-content: center;
   padding-bottom: 40px;
+}
+@media(max-width: 878px){
+  .logo{
+
+  }
 }
 .task-title--done {
   text-decoration: line-through;
@@ -75,7 +80,7 @@ body {
   font-size: 32px;
 }
 .btn-action {
-    background-color: rgba(233, 162, 233, 0.546);
+    background-color: #1ce06aa7;
     padding: 10px 10px;
     cursor: pointer;
     border: 0;
@@ -122,13 +127,13 @@ body {
   border: none;
   font-weight: 400;
   border-radius: 10px;
-  color: #8220bf;
+  color: #24a558;
 }
 #btn-add:hover{
   background-color: rgba(255, 255, 255, 0.709);
 }
 .card-body{
-  background: linear-gradient(45deg, #8220bf 33%, purple 66%);
+  background: linear-gradient(45deg, #50c878	 33%, #76ec99	 89%);
   border-radius: 0px 0px 25px 25px;
 
 }
