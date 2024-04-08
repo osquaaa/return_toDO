@@ -190,3 +190,8 @@ body {
   font-size: 17px;
   font-weight: 500;
 }
+@media (max-width: 700px){
+  body{
+    background-position: center;
+  }
+}
