@@ -1,5 +1,6 @@
 html, body {
-  min-height: 100vh;
+  height: 100%;
+  width: 100%;
   font-family: "Exo 2", sans-serif;
   background-image: url('./../img/rm222-mind-22.jpg');
   background-repeat: no-repeat;
