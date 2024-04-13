@@ -5,6 +5,7 @@ html, body {
   background-image: url('./../img/rm222-mind-22.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  overflow: hidden;
 }
 
 
