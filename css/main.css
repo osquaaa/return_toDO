@@ -174,13 +174,18 @@ body {
   background-color: rgba(216, 220, 255, 0.209);
   backdrop-filter: blur(40px);
   height: 37px;
+  
+}
+.form input{
+  color: #fff;
 }
 .form-control::placeholder{
   color: rgb(222, 222, 255);
 }
 .form-control:focus{
-  background-color: rgba(255, 255, 255, 0.334);
+  background-color: rgba(255, 255, 255, 0.397);
   border: none;
+  color: rgb(222, 222, 255);
 }
 #emailHelp{
   color: #ffffffdf;
