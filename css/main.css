@@ -31,7 +31,7 @@ body {
   top: 0;
   height: 90px;
   border-radius: 0px 0px 25px 25px;
-  margin-bottom: 120px;
+  margin-bottom: 90px;
 }
 .logo{
   font-weight: 700;
@@ -51,14 +51,6 @@ body {
 }
 .main {
   height: 400px;
-}
-.footer{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	background-color: rgba(90, 62, 163, 0.911);
-	height: 60px;
 }
 .d-flex {
   display: flex;
@@ -86,6 +78,9 @@ body {
 .task-item__buttons {
   display: flex;
   column-gap: 5px;
+}
+.task-item{
+
 }
 .notify-holder {
   height: 60px;
@@ -174,7 +169,7 @@ body {
   background-color: rgba(216, 220, 255, 0.209);
   backdrop-filter: blur(40px);
   height: 37px;
-  
+  color: rgb(222, 222, 255);
 }
 .form input{
   color: #fff;
@@ -218,3 +213,4 @@ body {
 .justify-content-between{
   
 }
+
