@@ -142,9 +142,13 @@ body {
   font-weight: 400;
   border-radius: 10px;
 	color: rgb(20, 20, 38);
+  transition: all 0.05s ease-in;
 }
 #btn-add:hover{
-	background-color: rgb(138, 138, 255);
+	background-color: rgb(94, 94, 255);
+}
+#btn-add:active{
+  transform: scale(0.9);
 }
 .card--add{
   position: relative;
