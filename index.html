@@ -14,16 +14,20 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 	<title>LETget | Задачи, покупки, цели</title>
 </head>
 <body>
+	<div class="wrapper">
 
 	<div class="container">
-
-		<div class="display-4 mb-2 logo">LETget</div>
-
+	<div class="header">
+		<div class="display-4 mb-2 logo"><span class="logo-new">LET</span>get</div>
+	</div>
 		<!-- List of tasks -->
-		<div class="card mb-4" style="border-radius: 15px;">
+		<div class="mb-4" style="border-radius: 15px;">
 			<ul id="tasksList" class="list-group list-group-flush" style="border-radius: 15px;">
 
 				<!-- <li id="emptyList" class="list-group-item empty-list" style="border-radius: 15px;">
@@ -48,7 +52,7 @@
 		<!-- //List of tasks -->
 
 		<!-- Form -->
-		<div class="card card--add" id="card__active">
+		<div class="card--add" id="card__active">
 			<div class="card-header">Добавить новую задачу</div>
 			<div class="card-body">
 				<form id="form">
@@ -65,6 +69,7 @@
 
 	</div>
 
+	</div>
 
 	<script src="js/main.js"></script>
 </body>

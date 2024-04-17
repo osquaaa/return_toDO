@@ -1,26 +1,64 @@
 html, body {
   min-height: 100vh;
-  font-family: "Exo 2", sans-serif;
-  background-image: url('./../img/rm222-mind-22.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
+	height: 100%;
+	font-family: 'Rubik', sans-serif;
+	background-color: rgb(20, 20, 38);
+  width: 100%;
+	height: 100%;
 }
 
 
 body {
-  background-color: #E4E5E7;
-  padding-top: 30px;
+  padding-top: 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  max-width: 100%;
+}
+
+.wrapper{
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+	background-color: rgb(36, 36, 69);
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 90px;
+  border-radius: 0px 0px 25px 25px;
+  margin-bottom: 120px;
+}
+.logo{
+  font-weight: 700;
+  color: rgb(87, 87, 255);
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 }
 .container{
+}
+.logo-new{
+  color: rgb(172, 172, 255);
 }
 .aside {
   height: 400px;
 }
 .main {
   height: 400px;
+}
+.footer{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	background-color: rgba(90, 62, 163, 0.911);
+	height: 60px;
 }
 .d-flex {
   display: flex;
@@ -30,23 +68,12 @@ body {
   justify-content: center;
   align-items: center;
   font-weight: 500;
-  color: rgba(142, 28, 142, 0.877);
+  color: rgb(172, 172, 255);
 }
 .gray {
   color: #BDBDBD;
 }
-.logo{
-  font-weight: 700;
-  background: linear-gradient(45deg, #8220bf 33%, #0D61BC 66%, #8AA9D6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: #0B2349;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  padding-bottom: 40px;
-}
+
 @media(max-width: 878px){
   .logo{
 
@@ -54,7 +81,7 @@ body {
 }
 .task-title--done {
   text-decoration: line-through;
-  color: #CDCDCD;
+  color: #939393;
 }
 .task-item__buttons {
   display: flex;
@@ -71,18 +98,19 @@ body {
   align-items: center;
   padding-top: 1em;
   padding-bottom: 1em;
+	background-color: rgb(36, 36, 69);
 }
 .empty-list__title {
-  font-size: 28px;
+  font-size: 35px;
   margin-bottom: 15px;
   font-weight: 300;
+  color: rgb(172, 172, 255);
 }
 .empty-list__icon {
-  color: #42BE2A;
   font-size: 32px;
 }
 .btn-action {
-    background-color: rgba(233, 162, 233, 0.546);
+    background-color: rgb(172, 172, 255);
     padding: 10px 10px;
     cursor: pointer;
     border: 0;
@@ -92,12 +120,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
+    border-radius: 10px;
 }
 
 .btn-action:hover {
-    background-color: #e0e5ea;
-    opacity: 1;
+  background-color: rgb(138, 138, 255);
+  opacity: 1;
 }
 
 .btn-action img {
@@ -111,40 +139,29 @@ body {
 .float-right {
   float: right;
 }
-.copyright {
-  margin-top: 40px;
-  font-size: 14px;
-  color: gray;
-  text-align: center;
-  margin-bottom: 30px;
-  /* position: absolute; */
-  /* bottom: 30px; */
-  /* left: 0; */
-  /* right: 0; */
-}
 
 #btn-add{
   display: flex;
-  background-color: rgba(254, 250, 255, 0.836);
+	background-color: rgb(157, 157, 255);
   border: none;
   font-weight: 400;
   border-radius: 10px;
-  color: #8220bf;
+	color: rgb(20, 20, 38);
 }
 #btn-add:hover{
-  background-color: rgba(255, 255, 255, 0.709);
+	background-color: rgb(138, 138, 255);
 }
-.card-body{
-  background: linear-gradient(45deg, #8220bf 33%, purple 66%);
-  border-radius: 0px 0px 25px 25px;
+.card--add{
+  position: relative;
+	background-color: rgb(36, 36, 69);
+  border-radius: 25px 25px 25px 25px;
 }
 
 .card-header{
-  font-size: 20px;
-  font-weight: 500;
-  background-color: rgba(136, 25, 136, 0);
-  border-radius: 25px;
   text-align: center;
+  font-size: 23px;
+  font-weight: 400;
+  color: rgb(172, 172, 255);
 }
 
 #card__active{
@@ -154,14 +171,15 @@ body {
 .form-control{
   border-radius: 10px;
   border: none;
-  background-color: rgba(255, 255, 255, 0.542);
+  background-color: rgba(216, 220, 255, 0.209);
   backdrop-filter: blur(40px);
+  height: 37px;
 }
 .form-control::placeholder{
-  color: #ffffff;
+  color: rgb(222, 222, 255);
 }
 .form-control:focus{
-  background-color: rgba(255, 255, 255, 0.559);
+  background-color: rgba(255, 255, 255, 0.334);
   border: none;
 }
 #emailHelp{
@@ -182,18 +200,16 @@ body {
     display: none;
   }
 }
-.footer{
-  color: rgba(255, 255, 255, 0.887);
-  display: flex;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 15px;
-  font-size: 17px;
-  font-weight: 500;
-}
 @media (max-width: 700px){
   body{
 
   }
+}
+
+.list-group-item{
+  background-color: rgb(36, 36, 69);
+  border-radius: 30px;
+}
+.justify-content-between{
+  
 }
