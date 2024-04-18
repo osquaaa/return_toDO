@@ -116,21 +116,11 @@ body {
     align-items: center;
     border-radius: 10px;
 }
-@media (hover: hover){
-  .btn-action:hover {
-    background-color: rgb(138, 138, 255);
-    opacity: 1;
-  }
+
+.btn-action:hover {
+  background-color: rgb(138, 138, 255);
+  opacity: 1;
 }
-@media (hover: none){
-  .btn-action:active {
-    background-color: rgb(138, 138, 255);
-    opacity: 1;
-  }
-}
-
-
-
 
 .btn-action img {
   pointer-events: none;
@@ -153,17 +143,12 @@ body {
 	color: rgb(20, 20, 38);
   transition: all 0.05s ease-in;
 }
-@media (hover: hover){
-  #btn-add:hover{
-    background-color: rgb(94, 94, 255);
-  }
+#btn-add:hover{
+	background-color: rgb(94, 94, 255);
 }
-@media (hover: none){
-  #btn-add:active{
-    background-color: rgb(94, 94, 255);
-  }
+#btn-add:active{
+  transform: scale(0.9);
 }
-
 .card--add{
   position: relative;
 	background-color: rgb(36, 36, 69);
@@ -230,4 +215,14 @@ body {
 }
 .justify-content-between{
   
+}
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(172, 172, 255);
+	background-color: rgb(36, 36, 69);
+  border-radius: 25px;
+  height: 60px;
+  margin-top: 15px;
 }
