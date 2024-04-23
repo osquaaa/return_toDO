@@ -1,18 +1,35 @@
+
+:root{
+  --body-color: rgb(20, 20, 38);
+  --background-color: rgb(45, 45, 81);
+  --text-color: rgb(172, 172, 255);
+  --logo-color: rgb(87, 87, 255);
+  --theme-toggle-btn: rgb(172, 172, 255);
+  --theme-toggle-color: rgb(20, 20, 38);
+  --btn-add: rgb(29, 29, 54);
+}
+
 html, body {
 	height: 100%;
 	font-family: 'Rubik', sans-serif;
-	background-color: rgb(20, 20, 38);
   width: 100%;
-
+  background-color: var(--body-color);
 }
-
-
 body {
   padding-top: 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: 100%ж
+  max-width: 100%;
+}
+body.dark-theme {
+  --body-color: rgb(188, 188, 255);
+  --background-color: rgb(79, 79, 164);
+  --text-color: rgb(215, 215, 215);
+  --logo-color: rgb(156, 156, 255);
+  --theme-toggle-btn: rgb(111, 111, 255);
+  --theme-toggle-color: #fff;
+  --btn-add: rgb(42, 42, 72);
 }
 
 .wrapper{
@@ -24,7 +41,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-	background-color: rgb(45, 45, 81);
+	background-color: var(--background-color);
   width: 100%;
   left: 0;
   top: 0;
@@ -32,9 +49,27 @@ body {
   border-radius: 0px 0px 25px 25px;
   margin-bottom: 90px;
 }
+#theme-toggle{
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 15%;
+  background-color: var(--theme-toggle-btn);
+  color: var(--theme-toggle-color);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 15px;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+  font-size: 18px;
+  font-weight: 400;
+}
+#theme-toggle:hover{
+  background-color: rgb(87, 87, 255);
+}
 .logo{
   font-weight: 700;
-  color: rgb(87, 87, 255);
+  color: var(--logo-color);
   display: flex;
   align-items: center;
   text-align: center;
@@ -43,7 +78,7 @@ body {
 .container{
 }
 .logo-new{
-  color: rgb(172, 172, 255);
+  color: var(--text-color);
 }
 .aside {
   height: 400px;
@@ -59,7 +94,7 @@ body {
   justify-content: center;
   align-items: center;
   font-weight: 500;
-  color: rgb(172, 172, 255);
+  color: var(--text-color);
 }
 .gray {
   color: #BDBDBD;
@@ -92,19 +127,19 @@ body {
   align-items: center;
   padding-top: 1em;
   padding-bottom: 1em;
-	background-color: rgb(45, 45, 81);
+	background-color: var(--background-color);
 }
 .empty-list__title {
   font-size: 35px;
   margin-bottom: 15px;
   font-weight: 300;
-  color: rgb(172, 172, 255);
+  color: var(--text-color);
 }
 .empty-list__icon {
   font-size: 32px;
 }
 .btn-action {
-    background-color: rgb(172, 172, 255);
+    background-color: var(--text-color);
     padding: 10px 10px;
     cursor: pointer;
     border: 0;
@@ -136,11 +171,11 @@ body {
 
 #btn-add{
   display: flex;
-	background-color: rgb(157, 157, 255);
+	background-color: var(--text-color);
   border: none;
+  color: var(--btn-add);
   font-weight: 400;
   border-radius: 10px;
-	color: rgb(20, 20, 38);
   transition: all 0.05s ease-in;
 }
 #btn-add:hover{
@@ -151,7 +186,7 @@ body {
 }
 .card--add{
   position: relative;
-	background-color: rgb(45, 45, 81);
+	background-color: var(--background-color);
   border-radius: 25px 25px 25px 25px;
 }
 
@@ -159,7 +194,7 @@ body {
   text-align: center;
   font-size: 23px;
   font-weight: 400;
-  color: rgb(172, 172, 255);
+  color: var(--text-color);
 }
 
 #card__active{
@@ -210,7 +245,7 @@ body {
 }
 
 .list-group-item{
-	background-color: rgb(45, 45, 81);
+	background-color: var(--background-color);
   border-radius: 30px;
 }
 .justify-content-between{
@@ -220,7 +255,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgb(172, 172, 255);
+  color: var(--text-color);
 	background-color: rgb(36, 36, 69);
   border-radius: 25px;
   height: 60px;

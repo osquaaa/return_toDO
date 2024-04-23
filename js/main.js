@@ -1,9 +1,9 @@
 // Находим элементы
 const form = document.querySelector('#form');
 const taskInput = document.querySelector('#taskInput');
-const tasksList = document.querySelector('#tasksList')
-const emptyList = document.querySelector('#emptyList')
-
+const tasksList = document.querySelector('#tasksList');
+const emptyList = document.querySelector('#emptyList');
+const emptyFooter = document.querySelector('.footer');
 let tasks = [];
 if(localStorage.getItem('tasks')) {
     tasks = JSON.parse(localStorage.getItem('tasks'));
@@ -138,3 +138,11 @@ function checkEmptyList() {
 function saveToLocalStorage() {
     localStorage.setItem('tasks', JSON.stringify(tasks))
 }
+
+
+
+
+
+document.getElementById('theme-toggle').addEventListener('click', function() {
+    document.body.classList.toggle('dark-theme');
+});
