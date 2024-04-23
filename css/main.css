@@ -53,7 +53,7 @@ body.dark-theme {
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
-  top: 15%;
+  top: 16%;
   background-color: var(--theme-toggle-btn);
   color: var(--theme-toggle-color);
   border: none;
