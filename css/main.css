@@ -41,19 +41,19 @@ body.dark-theme {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 	background-color: var(--background-color);
   width: 100%;
   left: 0;
   top: 0;
-  height: 90px;
+  height: 120px;
   border-radius: 0px 0px 25px 25px;
   margin-bottom: 90px;
 }
-#theme-toggle{
-  position: absolute;
-  transform: translate(-50%, -50%);
-  left: 50%;
-  top: 16%;
+theme-toggle{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--theme-toggle-btn);
   color: var(--theme-toggle-color);
   border: none;
@@ -65,8 +65,49 @@ body.dark-theme {
   font-weight: 400;
 }
 #theme-toggle:hover{
-  background-color: rgb(87, 87, 255);
+  background-color: rgb(144, 144, 255);
 }
+  
+#theme-toggle {   
+  background-color: rgb(172, 172, 255);
+  -webkit-appearance: none;
+  -moz-appearance: none;  
+  appearance: none;
+  width: 45px;
+  height: 26px;  
+  cursor: pointer;
+  border-radius: 30px;
+  border: 3px solid rgb(172, 172, 255);
+  cursor: pointer;
+  position: relative;
+  transition: 0.3s;
+}
+
+#theme-toggle:checked { 
+  background: #9bb4ff;
+  border: 3px solid #9bb4ff;
+}
+
+#theme-toggle::before {   
+  content: '';
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: rgb(249, 249, 255);
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  transition: 0.3s;
+}
+
+#theme-toggle:checked::before { 
+  background: #275efe;
+  border: none;
+  left: 21px;
+  background: white;  
+}
+
 .logo{
   font-weight: 700;
   color: var(--logo-color);
