@@ -65,11 +65,11 @@ theme-toggle{
   font-weight: 400;
 }
 #theme-toggle:hover{
-  background-color: rgb(144, 144, 255);
+  /* background-color: rgb(144, 144, 255); */
 }
   
 #theme-toggle {   
-  background-color: rgb(172, 172, 255);
+  background-color: rgb(144, 144, 255);
   -webkit-appearance: none;
   -moz-appearance: none;  
   appearance: none;
