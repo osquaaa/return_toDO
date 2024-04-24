@@ -8,16 +8,7 @@
   --theme-toggle-color: rgb(20, 20, 38);
   --btn-add: rgb(29, 29, 54);
 }
-@media (prefers-color-scheme: dark){
-    :root{--body-color: rgb(188, 188, 255);
-    --background-color: rgb(79, 79, 164);
-    --text-color: rgb(215, 215, 215);
-    --logo-color: rgb(156, 156, 255);
-    --theme-toggle-btn: rgb(111, 111, 255);
-    --theme-toggle-color: #fff;
-    --btn-add: rgb(42, 42, 72);
-    }
-}
+
 body.dark-theme {
   --body-color: rgb(188, 188, 255);
   --background-color: rgb(79, 79, 164);
