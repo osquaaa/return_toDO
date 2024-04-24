@@ -8,19 +8,15 @@
   --theme-toggle-color: rgb(20, 20, 38);
   --btn-add: rgb(29, 29, 54);
 }
-
-html, body {
-	height: 100%;
-	font-family: 'Rubik', sans-serif;
-  width: 100%;
-  background-color: var(--body-color);
-}
-body {
-  padding-top: 0px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  max-width: 100%;
+@media (prefers-color-scheme: dark){
+    :root{--body-color: rgb(188, 188, 255);
+    --background-color: rgb(79, 79, 164);
+    --text-color: rgb(215, 215, 215);
+    --logo-color: rgb(156, 156, 255);
+    --theme-toggle-btn: rgb(111, 111, 255);
+    --theme-toggle-color: #fff;
+    --btn-add: rgb(42, 42, 72);
+    }
 }
 body.dark-theme {
   --body-color: rgb(188, 188, 255);
@@ -32,10 +28,21 @@ body.dark-theme {
   --btn-add: rgb(42, 42, 72);
 }
 
+.dark-theme{
+  height: 100%;
+}
+html, body {
+	font-family: 'Rubik', sans-serif;
+  padding-bottom: 0;
+}
+body {
+  background-color: var(--body-color);
+  padding-top: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .wrapper{
-	min-height: 100%;
-	display: flex;
-	flex-direction: column;
 }
 .header {
   display: flex;
@@ -49,20 +56,6 @@ body.dark-theme {
   height: 120px;
   border-radius: 0px 0px 25px 25px;
   margin-bottom: 90px;
-}
-theme-toggle{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--theme-toggle-btn);
-  color: var(--theme-toggle-color);
-  border: none;
-  border-radius: 6px;
-  padding: 6px 15px;
-  cursor: pointer;
-  transition: all 0.1s ease-in;
-  font-size: 18px;
-  font-weight: 400;
 }
 #theme-toggle:hover{
   /* background-color: rgb(144, 144, 255); */
@@ -290,14 +283,4 @@ theme-toggle{
 }
 .justify-content-between{
   
-}
-.footer{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-color);
-	background-color: rgb(36, 36, 69);
-  border-radius: 25px;
-  height: 60px;
-  margin-top: 15px;
 }
