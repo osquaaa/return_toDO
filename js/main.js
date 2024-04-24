@@ -31,6 +31,8 @@ checkEmptyList();
 
 form.addEventListener('submit', addTask)
 
+
+
 tasksList.addEventListener('click', deleteTask)
 
 tasksList.addEventListener('click', doneTask)
@@ -39,6 +41,7 @@ function addTask(event){
     event.preventDefault();
 
     const taskText = taskInput.value;
+    
 
     const newTask = {
         id: Date.now(),
@@ -70,6 +73,7 @@ function addTask(event){
     taskInput.focus();
 
     checkEmptyList();
+    
 }
 
 function deleteTask(event){
@@ -146,3 +150,6 @@ function saveToLocalStorage() {
 document.getElementById('theme-toggle').addEventListener('click', function() {
     document.body.classList.toggle('dark-theme');
 });
+
+
+

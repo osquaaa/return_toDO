@@ -79,7 +79,11 @@ body {
   background: #9bb4ff;
   border: 3px solid #9bb4ff;
 }
-
+.time-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 #theme-toggle::before {   
   content: '';
   position: absolute;
@@ -92,7 +96,14 @@ body {
   transform: translateY(-50%);
   transition: 0.3s;
 }
-
+.img-dark{
+  padding-right: 10px;
+  height: 20px;
+}
+.img-light{
+  height: 20px;
+  padding-left: 10px;
+}
 #theme-toggle:checked::before { 
   background: #275efe;
   border: none;
