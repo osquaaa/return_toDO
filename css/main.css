@@ -7,6 +7,7 @@
   --theme-toggle-btn: rgb(172, 172, 255);
   --theme-toggle-color: rgb(20, 20, 38);
   --btn-add: rgb(29, 29, 54);
+  --blur-color: #7195ff;
 }
 
 body.dark-theme {
@@ -17,6 +18,7 @@ body.dark-theme {
   --theme-toggle-btn: rgb(111, 111, 255);
   --theme-toggle-color: #fff;
   --btn-add: rgb(42, 42, 72);
+  --blur-color: #0037db;
 }
 
 .dark-theme{
@@ -47,6 +49,16 @@ body {
   height: 120px;
   border-radius: 0px 0px 25px 25px;
   margin-bottom: 90px;
+}
+.header::after{
+  position: absolute;
+  top: 10%;
+  filter: blur(40px);
+  z-index: -1;
+  content: '';
+  height: 90px;
+  width: 90px;
+  background-color: var(--blur-color);
 }
 #theme-toggle:hover{
   /* background-color: rgb(144, 144, 255); */
