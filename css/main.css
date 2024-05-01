@@ -7,7 +7,7 @@
   --theme-toggle-btn: rgb(172, 172, 255);
   --theme-toggle-color: rgb(20, 20, 38);
   --btn-add: rgb(29, 29, 54);
-  --blur-color: #7195ff;
+  --blur-color: #7194ff;
 }
 
 body.dark-theme {
@@ -18,7 +18,7 @@ body.dark-theme {
   --theme-toggle-btn: rgb(111, 111, 255);
   --theme-toggle-color: #fff;
   --btn-add: rgb(42, 42, 72);
-  --blur-color: #0037db;
+  --blur-color: #0040ff;
 }
 
 .dark-theme{
@@ -57,8 +57,9 @@ body {
   z-index: -1;
   content: '';
   height: 90px;
-  width: 90px;
+  width: 110px;
   background-color: var(--blur-color);
+  border-radius: 50%;
 }
 #theme-toggle:hover{
   /* background-color: rgb(144, 144, 255); */
