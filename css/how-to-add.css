@@ -1,0 +1,82 @@
+body, html{
+
+}
+.header-subtitle{
+    color: rgb(172, 172, 255);
+
+}
+.header{
+    height: 140px;
+}
+
+.card-title{
+    color: #fff;
+    font-weight: 600;
+    font-size: 40px;
+}
+.main-card{
+    background-color: rgb(45, 45, 81);
+    color: rgb(172, 172, 255);
+    border-radius: 25px;
+    padding: 5px 10px;
+}
+.card-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.img-info{
+    margin-bottom: 10px;
+    margin-top: 20px;
+    height: 55px;
+    border-radius: 10px;
+}
+.card-info span{
+    font-weight: 500;
+}
+.card-info{
+    font-size: 20px;
+}
+.margin-card{
+    margin-top: 20px;
+}
+.img-add{
+    height: 40px;
+}
+.share-btn{
+    height: 25px;
+}
+.done2{
+    height: 70px;
+}
+
+@media(max-width:330px){
+    .img-add{
+        height: 35px;
+    }
+}
+.end-card{
+    margin-bottom: 20px;
+}
+
+.info-end{
+    margin-bottom: 20px;
+}
+.back-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(204, 204, 255);
+    font-size: 20px;
+
+}
+.back-btn:hover{
+    text-decoration: underline rgb(204, 204, 255);
+}
+.line-header{
+    margin-right: 5px;
+    transform: rotate(180deg);
+    height: 20px;
+}
