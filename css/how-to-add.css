@@ -19,6 +19,9 @@ body, html{
     color: rgb(172, 172, 255);
     border-radius: 25px;
     padding: 5px 10px;
+    -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.1);
+    box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.1);
 }
 .card-content{
     display: flex;
