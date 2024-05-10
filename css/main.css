@@ -141,6 +141,7 @@ box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
   height: 400px;
 }
 .d-flex {
+  margin-top: 5px;
   display: flex;
 }
 .task-title {
@@ -149,6 +150,7 @@ box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
   align-items: center;
   font-weight: 500;
   color: var(--text-color);
+  word-break: break-all;
 }
 .gray {
   color: #BDBDBD;
