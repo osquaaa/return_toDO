@@ -53,12 +53,19 @@
 			<img src="./img/moon-svgrepo-com.svg" alt="" class="img-dark">
 		<input type="checkbox" id="theme-toggle">
 			<img src="./img/sun-svgrepo-com.svg" alt="" class="img-light">
+			
 	</div>
 
 	</div>
+
+
 		<!-- List of tasks -->
 		<div class="main">
-			
+			<div class="time-all">
+				<div class="hours"></div>
+				<div class="two-poinst">:</div>
+				<div class="minutes"></div>
+			</div>
 		<div class="mb-4" style="">
 			<ul id="tasksList" class="list-group list-group-flush" style="">
 
@@ -68,6 +75,13 @@
 				</li> -->
 
 				<!-- <li class="list-group-item d-flex justify-content-between task-item" style="border-radius: 15px;">
+
+					<div class="full-date">
+					<span id="date-year"></span>
+					<span id="date-day"></span>
+					<span id="date-month"></span>
+					<span id="date-hours"></span>
+					</div>
 					<span class="task-title">Купить молоко</span>
 					<div class="task-item__buttons">
 						<button type="button" data-action="done" class="btn-action">
@@ -91,6 +105,7 @@
 					<div class="form-group">
 						<input type="text" class="form-control" id="taskInput" placeholder="Текст задачи" required>
 						<small id="emailHelp" class="form-text">Что делаем, сколько времени тратим, какой результат получаем.</small>
+
 					</div>
 					<button type="submit" class="btn btn-primary  btn-lg active" id="btn-add">Добавить</button>
 				</form>

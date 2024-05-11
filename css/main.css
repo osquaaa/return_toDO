@@ -9,6 +9,7 @@
   --btn-add: rgb(29, 29, 54);
   --blur-color: #7194ff;
   --box-shadow: ;
+  --time-color: rgb(216, 216, 255);
 }
 
 body.dark-theme {
@@ -20,6 +21,7 @@ body.dark-theme {
   --theme-toggle-color: #fff;
   --btn-add: rgb(42, 42, 72);
   --blur-color: #0032c6;
+  --time-color: rgb(79, 79, 164);
 }
 
 .dark-theme{
@@ -35,6 +37,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: background-color 0.3s ease-in;
 }
 .wrapper{
 }
@@ -53,6 +56,7 @@ body {
   -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
 -moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
 box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
+transition: all 0.3s ease-in;
 }
 .header::after{
   position: absolute;
@@ -126,6 +130,7 @@ box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
   align-items: center;
   text-align: center;
   justify-content: center;
+  transition: all 0.3s ease-in;
 }
 .container{
 }
@@ -151,6 +156,7 @@ box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
   font-weight: 500;
   color: var(--text-color);
   word-break: break-all;
+  transition: all 0.3s ease-in;
 }
 .gray {
   color: #BDBDBD;
@@ -188,15 +194,19 @@ box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
 -moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
 box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
 text-align: center;
+transition: all 0.3s ease-in;
 }
 .empty-list__title {
   font-size: 35px;
   margin-bottom: 15px;
   font-weight: 300;
   color: var(--text-color);
+  transition: all 0.3s ease-in;
+
 }
 .empty-list__icon {
   font-size: 32px;
+
 }
 .btn-action {
     background-color: var(--text-color);
@@ -210,6 +220,8 @@ text-align: center;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+    transition: all 0.3s ease-in;
+
 }
 
 .btn-action:hover {
@@ -236,7 +248,8 @@ text-align: center;
   color: var(--btn-add);
   font-weight: 400;
   border-radius: 10px;
-  transition: all 0.05s ease-in;
+  transition: 0.3s ease-in;
+
 }
 #btn-add:hover{
 	background-color: rgb(94, 94, 255);
@@ -251,6 +264,7 @@ text-align: center;
   -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
 -moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
 box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
+transition: all 0.3s ease-in;
 }
 
 .card-header{
@@ -258,6 +272,8 @@ box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
   font-size: 23px;
   font-weight: 400;
   color: var(--text-color);
+  transition: all 0.3s ease-in;
+
 }
 
 #card__active{
@@ -326,6 +342,7 @@ box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
   border-radius: 10px;
   padding: 10px 40px;
   opacity: 0.95;
+  transition: all 0.3s ease-in;
 }
 .btn-how{
   display: flex;
@@ -337,4 +354,54 @@ box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
   .btn-how{
     display: flex;
   }
+}
+
+
+
+#date-title{
+
+  font-size: 15px;
+}
+.full-date{
+  color: #ffffff55;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+}
+.span-time{
+  visibility: hidden;
+}
+
+select{
+  background-color: #7194ff;
+  border: none;
+  border-radius: 5px;
+  padding: 2px 10px;
+}
+.time-all{
+  color: var(--time-color);
+  font-weight: 600;
+  display: flex;
+  flex-direction: row;
+  font-size: 35px;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 1px;
+  padding-bottom: 5px;
+  transition: all 0.3s ease-in;
+}
+.hours{
+  transform: rotate(-5deg);
+}
+.two-poinst{
+  transform: rotate(-3deg);
+  animation: flicker 0.8s alternate infinite; /* Параметры анимации */
+}
+.minutes{
+  transform: rotate(3deg);
+}
+@keyframes flicker {
+  from { opacity: 1; /* Непрозрачный текст */ }
+  to { opacity: 0.1; /* Прозрачный текст */ }
 }
