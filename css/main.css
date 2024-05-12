@@ -136,6 +136,8 @@ transition: all 0.3s ease-in;
 }
 .logo-new{
   color: var(--text-color);
+  transition: all 0.3s ease-in;
+
 }
 .aside {
   height: 400px;
@@ -374,22 +376,20 @@ transition: all 0.3s ease-in;
   visibility: hidden;
 }
 
-select{
-  background-color: #7194ff;
-  border: none;
-  border-radius: 5px;
-  padding: 2px 10px;
-}
+
 .time-all{
+  position: relative;
   color: var(--time-color);
   font-weight: 600;
   display: flex;
-  flex-direction: row;
   font-size: 50px;
   align-items: center;
   justify-content: center;
   letter-spacing: 1px;
   transition: all 0.3s ease-in;
+}
+.time-value{
+  
 }
 .hours{
   /* transform: rotate(-5deg); */
