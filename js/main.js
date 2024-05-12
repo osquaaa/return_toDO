@@ -10,11 +10,36 @@ const timeDate = document.querySelector('.time-all');
 const hoursDate = document.querySelector('.hours')
 const minutesDate = document.querySelector('.minutes')
 
+// function allDate(){
+//     let time = new Date();
+//     seconds.innerHTML = time.getSeconds();
+//     // Сохраняем значение
+//     localStorage.setItem('seconds', time.getSeconds());
+//   }
+  
+//   document.addEventListener('DOMContentLoaded', () => {
+//     // Достаем значение
+//     const secondSave = localStorage.getItem('seconds');
+//     if (secondSave) { // Если есть, отображаем
+//       seconds.innerHTML = secondSave;
+//     }
+//   })
+
+// счетчик 
+// let metr = new Date();
+// const secon = metr.getSeconds();
+// localStorage.setItem('secon', metr.getSeconds());
+// const saveSecon = localStorage.getItem('secon');
+
+//
+
+// Часы
 function myClock(){
     let allTime = new Date()
     hoursDate.innerHTML = (`0${allTime.getHours()}`).slice(-2);
     minutesDate.innerHTML = (`0${allTime.getMinutes()}`).slice(-2);
 }
+//
 
 myClock();
 
@@ -37,10 +62,10 @@ tasks.forEach(function(task){
 
     const cssClass = task.done ? "task-title task-title--done" : "task-title";
     
-    const taskHTML = `<li id="${task.id}" class="list-group-item d-flex justify-content-between task-item" border-radius="10px">
+    const taskHTML = `
+    <li id="${task.id}" class="list-group-item d-flex justify-content-between task-item">
     <span class="${cssClass}">${task.text}</span>
-
-    <div class="task-item__buttons">
+      <div class="task-item__buttons">
         <button type="button" data-action="done" class="btn-action">
             <img src="./img/tick.svg" alt="Done" width="18" height="18">
         </button>
@@ -52,6 +77,7 @@ tasks.forEach(function(task){
 
 tasksList.insertAdjacentHTML('beforeend', taskHTML);
 
+
 })
 
 checkEmptyList();
@@ -59,11 +85,30 @@ checkEmptyList();
 
 form.addEventListener('submit', addTask)
 
-
-
 tasksList.addEventListener('click', deleteTask)
 
 tasksList.addEventListener('click', doneTask)
+
+
+let second = document.querySelector('.date')
+
+
+// form.addEventListener('submit', myDate)
+// function myDate(){
+//     let clock = new Date();
+//     second.innerHTML = clock.getSeconds();
+//     localStorage.setItem('second', clock.getSeconds());
+// }
+// document.addEventListener('DOMContentLoaded', () => {
+//     const saveSecond = localStorage.getItem('second');
+//     if(saveSecond){
+//         second.innerHTML = saveSecond;
+//     }
+// })
+
+const seconds = document.querySelector('.seconds');
+const btn = document.querySelector('.btn');
+
 
 function addTask(event){
     
@@ -81,23 +126,24 @@ function addTask(event){
 
     tasks.push(newTask);
     saveToLocalStorage()
-    
+
     
 
     const cssClass = newTask.done ? "task-title task-title--done" : "task-title";
 
-    const taskHTML = `<li id="${newTask.id}" class="list-group-item d-flex justify-content-between task-item" border-radius="10px">
+    const taskHTML =`
+    <li id="${newTask.id}" class="list-group-item d-flex justify-content-between task-item">
+<span class="${cssClass}">${newTask.text}</span>
 
-    <span class="${cssClass}">${newTask.text}</span>
-    <div class="task-item__buttons">
-        <button type="button" data-action="done" class="btn-action">
-            <img src="./img/tick.svg" alt="Done" width="18" height="18">
-        </button>
-        <button type="button" data-action="delete" class="btn-action">
-            <img src="./img/cross.svg" alt="Done" width="18" height="18">
-        </button>
-    </div>
-</li>` 
+<div class="task-item__buttons">
+    <button type="button" data-action="done" class="btn-action">
+        <img src="./img/tick.svg" alt="Done" width="18" height="18">
+    </button>
+    <button type="button" data-action="delete" class="btn-action">
+        <img src="./img/cross.svg" alt="Done" width="18" height="18">
+    </button>
+</div>
+</li>`
 
     tasksList.insertAdjacentHTML('beforeend', taskHTML);
 
@@ -149,14 +195,15 @@ function doneTask(event) {
     const task = tasks.find(function(task){
         if(task.id === id) {
             return true;
+            
         }
     })
-
     task.done = !task.done
     saveToLocalStorage()
 
 
     const taskTitle = parentNode.querySelector('.task-title');
+
     taskTitle.classList.toggle('task-title--done')
 }
 
@@ -186,13 +233,6 @@ function saveToLocalStorage() {
 
 document.getElementById('theme-toggle').addEventListener('click', function() {
     document.body.classList.toggle('dark-theme');
+
 });
 
-
-
-
-
-// if (localStorage.getItem('theme-toggle') === 'dark-theme') { 
-//     // Если установлена темная тема, применяем ее к body документа
-//     document.body.classList.add('dark-theme');
-// }

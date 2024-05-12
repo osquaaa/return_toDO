@@ -160,6 +160,7 @@ transition: all 0.3s ease-in;
   color: var(--text-color);
   word-break: break-all;
   transition: all 0.3s ease-in;
+  margin-right: 2px;
 }
 .gray {
   color: #BDBDBD;
@@ -172,7 +173,11 @@ transition: all 0.3s ease-in;
 }
 .task-title--done {
   text-decoration: line-through;
-  color: #939393;
+  color: #cacaca;
+  background-color: #7a7a7aba;
+  padding: 0px 10px 0px 10px;
+  border-radius: 10px;
+  margin-right: 5px;
 }
 .task-item__buttons {
   display: flex;
@@ -404,4 +409,11 @@ transition: all 0.3s ease-in;
 @keyframes flicker {
   from { opacity: 1; /* Непрозрачный текст */ }
   to { opacity: 0.1; /* Прозрачный текст */ }
+}
+.date{
+  color: #fff;
+  font-size: 20px;
+}
+.task-bg-done{
+  background-color: #275efe;
 }
