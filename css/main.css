@@ -10,6 +10,7 @@
   --blur-color: #7194ff;
   --box-shadow: ;
   --time-color: rgb(216, 216, 255);
+  --time-shadow: 4px 0px 19px rgba(216,  216,  255, 0.4);
 }
 
 body.dark-theme {
@@ -22,6 +23,7 @@ body.dark-theme {
   --btn-add: rgb(42, 42, 72);
   --blur-color: #0032c6;
   --time-color: rgb(79, 79, 164);
+  --time-shadow: 4px 0px 19px rgba(79, 79, 164, 0.8);
 }
 
 .dark-theme{
@@ -53,9 +55,9 @@ body {
   height: 120px;
   border-radius: 0px 0px 25px 25px;
   margin-bottom: 30px;
-  -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
--moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
+  -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
+-moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
+box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
 transition: all 0.3s ease-in;
 }
 .header::after{
@@ -198,9 +200,9 @@ transition: all 0.3s ease-in;
   padding-top: 1em;
   padding-bottom: 1em;
 	background-color: var(--background-color);
-  -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
--moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
+  -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
+-moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
+box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
 text-align: center;
 transition: all 0.3s ease-in;
 }
@@ -269,9 +271,9 @@ transition: all 0.3s ease-in;
   position: relative;
 	background-color: var(--background-color);
   border-radius: 25px 25px 25px 25px;
-  -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
--moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.35);
+  -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
+-moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
+box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
 transition: all 0.3s ease-in;
 }
 
@@ -351,6 +353,9 @@ transition: all 0.3s ease-in;
   padding: 10px 40px;
   opacity: 0.95;
   transition: all 0.3s ease-in;
+  -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
+  -moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
+  box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
 }
 .btn-how{
   display: flex;
@@ -392,6 +397,7 @@ transition: all 0.3s ease-in;
   justify-content: center;
   letter-spacing: 1px;
   transition: all 0.3s ease-in;
+  text-shadow: var(--time-shadow);
 }
 .time-value{
   
