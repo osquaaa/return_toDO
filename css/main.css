@@ -10,7 +10,7 @@
   --blur-color: #7194ff;
   --box-shadow: ;
   --time-color: rgb(216, 216, 255);
-  --time-shadow: 4px 0px 19px rgba(216,  216,  255, 0.4);
+  --time-shadow: 4px 0px 19px rgba(216,  216,  255, 0.3);
 }
 
 body.dark-theme {
@@ -23,7 +23,7 @@ body.dark-theme {
   --btn-add: rgb(42, 42, 72);
   --blur-color: #0032c6;
   --time-color: rgb(79, 79, 164);
-  --time-shadow: 4px 0px 19px rgba(79, 79, 164, 0.8);
+  --time-shadow: 4px 0px 19px rgba(79, 79, 164, 0.7);
 }
 
 .dark-theme{
@@ -54,7 +54,7 @@ body {
   top: 0;
   height: 120px;
   border-radius: 0px 0px 25px 25px;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   -webkit-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
 -moz-box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
 box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.5);
