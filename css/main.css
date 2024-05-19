@@ -13,7 +13,7 @@
   --time-shadow: 4px 0px 19px rgba(216,  216,  255, 0.2);
 }
 
-body.dark-theme {
+body.light-theme {
   --body-color: rgb(188, 188, 255);
   --background-color: rgb(79, 79, 164);
   --text-color: rgb(215, 215, 215);
@@ -26,7 +26,7 @@ body.dark-theme {
   --time-shadow: 4px 0px 19px rgba(79, 79, 164, 0.4);
 }
 
-.dark-theme{
+.light-theme{
   height: 100%;
 }
 html, body {
