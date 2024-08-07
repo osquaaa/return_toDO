@@ -212,7 +212,7 @@ function checkEmptyList() {
     if(tasks.length === 0){
         const emptyListHTML = `<li id="emptyList" class="list-group-item empty-list" style="border-radius: 15px;">
         <img src="./img/leaf.svg" alt="Empty" width="48" class="mt-3">
-        <div class="empty-list__title">Список дел пуст</div>
+        <div class="empty-list__title lang" key="empty">Список дел пуст</div>
     </li>`;
     tasksList.insertAdjacentHTML('afterbegin', emptyListHTML);
     }
