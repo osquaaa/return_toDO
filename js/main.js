@@ -57,28 +57,25 @@ if(localStorage.getItem('tasks')) {
     
 }
 
-tasks.forEach(function(task){    
-
-
+tasks.forEach(function(task) {
     const cssClass = task.done ? "task-title task-title--done" : "task-title";
-    
+
     const taskHTML = `
     <li id="${task.id}" class="list-group-item d-flex justify-content-between task-item">
-    <span class="${cssClass}">${task.text}</span>
-      <div class="task-item__buttons">
-        <button type="button" data-action="done" class="btn-action">
-            <img src="./img/tick.svg" alt="Done" width="18" height="18">
-        </button>
-        <button type="button" data-action="delete" class="btn-action">
-            <img src="./img/cross.svg" alt="Done" width="18" height="18">
-        </button>
-    </div>
-</li>`;
+        <span class="${cssClass}">${task.text}</span>
+        <span class="task-time">${task.createdAt}</span> <!-- Время создания -->
+        <div class="task-item__buttons">
+            <button type="button" data-action="done" class="btn-action">
+                <img src="./img/tick.svg" alt="Done" width="18" height="18">
+            </button>
+            <button type="button" data-action="delete" class="btn-action">
+                <img src="./img/cross.svg" alt="Done" width="18" height="18">
+            </button>
+        </div>
+    </li>`;
 
-tasksList.insertAdjacentHTML('beforeend', taskHTML);
-
-
-})
+    tasksList.insertAdjacentHTML('beforeend', taskHTML);
+});
 
 checkEmptyList();
 
@@ -110,40 +107,42 @@ const seconds = document.querySelector('.seconds');
 const btn = document.querySelector('.btn');
 
 
-function addTask(event){
-    
+function addTask(event) {
     event.preventDefault();
 
     const taskText = taskInput.value;
-    
 
     const newTask = {
         id: Date.now(),
         text: taskText,
         done: false,
+        createdAt: new Date().toLocaleString('ru-RU', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        }), // Добавляем дату и время без секунд
     };
-    
 
     tasks.push(newTask);
-    saveToLocalStorage()
-
-    
+    saveToLocalStorage();
 
     const cssClass = newTask.done ? "task-title task-title--done" : "task-title";
 
-    const taskHTML =`
+    const taskHTML = `
     <li id="${newTask.id}" class="list-group-item d-flex justify-content-between task-item">
-<span class="${cssClass}">${newTask.text}</span>
-
-<div class="task-item__buttons">
-    <button type="button" data-action="done" class="btn-action">
-        <img src="./img/tick.svg" alt="Done" width="18" height="18">
-    </button>
-    <button type="button" data-action="delete" class="btn-action">
-        <img src="./img/cross.svg" alt="Done" width="18" height="18">
-    </button>
-</div>
-</li>`
+        <span class="${cssClass}">${newTask.text}</span>
+        <span class="task-time">${newTask.createdAt}</span> <!-- Время создания -->
+        <div class="task-item__buttons">
+            <button type="button" data-action="done" class="btn-action">
+                <img src="./img/tick.svg" alt="Done" width="18" height="18">
+            </button>
+            <button type="button" data-action="delete" class="btn-action">
+                <img src="./img/cross.svg" alt="Done" width="18" height="18">
+            </button>
+        </div>
+    </li>`;
 
     tasksList.insertAdjacentHTML('beforeend', taskHTML);
 
@@ -151,8 +150,6 @@ function addTask(event){
     taskInput.focus();
 
     checkEmptyList();
-    
-    
 }
 
 function deleteTask(event){

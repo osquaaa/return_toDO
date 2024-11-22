@@ -30,7 +30,7 @@ body.light-theme {
   height: 100%;
 }
 html, body {
-	font-family: 'Rubik', sans-serif;
+	font-family: Rubik;
   padding-bottom: 0;
 }
 body {
@@ -46,7 +46,7 @@ body {
 
 .header::after{
   position: absolute;
-  top: 4.5%;
+  top: 30%;
   filter: blur(40px);
   z-index: -1;
   content: '';
@@ -54,6 +54,7 @@ body {
   width: 150px;
   background-color: var(--blur-color);
   border-radius: 50%;
+  z-index: -1;
 }
 #theme-toggle:hover{
   /* background-color: rgb(144, 144, 255); */
@@ -162,6 +163,7 @@ body {
   color: #cacaca;
   background-color: #7a7a7aba;
   padding: 0px 10px 0px 10px;
+  margin-top: 4px;
   border-radius: 10px;
   margin-right: 5px;
 }
@@ -320,6 +322,7 @@ transition: all 0.3s ease-in;
 .list-group-item{
 	background-color: var(--background-color);
   transition: all 0.3s ease-in;
+  padding-top: 18px;
 }
 .justify-content-between{
 
@@ -406,4 +409,28 @@ box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.39);
 }
 .task-bg-done{
   background-color: #275efe;
+}
+
+.task-time{
+  color: #fff;
+  background-color: #275dfe;
+  position: absolute;
+  top: 0;
+  font-size: 13px;
+  left: 0;
+  padding: 0px 10px;
+  transform: rotate(-50%, -50%);
+  border-radius: 0px 0px 10px 0px;
+  font-family: unbounded;
+}
+
+
+
+.bg-spirit img{
+  position: absolute;
+  opacity: 0.6;
+  height: 100px;
+  z-index: -2;
+  bottom: 40%;
+  left: 40%;
 }
