@@ -133,8 +133,15 @@ function addTask(event) {
     const taskHTML = `
     <li id="${newTask.id}" class="list-group-item d-flex justify-content-between task-item">
         <span class="${cssClass}">${newTask.text}</span>
-        <span class="task-time">${newTask.createdAt}</span> <!-- Время создания -->
+                <span class="task-time">${newTask.createdAt}</span> <!-- Время создания -->
+
         <div class="task-item__buttons">
+            <button type="button" data-action="move-up" class="btn-action">
+                ↑
+            </button>
+            <button type="button" data-action="move-down" class="btn-action">
+                ↓
+            </button>
             <button type="button" data-action="done" class="btn-action">
                 <img src="./img/tick.svg" alt="Done" width="18" height="18">
             </button>
@@ -143,7 +150,6 @@ function addTask(event) {
             </button>
         </div>
     </li>`;
-
     tasksList.insertAdjacentHTML('beforeend', taskHTML);
 
     taskInput.value = "";
@@ -217,6 +223,38 @@ function checkEmptyList() {
     if(tasks.length > 0) {
         const emptyListEl = document.querySelector('#emptyList');
         emptyListEl ? emptyListEl.remove() : null;
+    }
+}
+
+tasksList.addEventListener('click', moveTask);
+
+function moveTask(event) {
+    const parentNode = event.target.closest('.list-group-item');
+    const id = Number(parentNode.id);
+    const taskIndex = tasks.findIndex(task => task.id === id);
+
+    if (event.target.dataset.action === 'move-up' && taskIndex > 0) {
+        // Перемещение задачи вверх
+        const temp = tasks[taskIndex];
+        tasks[taskIndex] = tasks[taskIndex - 1];
+        tasks[taskIndex - 1] = temp;
+
+        // Сохраняем измененный список в LocalStorage
+        saveToLocalStorage();
+        
+        // Перерисовываем список
+        renderTasks();
+    } else if (event.target.dataset.action === 'move-down' && taskIndex < tasks.length - 1) {
+        // Перемещение задачи вниз
+        const temp = tasks[taskIndex];
+        tasks[taskIndex] = tasks[taskIndex + 1];
+        tasks[taskIndex + 1] = temp;
+
+        // Сохраняем измененный список в LocalStorage
+        saveToLocalStorage();
+        
+        // Перерисовываем список
+        renderTasks();
     }
 }
 
