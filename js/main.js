@@ -69,7 +69,7 @@ tasks.forEach(function(task) {
                 <img src="./img/tick.svg" alt="Done" width="18" height="18">
             </button>
             <button type="button" data-action="delete" class="btn-action">
-                <img src="./img/cross.svg" alt="Done" width="18" height="18">
+                <img src="./img/trash2.svg" alt="Done" width="19" height="19">
             </button>
         </div>
     </li>`;
@@ -146,7 +146,7 @@ function addTask(event) {
                 <img src="./img/tick.svg" alt="Done" width="18" height="18">
             </button>
             <button type="button" data-action="delete" class="btn-action">
-                <img src="./img/cross.svg" alt="Done" width="18" height="18">
+                <img src="./img/trash2.svg" alt="Done" width="18" height="18">
             </button>
         </div>
     </li>`;

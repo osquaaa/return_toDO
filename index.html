@@ -194,12 +194,22 @@ transition: all 0.3s ease-in;
 
 		<!-- Form -->
 		<div class="card--add" id="card__active">
-			<div class="card-header lang" key="title-full">Добавить новую задачу</div>
+			<div class="card-header lang" key="title-full">Добавить<div class="card">
+				<div class="loader">
+				  <div class="words">
+					<span class="word">Задачу</span>
+					<span class="word">Цель</span>
+					<span class="word">Заметку</span>
+					<span class="word">Пароль</span>
+					<span class="word">Мечту</span>
+				  </div>
+				</div>
+			  </div></div>
 			<div class="card-body">
 				<form id="form">
 					<div class="form-group">
 						<input type="text" class="form-control lang" id="taskInput" placeholder="Text..." required key="placeholder1">
-						<small id="emailHelp" class="form-text lang" key="title-card">Что делаем, сколько времени тратим, какой результат получаем.</small>
+
 
 					</div>
 					<button type="submit" class="btn btn-primary btn-lg active lang" id="btn-add" key="add-btn">Добавить</button>
