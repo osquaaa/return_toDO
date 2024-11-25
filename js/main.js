@@ -64,15 +64,18 @@ tasks.forEach(function(task) {
     <li id="${task.id}" class="list-group-item d-flex justify-content-between task-item">
         <span class="${cssClass}">${task.text}</span>
         <span class="task-time">${task.createdAt}</span> <!-- Время создания -->
+                <span class="task-number">${task.number}</span>
         <div class="task-item__buttons">
             <button type="button" data-action="done" class="btn-action">
                 <img src="./img/tick.svg" alt="Done" width="18" height="18">
             </button>
             <button type="button" data-action="delete" class="btn-action">
-                <img src="./img/trash2.svg" alt="Done" width="19" height="19">
+                <img src="./img/trash2.svg" alt="Done" width="18" height="18">
             </button>
         </div>
     </li>`;
+
+
 
     tasksList.insertAdjacentHTML('beforeend', taskHTML);
 });
@@ -116,13 +119,14 @@ function addTask(event) {
         id: Date.now(),
         text: taskText,
         done: false,
+        number: tasks.length + 1, // Присваиваем номер задачи
         createdAt: new Date().toLocaleString('ru-RU', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
-        }), // Добавляем дату и время без секунд
+        }),
     };
 
     tasks.push(newTask);
@@ -133,15 +137,9 @@ function addTask(event) {
     const taskHTML = `
     <li id="${newTask.id}" class="list-group-item d-flex justify-content-between task-item">
         <span class="${cssClass}">${newTask.text}</span>
-                <span class="task-time">${newTask.createdAt}</span> <!-- Время создания -->
-
+        <span class="task-time">${newTask.createdAt}</span> <!-- Время создания -->
+       <span class="task-number">${newTask.number}</span>
         <div class="task-item__buttons">
-            <button type="button" data-action="move-up" class="btn-action">
-                ↑
-            </button>
-            <button type="button" data-action="move-down" class="btn-action">
-                ↓
-            </button>
             <button type="button" data-action="done" class="btn-action">
                 <img src="./img/tick.svg" alt="Done" width="18" height="18">
             </button>
@@ -150,6 +148,7 @@ function addTask(event) {
             </button>
         </div>
     </li>`;
+
     tasksList.insertAdjacentHTML('beforeend', taskHTML);
 
     taskInput.value = "";
@@ -158,33 +157,36 @@ function addTask(event) {
     checkEmptyList();
 }
 
-function deleteTask(event){
-    
+// У
 
-    if(event.target.dataset.action !== 'delete'){
-        return
+function deleteTask(event) {
+    if (event.target.dataset.action !== 'delete') {
+        return;
     }
 
-        console.log('delete');
-        const parenNode = event.target.closest('.list-group-item');
+    const parentNode = event.target.closest('.list-group-item');
 
-        const id = Number(parenNode.id);
+    const id = Number(parentNode.id);
 
-        const index = tasks.findIndex(function(task){
-            return task.id === id;
-        })
+    const index = tasks.findIndex(function(task) {
+        return task.id === id;
+    });
 
+    tasks.splice(index, 1);
 
-        tasks.splice(index, 1)
+    // Перенумерация оставшихся задач
+    tasks.forEach((task, i) => {
+        task.number = i + 1;
+    });
 
-        saveToLocalStorage()
+    saveToLocalStorage();
 
+    parentNode.remove();
 
-        parenNode.remove();
-
-
-        checkEmptyList();   
+    checkEmptyList();
 }
+
+// Отмечаем
 
 function doneTask(event) {
     
@@ -215,7 +217,7 @@ function checkEmptyList() {
     if(tasks.length === 0){
         const emptyListHTML = `<li id="emptyList" class="list-group-item empty-list" style="border-radius: 15px;">
         <img src="./img/leaf.svg" alt="Empty" width="48" class="mt-3">
-        <div class="empty-list__title lang" key="empty">Список дел пуст</div>
+        <div class="empty-list__title lang" key="empty">Список пуст</div>
     </li>`;
     tasksList.insertAdjacentHTML('afterbegin', emptyListHTML);
     }

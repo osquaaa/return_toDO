@@ -111,7 +111,8 @@ body {
 }
 
 .logo{
-  font-weight: 700;
+  font-family: unbounded;
+  font-weight: 600;
   color: var(--logo-color);
   display: flex;
   align-items: center;
@@ -545,3 +546,15 @@ box-shadow: -1px -1px 34px 0px rgba(0,0,0,0.39);
 }
 
 
+.task-number{
+  color: #fff;
+  background-color: #275dfe;
+  position: absolute;
+  top: 0;
+  font-size: 13px;
+  margin-left: 130px;
+  padding: 0px 10px;
+  transform: rotate(-50%, -50%);
+  border-radius: 0px 0px 10px 10px;
+  font-family: unbounded;
+}
