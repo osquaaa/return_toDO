@@ -1,274 +1,218 @@
-// Находим элементы
-
-const form = document.querySelector('#form');
-const taskInput = document.querySelector('#taskInput');
-const tasksList = document.querySelector('#tasksList');
-const emptyList = document.querySelector('#emptyList');
-const emptyFooter = document.querySelector('.footer');
-const fullDate = document.querySelector('.full-date');
-const timeDate = document.querySelector('.time-all');
+const form = document.querySelector('#form')
+const taskInput = document.querySelector('#taskInput')
+const tasksList = document.querySelector('#tasksList')
+const emptyList = document.querySelector('#emptyList')
 const hoursDate = document.querySelector('.hours')
 const minutesDate = document.querySelector('.minutes')
 
-// function allDate(){
-//     let time = new Date();
-//     seconds.innerHTML = time.getSeconds();
-//     // Сохраняем значение
-//     localStorage.setItem('seconds', time.getSeconds());
-//   }
-  
-//   document.addEventListener('DOMContentLoaded', () => {
-//     // Достаем значение
-//     const secondSave = localStorage.getItem('seconds');
-//     if (secondSave) { // Если есть, отображаем
-//       seconds.innerHTML = secondSave;
-//     }
-//   })
-
-// счетчик 
-// let metr = new Date();
-// const secon = metr.getSeconds();
-// localStorage.setItem('secon', metr.getSeconds());
-// const saveSecon = localStorage.getItem('secon');
-
-//
-
-// Часы
-function myClock(){
-    let allTime = new Date()
-    hoursDate.innerHTML = (`0${allTime.getHours()}`).slice(-2);
-    minutesDate.innerHTML = (`0${allTime.getMinutes()}`).slice(-2);
+// Обновление времени
+function myClock() {
+	let allTime = new Date()
+	hoursDate.innerHTML = `0${allTime.getHours()}`.slice(-2)
+	minutesDate.innerHTML = `0${allTime.getMinutes()}`.slice(-2)
 }
-//
+myClock()
+setInterval(myClock, 1000)
 
-myClock();
+// Инициализация задач из localStorage
+let tasks = localStorage.getItem('tasks')
+	? JSON.parse(localStorage.getItem('tasks'))
+	: []
 
-setInterval(myClock, 1000);
+// Отображение задач из localStorage
+tasks.forEach(task => renderTask(task))
 
+// Проверяем пустой список при загрузке страницы
+checkEmptyList()
 
-// const cachedDate = localStorage.setItem('newDate', JSON.stringify(new Date().getSeconds()));
-// const returnDate = JSON.parse(localStorage.getItem('newDate'));
-let tasks = [];
-
-
-if(localStorage.getItem('tasks')) {
-    
-    tasks = JSON.parse(localStorage.getItem('tasks'));
-    
-}
-
-tasks.forEach(function(task) {
-    const cssClass = task.done ? "task-title task-title--done" : "task-title";
-
-    const taskHTML = `
-    <li id="${task.id}" class="list-group-item d-flex justify-content-between task-item">
-        <span class="${cssClass}">${task.text}</span>
-        <span class="task-time">${task.createdAt}</span> <!-- Время создания -->
-                <span class="task-number">${task.number}</span>
-        <div class="task-item__buttons">
-            <button type="button" data-action="done" class="btn-action">
-                <img src="./img/tick.svg" alt="Done" width="18" height="18">
-            </button>
-            <button type="button" data-action="delete" class="btn-action">
-                <img src="./img/trash2.svg" alt="Done" width="18" height="18">
-            </button>
-        </div>
-    </li>`;
-
-
-
-    tasksList.insertAdjacentHTML('beforeend', taskHTML);
-});
-
-checkEmptyList();
-
-
+// Добавление задачи
 form.addEventListener('submit', addTask)
 
-tasksList.addEventListener('click', deleteTask)
+// Слушатели событий для кнопок
+tasksList.addEventListener('click', event => {
+	const taskContainer = event.target.closest('.task-container')
+	if (!taskContainer) return
 
-tasksList.addEventListener('click', doneTask)
+	const taskId = Number(taskContainer.id)
+	const task = tasks.find(t => t.id === taskId)
 
+	if (event.target.closest('[data-action="delete"]')) {
+		deleteTask(taskId, taskContainer)
+	} else if (event.target.closest('[data-action="done"]')) {
+		doneTask(task, taskContainer)
+	} else if (event.target.closest('[data-action="edit"]')) {
+		editTask(task, taskContainer)
+	}
+})
 
-let second = document.querySelector('.date')
+// Функция рендеринга задачи
+function renderTask(task) {
+	const cssClass = task.done ? 'task-title task-title--done' : 'task-title'
 
-
-// form.addEventListener('submit', myDate)
-// function myDate(){
-//     let clock = new Date();
-//     second.innerHTML = clock.getSeconds();
-//     localStorage.setItem('second', clock.getSeconds());
-// }
-// document.addEventListener('DOMContentLoaded', () => {
-//     const saveSecond = localStorage.getItem('second');
-//     if(saveSecond){
-//         second.innerHTML = saveSecond;
-//     }
-// })
-
-const seconds = document.querySelector('.seconds');
-const btn = document.querySelector('.btn');
-
-
-function addTask(event) {
-    event.preventDefault();
-
-    const taskText = taskInput.value;
-
-    const newTask = {
-        id: Date.now(),
-        text: taskText,
-        done: false,
-        number: tasks.length + 1, // Присваиваем номер задачи
-        createdAt: new Date().toLocaleString('ru-RU', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-        }),
-    };
-
-    tasks.push(newTask);
-    saveToLocalStorage();
-
-    const cssClass = newTask.done ? "task-title task-title--done" : "task-title";
-
-    const taskHTML = `
-    <li id="${newTask.id}" class="list-group-item d-flex justify-content-between task-item">
-        <span class="${cssClass}">${newTask.text}</span>
-        <span class="task-time">${newTask.createdAt}</span> <!-- Время создания -->
-       <span class="task-number">${newTask.number}</span>
-        <div class="task-item__buttons">
-            <button type="button" data-action="done" class="btn-action">
-                <img src="./img/tick.svg" alt="Done" width="18" height="18">
-            </button>
-            <button type="button" data-action="delete" class="btn-action">
-                <img src="./img/trash2.svg" alt="Done" width="18" height="18">
-            </button>
+	const taskHTML = `
+    <div id="${task.id}" class="task-container">
+        <div class="task-header">
+            <span class="task-time">${task.createdAt}</span>
+            <span class="task-number">#${task.number}</span>
+            <div class="task-item__buttons">
+                <button type="button" data-action="done" class="btn-action">
+                    <img src="./img/tick.svg" alt="Done" width="18" height="18">
+                </button>
+                <button type="button" data-action="edit" class="btn-action">
+                    <img src="./img/edit.svg" alt="Edit" width="18" height="18">
+                </button>
+                <button type="button" data-action="delete" class="btn-action">
+                    <img src="./img/trash2.svg" alt="Delete" width="18" height="18">
+                </button>
+            </div>
         </div>
-    </li>`;
-
-    tasksList.insertAdjacentHTML('beforeend', taskHTML);
-
-    taskInput.value = "";
-    taskInput.focus();
-
-    checkEmptyList();
+        <div class="task-item">
+            <div class="task-body">
+                <span class="${cssClass}">${task.text}</span>
+            </div>
+        </div>
+    </div>`
+	tasksList.insertAdjacentHTML('beforeend', taskHTML)
+	checkEmptyList()
 }
 
-// У
+// Функция добавления задачи
+function addTask(event) {
+	event.preventDefault()
 
-function deleteTask(event) {
-    if (event.target.dataset.action !== 'delete') {
-        return;
-    }
+	const taskText = taskInput.value
 
-    const parentNode = event.target.closest('.list-group-item');
+	const newTask = {
+		id: Date.now(),
+		text: taskText,
+		done: false,
+		number: tasks.length + 1,
+		createdAt: new Date().toLocaleString('ru-RU', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit',
+		}),
+	}
 
-    const id = Number(parentNode.id);
+	tasks.push(newTask)
+	saveToLocalStorage()
+	renderTask(newTask)
 
-    const index = tasks.findIndex(function(task) {
-        return task.id === id;
-    });
-
-    tasks.splice(index, 1);
-
-    // Перенумерация оставшихся задач
-    tasks.forEach((task, i) => {
-        task.number = i + 1;
-    });
-
-    saveToLocalStorage();
-
-    parentNode.remove();
-
-    checkEmptyList();
+	taskInput.value = ''
+	taskInput.focus()
 }
 
-// Отмечаем
-
-function doneTask(event) {
-    
-    
-    if(event.target.dataset.action !== "done") return;
-
-    const parentNode = event.target.closest('.list-group-item');
-
-    const id = Number(parentNode.id);
-
-    const task = tasks.find(function(task){
-        if(task.id === id) {
-            return true;
-            
-        }
-    })
-    task.done = !task.done
-    saveToLocalStorage()
-
-
-    const taskTitle = parentNode.querySelector('.task-title');
-
-    taskTitle.classList.toggle('task-title--done')
+// Функция удаления задачи
+function deleteTask(id, taskContainer) {
+	tasks = tasks.filter(task => task.id !== id)
+	saveToLocalStorage()
+	taskContainer.remove()
+	checkEmptyList()
 }
 
+// Функция завершения задачи
+function doneTask(task, taskContainer) {
+	task.done = !task.done
+	saveToLocalStorage()
+
+	const taskTitle = taskContainer.querySelector('.task-title')
+	taskTitle.classList.toggle('task-title--done')
+}
+
+// Функция редактирования задачи
+function editTask(task, taskContainer) {
+	const taskBody = taskContainer.querySelector('.task-body')
+	const taskText = task.text
+
+	// Открываем поле для редактирования
+	taskBody.innerHTML = `
+        <input type="text" class="edit-input form-control" value="${taskText}" />
+        <div class="task-edit-buttons">
+            <button type="button" data-action="save" class="btn-action">
+                <img src="./img/tick.svg" alt="Save" width="18" height="18">
+            </button>
+            <button type="button" data-action="cancel" class="btn-action">
+                <img src="./img/cross2.svg" alt="Cancel" width="18" height="18">
+            </button>
+        </div>`
+
+	// Обработчик для сохранения изменений
+	taskBody
+		.querySelector('[data-action="save"]')
+		.addEventListener('click', () => {
+			const input = taskBody.querySelector('.edit-input')
+			task.text = input.value.trim() || task.text
+			saveToLocalStorage()
+
+			// Перерисовываем задачу с учётом её статуса (выполнена/не выполнена)
+			taskBody.innerHTML = `
+            <span class="task-title ${task.done ? 'task-title--done' : ''}">
+                ${task.text}
+            </span>`
+		})
+
+	// Обработчик для отмены изменений
+	taskBody
+		.querySelector('[data-action="cancel"]')
+		.addEventListener('click', () => {
+			taskBody.innerHTML = `
+            <span class="task-title ${task.done ? 'task-title--done' : ''}">
+                ${task.text}
+            </span>`
+		})
+}
+
+// Проверка пустого списка
 function checkEmptyList() {
-    
-    if(tasks.length === 0){
-        const emptyListHTML = `<li id="emptyList" class="list-group-item empty-list" style="border-radius: 15px;">
-        <img src="./img/leaf.svg" alt="Empty" width="48" class="mt-3">
-        <div class="empty-list__title lang" key="empty">Список пуст</div>
-    </li>`;
-    tasksList.insertAdjacentHTML('afterbegin', emptyListHTML);
-    }
-
-    if(tasks.length > 0) {
-        const emptyListEl = document.querySelector('#emptyList');
-        emptyListEl ? emptyListEl.remove() : null;
-    }
+	if (tasks.length === 0) {
+		const emptyListHTML = `
+            <li id="emptyList" class="list-group-item empty-list" style="border-radius:25px;">
+                <img src="./img/leaf.svg" alt="Empty" width="48" class="mt-3">
+                <div class="empty-list__title">Список дел пуст</div>
+            </li>`
+		tasksList.innerHTML = ''
+		tasksList.insertAdjacentHTML('afterbegin', emptyListHTML)
+	} else {
+		const emptyListEl = document.querySelector('#emptyList')
+		if (emptyListEl) emptyListEl.remove()
+	}
 }
 
-tasksList.addEventListener('click', moveTask);
-
-function moveTask(event) {
-    const parentNode = event.target.closest('.list-group-item');
-    const id = Number(parentNode.id);
-    const taskIndex = tasks.findIndex(task => task.id === id);
-
-    if (event.target.dataset.action === 'move-up' && taskIndex > 0) {
-        // Перемещение задачи вверх
-        const temp = tasks[taskIndex];
-        tasks[taskIndex] = tasks[taskIndex - 1];
-        tasks[taskIndex - 1] = temp;
-
-        // Сохраняем измененный список в LocalStorage
-        saveToLocalStorage();
-        
-        // Перерисовываем список
-        renderTasks();
-    } else if (event.target.dataset.action === 'move-down' && taskIndex < tasks.length - 1) {
-        // Перемещение задачи вниз
-        const temp = tasks[taskIndex];
-        tasks[taskIndex] = tasks[taskIndex + 1];
-        tasks[taskIndex + 1] = temp;
-
-        // Сохраняем измененный список в LocalStorage
-        saveToLocalStorage();
-        
-        // Перерисовываем список
-        renderTasks();
-    }
-}
-
+// Сохранение в LocalStorage
 function saveToLocalStorage() {
-    localStorage.setItem('tasks', JSON.stringify(tasks))
+	localStorage.setItem('tasks', JSON.stringify(tasks))
 }
 
+// Тема
+const themeToggle = document.getElementById('theme-toggle')
 
+// Инициализация темы при загрузке страницы
+function initializeTheme() {
+	const savedTheme = localStorage.getItem('theme')
+	if (savedTheme === 'light') {
+		document.body.classList.add('light-theme')
+		themeToggle.checked = true // Устанавливаем ползунок
+	} else {
+		document.body.classList.remove('light-theme')
+		themeToggle.checked = false // Устанавливаем ползунок
+	}
+}
 
+// Сохранение темы в localStorage
+function saveTheme(theme) {
+	localStorage.setItem('theme', theme)
+}
 
+// Обработчик переключения темы
+themeToggle.addEventListener('change', () => {
+	document.body.classList.toggle('light-theme')
+	const currentTheme = document.body.classList.contains('light-theme')
+		? 'light'
+		: 'dark'
+	saveTheme(currentTheme)
+})
 
-document.getElementById('theme-toggle').addEventListener('click', function() {
-    document.body.classList.toggle('light-theme');
-});
-
+// Инициализация темы при загрузке страницы
+initializeTheme()

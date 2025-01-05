@@ -1,85 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="./img/leaf.svg" />
-    <link
-  rel="apple-touch-icon"
-  sizes="180x180"
-  href="./img/leaf.svg"
-/>
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    <title>LETget | Как добавить на гл. экран</title>
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/how-to-add.css">
-</head> 
-<body>
-    <div class="wrapper">
-        <div class="container">
-        <div class="header">
-            <div class="display-4 mb-2 logo"><span class="logo-new">LET</span>get</div>
-            <div class="header-subtitle">Добавление на рабочий стол</div>
-            <a href="./index.html"><div class="back-btn"><img class="line-header" src="./img/icons8-стрелка-24.png" alt="">Назад</div></a>
-        </div>
-        <div class="main">
-            <div class="main__content">
-                <div class="main-card">
-                    <div class="card-content">
-                    <div class="card-title">Шаг 1</div>
-                    <div class="card-info">Зайдите на данный сайт через браузер <span>Safari</span> и найдите меню показанное ниже(снизу страницы), после нажмите на кнопку <span>"<img src="./img/icons8-поделиться-30.png" alt="" class="share-btn"> поделится"</span>.</div>
-                    <img src="./img/share letget.jpg" alt=""  class="img-info">
-                </div>
-                </div>
-                <div class="main-card margin-card">
-                    <div class="card-content">
-                    <div class="card-title">Шаг 2</div>
-                    <div class="card-info">В показавшемся меню найдите кнопку <span>На экран "Домой"</span> и нажмите на неё</div>
-                    <img src="./img/letget add.jpg" alt=""  class="img-info img-add">
-                </div>
-                </div>
-                <div class="main-card margin-card">
-                    <div class="card-content">
-                    <div class="card-title">Шаг 3</div>
-                    <div class="card-info">Почти всё! Выберите как хотите назвать приложение и нажмите <span>"Добавить"</span></div>
-                    <img src="./img/done2 letget.jpg" alt=""  class="img-info done2">
-                </div>
-                </div>
-                <div class="main-card margin-card end-card">
-                    <div class="card-content">
-                    <div class="card-title">Шаг 4</div>
-                    <div class="card-info info-end"><span>Всё!</span> Найдите приложение на рабочем столе и записывайте свои задачи!</div>
-                </div>
-                </div>
-            </div>
-        </div>
-            <!-- List of tasks -->
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="shortcut icon" href="./img/leaf.svg" />
+		<link rel="apple-touch-icon" sizes="180x180" href="./img/leaf.svg" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+			crossorigin="anonymous"
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+			rel="stylesheet"
+		/>
+		<title>LETget | Как добавить на гл. экран</title>
+		<link rel="stylesheet" href="./css/main.css" />
+		<link rel="stylesheet" href="./css/how-to-add.css" />
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="container">
+				<div class="header">
+					<div class="display-4 mb-2 logo">
+						<span class="logo-new">LET</span>get
+					</div>
+					<div class="header-subtitle">Добавление на рабочий стол</div>
+					<a href="./index.html"
+						><div class="back-btn">
+							<img
+								class="line-header"
+								src="./img/icons8-стрелка-24.png"
+								alt=""
+							/>Назад
+						</div></a
+					>
+				</div>
+				<div class="main">
+					<div class="main__content">
+						<div class="main-card">
+							<div class="card-content">
+								<div class="card-title">Шаг 1</div>
+								<div class="card-info">
+									Зайдите на данный сайт через браузер <span>Safari</span> и
+									найдите меню показанное ниже(снизу страницы), после нажмите на
+									кнопку
+									<span
+										>"<img
+											src="./img/icons8-поделиться-30.png"
+											alt=""
+											class="share-btn"
+										/>
+										поделится"</span
+									>.
+								</div>
+								<img src="./img/share letget.jpg" alt="" class="img-info" />
+							</div>
+						</div>
+						<div class="main-card margin-card">
+							<div class="card-content">
+								<div class="card-title">Шаг 2</div>
+								<div class="card-info">
+									В показавшемся меню найдите кнопку
+									<span>На экран "Домой"</span> и нажмите на неё
+								</div>
+								<img
+									src="./img/letget add.jpg"
+									alt=""
+									class="img-info img-add"
+								/>
+							</div>
+						</div>
+						<div class="main-card margin-card">
+							<div class="card-content">
+								<div class="card-title">Шаг 3</div>
+								<div class="card-info">
+									Почти всё! Выберите как хотите назвать приложение и нажмите
+									<span>"Добавить"</span>
+								</div>
+								<img
+									src="./img/done2 letget.jpg"
+									alt=""
+									class="img-info done2"
+								/>
+							</div>
+						</div>
+						<div class="main-card margin-card end-card">
+							<div class="card-content">
+								<div class="card-title">Шаг 4</div>
+								<div class="card-info info-end">
+									<span>Всё!</span> Найдите приложение на рабочем столе и
+									записывайте свои задачи!
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- List of tasks -->
 
-        <!-- <footer class="footer">
+				<!-- <footer class="footer">
             <div class="footer-title">copyright 2024 by Trofim</div>
         </footer> -->
-        
-    
-        </div>
-    
-        </div>
-    
-    
+			</div>
+		</div>
 
-    <script src="js/main.js"></script>
-</body> 
+		<script src="js/main.js"></script>
+	</body>
 </html>
