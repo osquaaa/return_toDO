@@ -159,7 +159,7 @@ body {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 8px 12px;
+	padding: 4px 5px;
 	background-color: var(--background-color);
 	border-radius: 15px 15px 0 0;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -224,17 +224,16 @@ body {
 }
 .btn-action {
 	background-color: var(--btn-action);
-	padding: 5px 8px; /* Меньший отступ для кнопок */
 	cursor: pointer;
 	border: 0;
-	border-radius: 7px; /* Закругленные углы */
+	border-radius: 10px; /* Закругленные углы */
 	transition: all 0.2s ease-in-out;
 	opacity: 1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 35px; /* Фиксированная ширина */
-	height: 35px; /* Фиксированная высота */
+	width: 37px; /* Фиксированная ширина */
+	height: 37px; /* Фиксированная высота */
 	border: 1px solid #ffffff48;
 }
 
@@ -455,15 +454,17 @@ body {
 	color: var(--text-color);
 	background-color: rgba(0, 0, 0, 0.1);
 	padding: 2px 5px;
-	border-radius: 5px;
+	border-radius: 7px;
+	border: 1px solid rgba(172, 172, 255, 0.171);
 }
 .task-number {
 	font-size: 16px;
 	color: var(--text-color);
 	background-color: rgba(0, 0, 0, 0.1);
 	padding: 2px 5px;
-	border-radius: 5px;
+	border-radius: 7px;
 	margin-left: 10px; /* Отступ слева от времени */
+	border: 1px solid rgba(172, 172, 255, 0.171);
 }
 .task-body {
 	flex: 1; /* Текст занимает всё доступное пространство */
