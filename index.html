@@ -1,283 +1,439 @@
 <!DOCTYPE html>
 <html lang="ru">
-	<head>
-		<meta charset="UTF-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1, shrink-to-fit=no"
-		/>
-		<link rel="shortcut icon" href="./img/leaf.svg" />
-		<link rel="apple-touch-icon" sizes="180x180" href="./img/leaf.svg" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-		<link
-			rel="stylesheet"
-			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-			crossorigin="anonymous"
-		/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="shortcut icon" href="./img/leaf.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/leaf.svg" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>LETget • Задачи, покупки, код, тренировки</title>
 
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
-			rel="stylesheet"
-		/>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
-			rel="stylesheet"
-		/>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
-			rel="stylesheet"
-		/>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
-			rel="stylesheet"
-		/>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap"
-			rel="stylesheet"
-		/>
-		<link rel="stylesheet" href="css/main.css" />
-		<title>LETget | Задачи, покупки, цели</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
-		<!-- Yandex.Metrika counter -->
-		<script type="text/javascript">
-			;(function (m, e, t, r, i, k, a) {
-				m[i] =
-					m[i] ||
-					function () {
-						;(m[i].a = m[i].a || []).push(arguments)
-					}
-				m[i].l = 1 * new Date()
-				for (var j = 0; j < document.scripts.length; j++) {
-					if (document.scripts[j].src === r) {
-						return
-					}
-				}
-				;(k = e.createElement(t)),
-					(a = e.getElementsByTagName(t)[0]),
-					(k.async = 1),
-					(k.src = r),
-					a.parentNode.insertBefore(k, a)
-			})(
-				window,
-				document,
-				'script',
-				'https://mc.yandex.ru/metrika/tag.js',
-				'ym'
-			)
+    <link rel="stylesheet" href="css/main.css" />
 
-			ym(97203941, 'init', {
-				clickmap: true,
-				trackLinks: true,
-				accurateTrackBounce: true,
-				webvisor: true,
-			})
-		</script>
-		<noscript
-			><div>
-				<img
-					src="https://mc.yandex.ru/watch/97203941"
-					style="position: absolute; left: -9999px"
-					alt=""
-				/></div
-		></noscript>
-		<!-- /Yandex.Metrika counter -->
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+      (function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            (m[i].a = m[i].a || []).push(arguments);
+          };
+        m[i].l = 1 * new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) {
+            return;
+          }
+        }
+        (k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a);
+      })(
+        window,
+        document,
+        "script",
+        "https://mc.yandex.ru/metrika/tag.js",
+        "ym"
+      );
 
-		<style>
-			.header {
-				position: relative;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				flex-direction: column;
-				background-color: var(--background-color);
-				width: 100%;
-				left: 0;
-				top: 0;
-				height: 127px;
-				border-radius: 0px 0px 25px 25px;
-				margin-bottom: 50px;
-				-webkit-box-shadow: -1px -1px 34px 0px rgba(0, 0, 0, 0.39);
-				-moz-box-shadow: -1px -1px 34px 0px rgba(0, 0, 0, 0.39);
-				box-shadow: -1px -1px 34px 0px rgba(0, 0, 0, 0.39);
-				transition: all 0.3s ease-in;
-			}
-			#theme-toggle__lang:hover {
-				/* background-color: rgb(144, 144, 255); */
-			}
-			#theme-toggle__lang {
-				background-color: rgba(144, 144, 255, 0.48);
-				-webkit-appearance: none;
-				-moz-appearance: none;
-				appearance: none;
-				width: 45px;
-				height: 26px;
-				cursor: pointer;
-				border-radius: 30px;
-				border: 2px solid rgb(172, 172, 255);
-				cursor: pointer;
-				position: relative;
-				transition: 0.3s;
-			}
+      ym(97203941, "init", {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true,
+      });
+    </script>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/97203941"
+          style="position: absolute; left: -9999px"
+          alt=""
+        /></div
+    ></noscript>
+    <!-- /Yandex.Metrika counter -->
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div class="app-header-main">
+          <div class="logo">
+            <span class="logo-mark"></span>
+            <span class="logo-text"
+              ><span class="logo-accent">LET</span>get</span
+            >
+          </div>
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            type="button"
+            aria-label="Переключить тему"
+          >
+            <span class="theme-toggle__icon theme-toggle__icon--moon">☾</span>
+            <span class="theme-toggle__thumb"></span>
+            <span class="theme-toggle__icon theme-toggle__icon--sun">☼</span>
+          </button>
+        </div>
+        <div class="app-header-secondary">
+          <div class="clock">
+            <div class="clock-time">
+              <span data-time="hours" class="clock-number">--</span>
+              <span class="clock-separator">:</span>
+              <span data-time="minutes" class="clock-number">--</span>
+            </div>
+            <div data-time="date" class="clock-date"></div>
+          </div>
+          <div class="header-tagline">
+            Один тёмный аккуратный экран для задач, покупок, кода и турника.
+          </div>
+        </div>
+      </header>
 
-			#theme-toggle__lang:checked {
-				background: rgba(144, 144, 255, 0.9);
-				border: 1px solid rgba(144, 144, 255, 0.9);
-			}
-			.lang-btn {
-				margin-top: 10px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-			#theme-toggle__lang::before {
-				content: '';
-				position: absolute;
-				height: 18px;
-				width: 18px;
-				border-radius: 50%;
-				background: rgb(249, 249, 255);
-				top: 50%;
-				left: 2px;
-				transform: translateY(-50%);
-				transition: 0.3s;
-			}
-			.img-dark {
-				padding-right: 10px;
+      <main class="app-main">
+        <nav class="tabs" aria-label="Типы списков">
+          <div class="tabs__inner">
+            <button class="tab is-active" type="button" data-tab="tasks">
+              <span class="tab-icon">✓</span>
+              <span class="tab-label">Задачи</span>
+            </button>
+            <button class="tab" type="button" data-tab="shopping">
+              <span class="tab-icon">🛒</span>
+              <span class="tab-label">Покупки</span>
+            </button>
+            <button class="tab" type="button" data-tab="code">
+              <span class="tab-icon">&lt;/&gt;</span>
+              <span class="tab-label">Код</span>
+            </button>
+            <button class="tab" type="button" data-tab="workout">
+              <span class="tab-icon">🏋️‍♂️</span>
+              <span class="tab-label">Тренировки</span>
+            </button>
+            <div class="tabs__indicator"></div>
+          </div>
+        </nav>
 
-				color: #fff;
-			}
-			.img-light {
-				padding-left: 10px;
-				color: #fff;
-			}
-			.img-dark__lang {
-				background-color: rgb(188, 188, 255);
-				border: none;
-				/* border: 1px solid #fff; */
-				border-radius: 5px;
-				cursor: pointer;
-				color: #153288;
-			}
-			.img-dark__lang:not(:last-child) {
-				margin-right: 5px;
-			}
-			.img-dark__lang:hover {
-			}
-			#theme-toggle__lang:checked::before {
-				background: #275efe;
-				border: none;
-				left: 21px;
-				background: white;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="wrapper">
-			<div class="container">
-				<div class="header">
-					<div class="display-4 mb-2 logo">
-						<span class="logo-new">LET</span>get
-					</div>
+        <section class="panels">
+          <!-- Задачи -->
+          <section class="panel is-active" data-panel="tasks">
+            <header class="panel-header">
+              <h1 class="panel-title">Задачи</h1>
+              <p class="panel-subtitle">
+                Список для «сделать сегодня» и «не забыть потом».
+              </p>
+            </header>
 
-					<div class="time-btn">
-						<img src="./img/moon-svgrepo-com.svg" alt="" class="img-dark" />
-						<input type="checkbox" id="theme-toggle" />
-						<img src="./img/sun-svgrepo-com.svg" alt="" class="img-light" />
-					</div>
-				</div>
+            <div class="panel-hint" data-hint-id="tasks">
+              <div class="panel-hint__header">
+                <span class="panel-hint__title">Подсказка</span>
+                <button type="button" class="panel-hint__close" data-hint-close>
+                  Скрыть
+                </button>
+              </div>
+              <ul class="panel-hint__list">
+                <li>Напишите задачу одной фразой.</li>
+                <li>Нажмите «Добавить».</li>
+                <li>Отмечайте ✓, когда сделали.</li>
+              </ul>
+            </div>
 
-				<!-- List of tasks -->
-				<div class="main">
-					<div class="time-all">
-						<div class="hours"></div>
-						<div class="two-poinst">:</div>
-						<div class="minutes"></div>
-					</div>
-					<div class="mb-4" style="" id="border">
-						<ul id="tasksList" class="list-group list-group-flush" style="">
-							<!-- <li id="emptyList" class="list-group-item empty-list">
-					<img src="./img/leaf.svg" alt="Empty" width="48" class="mt-3">
-					<div class="empty-list__title">Список дел пуст</div>
-				</li> -->
+            <div class="panel-controls panel-controls--tasks">
+              <div class="chip-group">
+                <button
+                  class="chip is-active"
+                  type="button"
+                  data-task-filter="all"
+                >
+                  Все
+                </button>
+                <button class="chip" type="button" data-task-filter="active">
+                  Активные
+                </button>
+                <button class="chip" type="button" data-task-filter="done">
+                  Выполненные
+                </button>
+              </div>
+              <div class="tasks-counter" data-tasks-counter></div>
+            </div>
 
-							<!-- <li class="list-group-item d-flex justify-content-between task-item">
+            <form
+              class="panel-form task-form"
+              data-category="tasks"
+              autocomplete="off"
+            >
+              <input
+                class="input"
+                type="text"
+                name="text"
+                placeholder="Что нужно сделать?"
+                required
+              />
+              <button class="primary-button" type="submit">
+                <span>Добавить</span>
+                <span class="primary-button__icon">+</span>
+              </button>
+            </form>
+            <div class="items-list" data-category="tasks"></div>
+          </section>
 
-									<div class="seconds"></div>
-					<span class="task-title">Купить молоко</span>
-					<div class="task-item__buttons">
-						<button type="button" data-action="done" class="btn-action">
-							<img class='svg-cross' src="./img/tick.svg" alt="Done" width="18" height="18">
-						</button>
-						<button type="button" data-action="delete" class="btn-action">
-							<img src="./img/cross.svg" alt="Done" width="18" height="18">
-						</button>
-					</div>
-				</li> -->
-						</ul>
-					</div>
-					<!-- //List of tasks -->
+          <!-- Покупки -->
+          <section class="panel" data-panel="shopping">
+            <header class="panel-header">
+              <h1 class="panel-title">Покупки</h1>
+              <p class="panel-subtitle">
+                Походы в магазин объединены в списки, которые легко повторить.
+              </p>
+            </header>
 
-					<!-- Form -->
-					<div class="card--add" id="card__active">
-						<div class="card-header lang" key="title-full">
-							Добавить
-							<div class="card">
-								<div class="loader">
-									<div class="words">
-										<span class="word">Заметку</span>
-										<span class="word">Цель</span>
-										<span class="word">Задачу</span>
-										<span class="word">Пароль</span>
-										<span class="word">Мечту</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="card-body">
-							<form id="form">
-								<div class="form-group">
-									<input
-										type="text"
-										class="form-control lang"
-										id="taskInput"
-										placeholder="Текст задачи"
-										required
-										key="placeholder1"
-									/>
-								</div>
-								<!--<button type="submit" class="btn btn-primary btn-lg active lang" id="btn-add" key="add-btn">Добавить</button>-->
-								<button class="cssbuttons-io-button" type="submit" id="btn-add">
-									Добавить
-									<div class="icon">+</div>
-								</button>
-							</form>
-						</div>
-					</div>
-					<div class="btn-how">
-						<!--<a href="./how-to-add.html" class=""><div class="how-add">Как добавить на рабочий стол?</div></a>-->
-					</div>
-					<!-- //Form  -->
-					<!-- <button id="removeDoneTasks" class="btn btn-secondary mt-4 float-right">Удалить выполненные задачи</button> -->
-				</div>
-				<!-- <footer class="footer">
-		<div class="footer-title">copyright 2024 by Trofim</div>
-	</footer> -->
-			</div>
-		</div>
+            <div class="panel-hint" data-hint-id="shopping">
+              <div class="panel-hint__header">
+                <span class="panel-hint__title">Подсказка</span>
+                <button type="button" class="panel-hint__close" data-hint-close>
+                  Скрыть
+                </button>
+              </div>
+              <ul class="panel-hint__list">
+                <li>Добавляйте продукты по одному с нужным количеством.</li>
+                <li>Кнопка «Новый поход» — для отдельного визита в магазин.</li>
+                <li>Внизу можно повторить любой прошлый список.</li>
+              </ul>
+            </div>
 
-		<script src="jquery.min.js"></script>
-		<script src="js/main.js"></script>
-	</body>
+            <div class="shopping">
+              <div class="shopping-current">
+                <div class="shopping-current-header">
+                  <div>
+                    <div class="shopping-label">Текущий поход</div>
+                    <div class="shopping-meta" data-shopping-current-meta></div>
+                  </div>
+                  <button
+                    type="button"
+                    class="pill-button"
+                    data-shopping-action="new-trip"
+                  >
+                    Новый поход
+                  </button>
+                </div>
+
+                <form class="panel-form shopping-form" autocomplete="off">
+                  <div class="shopping-form-grid">
+                    <input
+                      class="input"
+                      type="text"
+                      name="product"
+                      placeholder="Что купить?"
+                      required
+                    />
+                    <input
+                      class="input input--qty"
+                      type="text"
+                      name="qty"
+                      placeholder="Кол-во"
+                    />
+                    <button class="primary-button" type="submit">
+                      <span>Добавить</span>
+                      <span class="primary-button__icon">+</span>
+                    </button>
+                  </div>
+                </form>
+
+                <div
+                  class="items-list items-list--shopping"
+                  data-shopping-current
+                ></div>
+              </div>
+
+              <div class="shopping-history">
+                <div class="shopping-history-header">
+                  <div class="shopping-label">История походов</div>
+                  <div class="shopping-history-hint">
+                    Выбирайте прошлый список и жмите «Повторить».
+                  </div>
+                </div>
+                <div class="shopping-history-list" data-shopping-history></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Код -->
+          <section class="panel" data-panel="code">
+            <header class="panel-header">
+              <h1 class="panel-title">Код</h1>
+              <p class="panel-subtitle">
+                Мини-хранилище сниппетов и команд. Никаких IDE — только текст.
+              </p>
+            </header>
+
+            <div class="panel-hint" data-hint-id="code">
+              <div class="panel-hint__header">
+                <span class="panel-hint__title">Подсказка</span>
+                <button type="button" class="panel-hint__close" data-hint-close>
+                  Скрыть
+                </button>
+              </div>
+              <ul class="panel-hint__list">
+                <li>При желании дайте сниппету короткое имя.</li>
+                <li>Вставьте код или команду и нажмите «Сохранить».</li>
+                <li>Копируйте содержимое одним нажатием по ⧉.</li>
+              </ul>
+            </div>
+
+            <form
+              class="panel-form panel-form--code task-form"
+              data-category="code"
+              autocomplete="off"
+            >
+              <div class="form-row">
+                <input
+                  class="input"
+                  type="text"
+                  name="title"
+                  placeholder="Название сниппета (опционально)"
+                />
+              </div>
+              <div class="form-row">
+                <textarea
+                  class="input input--textarea input--code"
+                  name="code"
+                  rows="4"
+                  placeholder="Вставьте сюда код или техническую заметку"
+                  required
+                ></textarea>
+              </div>
+              <button class="primary-button" type="submit">
+                <span>Сохранить код</span>
+                <span class="primary-button__icon">⭳</span>
+              </button>
+            </form>
+            <div class="items-list items-list--code" data-category="code"></div>
+          </section>
+
+          <!-- Тренировки -->
+          <section class="panel" data-panel="workout">
+            <header class="panel-header">
+              <h1 class="panel-title">Тренировки</h1>
+              <p class="panel-subtitle">
+                Подтягивания, брусья, отжимания — счётчик подходов и простая
+                статистика.
+              </p>
+            </header>
+
+            <div class="panel-hint" data-hint-id="workout">
+              <div class="panel-hint__header">
+                <span class="panel-hint__title">Подсказка</span>
+                <button type="button" class="panel-hint__close" data-hint-close>
+                  Скрыть
+                </button>
+              </div>
+              <ul class="panel-hint__list">
+                <li>Выберите упражнение сверху.</li>
+                <li>Настройте, сколько повторений в одном подходе.</li>
+                <li>После каждого подхода нажимайте «+ Подход».</li>
+              </ul>
+            </div>
+
+            <div class="workout">
+              <div class="workout-current">
+                <div class="workout-exercises">
+                  <button
+                    type="button"
+                    class="chip chip--workout is-active"
+                    data-workout-exercise="pullups"
+                  >
+                    Подтягивания
+                  </button>
+                  <button
+                    type="button"
+                    class="chip chip--workout"
+                    data-workout-exercise="dips"
+                  >
+                    Брусья
+                  </button>
+                  <button
+                    type="button"
+                    class="chip chip--workout"
+                    data-workout-exercise="pushups"
+                  >
+                    Отжимания
+                  </button>
+                </div>
+
+                <div class="workout-controls">
+                  <div class="workout-counter">
+                    <div class="workout-counter-label">
+                      Повторений в подходе
+                    </div>
+                    <div class="workout-counter-controls">
+                      <button
+                        type="button"
+                        class="counter-button"
+                        data-workout-action="dec-reps"
+                      >
+                        −
+                      </button>
+                      <div
+                        class="workout-counter-value"
+                        data-workout="reps-value"
+                      >
+                        8
+                      </div>
+                      <button
+                        type="button"
+                        class="counter-button"
+                        data-workout-action="inc-reps"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="workout-actions-row">
+                    <button
+                      type="button"
+                      class="primary-button primary-button--block"
+                      data-workout-action="add-set"
+                    >
+                      <span>+ Подход</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="pill-button pill-button--ghost"
+                      data-workout-action="reset-today"
+                    >
+                      Сбросить сегодня
+                    </button>
+                  </div>
+
+                  <div class="workout-today" data-workout-today></div>
+                </div>
+              </div>
+
+              <div class="workout-summary" data-workout-summary></div>
+
+              <div class="workout-history" data-workout-history></div>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <a href="how-to-add.html" class="footer-link"
+          >Как закрепить LETget на главный экран?</a
+        >
+      </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
 </html>
