@@ -758,7 +758,21 @@ body.light-theme .theme-toggle__thumb {
   gap: 3px;
   min-width: 0;
 }
+/* Специально для задач — textarea побольше и с отступом кнопок */
+.item[data-category="tasks"] .edit-inline--task {
+  align-items: stretch;
+  flex-direction: column;
+  gap: 6px;
+}
 
+.item[data-category="tasks"] .input--inline-edit {
+  min-height: 72px;
+  resize: vertical;
+}
+
+.item[data-category="tasks"] .edit-inline-actions--task {
+  margin-top: 4px;
+}
 .items-list--code .item-title {
   font-family: var(--font-sans);
   font-size: 0.9rem;
