@@ -114,7 +114,16 @@
       return "";
     }
   }
-
+  function formatTimeShort(date) {
+    try {
+      return date.toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch (e) {
+      return "";
+    }
+  }
   function formatDateLabelFromKey(key) {
     var parts = key ? key.split("-") : null;
     if (!parts || parts.length !== 3) return "";
@@ -710,14 +719,26 @@
 
       if (action === "new-trip") {
         var now = new Date();
-        var newTrip = {
-          id: now.getTime(),
-          name: "Поход от " + formatDateLabelFromKey(getDateKey(now)),
-          createdAt: formatDateTimeShort(now),
-          dateKey: getDateKey(now),
-          items: [],
-        };
-        state.data.shopping.unshift(newTrip);
+        var trips = state.data.shopping || [];
+
+        if (trips.length && (!trips[0].items || !trips[0].items.length)) {
+          // Текущий поход пустой — переиспользуем его
+          trips[0].name = "Поход от " + formatDateLabelFromKey(getDateKey(now));
+          trips[0].createdAt = formatDateTimeShort(now);
+          trips[0].dateKey = getDateKey(now);
+        } else {
+          // Обычный новый поход
+          var newTrip = {
+            id: now.getTime(),
+            name: "Поход от " + formatDateLabelFromKey(getDateKey(now)),
+            createdAt: formatDateTimeShort(now),
+            dateKey: getDateKey(now),
+            items: [],
+          };
+          trips.unshift(newTrip);
+        }
+
+        state.data.shopping = trips;
         saveState(state);
         renderShopping();
         return;
@@ -726,29 +747,52 @@
       if (action === "reuse-trip") {
         var tripEl = btn.closest(".shopping-trip");
         if (!tripEl) return;
+
         var tripId = Number(tripEl.getAttribute("data-trip-id"));
         if (!tripId) return;
+
         var trips = state.data.shopping || [];
         var original = trips.find(function (t) {
           return t.id === tripId;
         });
         if (!original) return;
+
+        var originalItems = original.items || [];
+        // Нечего повторять — не создаём пустой поход
+        if (!originalItems.length) {
+          return;
+        }
+
         var now2 = new Date();
+        var cloneItems = originalItems.map(function (item) {
+          return {
+            id: Date.now() + Math.random(),
+            name: item.name || "",
+            qty: item.qty || "",
+            done: false,
+          };
+        });
+
         var clone = {
           id: now2.getTime(),
-          name: (original.name || "Поход") + " (повтор)",
+          name:
+            original.name && original.name.indexOf("(повтор)") === -1
+              ? (original.name || "Поход") + " (повтор)"
+              : original.name || "Поход",
           createdAt: formatDateTimeShort(now2),
           dateKey: getDateKey(now2),
-          items: (original.items || []).map(function (item) {
-            return {
-              id: Date.now() + Math.random(),
-              name: item.name || "",
-              qty: item.qty || "",
-              done: false,
-            };
-          }),
+          items: cloneItems,
         };
-        state.data.shopping.unshift(clone);
+
+        // Если текущий активный поход пустой — заменяем его,
+        // а не отправляем ещё один пустой в историю
+        if (trips.length && (!trips[0].items || !trips[0].items.length)) {
+          trips[0] = clone;
+        } else {
+          trips.unshift(clone);
+        }
+
+        state.data.shopping = trips;
         saveState(state);
         renderShopping();
         return;
@@ -850,11 +894,14 @@
     if (!EXERCISE_META[exerciseKey]) {
       exerciseKey = "pullups";
     }
-    var todayKey = getDateKey(new Date());
+    var now = new Date();
+    var todayKey = getDateKey(now);
     var sessions = state.data.workout || [];
+
     var session = sessions.find(function (s) {
       return s.dateKey === todayKey && s.exercise === exerciseKey;
     });
+
     if (!session) {
       session = {
         id: Date.now(),
@@ -863,11 +910,15 @@
         exercise: exerciseKey,
         sets: 0,
         totalReps: 0,
+        updatedAt: "", // новое поле
       };
       sessions.push(session);
     }
+
     session.sets += 1;
     session.totalReps += workoutRepsPerSet;
+    session.updatedAt = formatTimeShort(now); // время последнего подхода
+
     state.data.workout = sessions;
     saveState(state);
     renderWorkout();
@@ -1006,10 +1057,17 @@
       daySessions.forEach(function (s) {
         var meta = EXERCISE_META[s.exercise];
         if (!meta) return;
+
         var line =
           (s.sets || 0) +
           " подходов" +
           (s.totalReps ? " · " + s.totalReps + " повторений" : "");
+
+        // добавляем время последнего подхода, если есть
+        if (s.updatedAt) {
+          line += " · " + s.updatedAt;
+        }
+
         historyHtml +=
           '<div class="workout-history-row">' +
           "<span>" +
@@ -1193,23 +1251,28 @@
   }
 
   // ---- list actions for tasks & code ----
+  // ---- list actions for tasks & code ----
   function startInlineEdit(itemEl, item) {
     if (itemEl.classList.contains("item--editing")) return;
     itemEl.classList.add("item--editing");
+
     var contentEl = itemEl.querySelector(".item-content");
     if (!contentEl) return;
+
     var currentText = item.text || "";
+
     contentEl.innerHTML =
-      '<div class="edit-inline">' +
-      '<input class="input input--inline-edit" type="text" value="' +
+      '<div class="edit-inline edit-inline--task">' +
+      '<textarea class="input input--textarea input--inline-edit" rows="3">' +
       escapeHTML(currentText) +
-      '" />' +
-      '<div class="edit-inline-actions">' +
+      "</textarea>" +
+      "</div>" +
+      '<div class="edit-inline-actions edit-inline-actions--task">' +
       '<button class="icon-button" type="button" data-action="save-edit"><span class="icon">✓</span></button>' +
       '<button class="icon-button" type="button" data-action="cancel-edit"><span class="icon">✕</span></button>' +
-      "</div>" +
       "</div>";
-    var input = contentEl.querySelector("input");
+
+    var input = contentEl.querySelector(".input--inline-edit");
     if (input) {
       input.focus();
       var len = input.value.length;
@@ -1218,7 +1281,6 @@
       } catch (e) {}
     }
   }
-
   function initListActions() {
     var container = document.querySelector(".app-main");
     if (!container) return;
