@@ -2,79 +2,90 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <link rel="shortcut icon" href="./img/leaf.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="./img/leaf.svg" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="theme-color" content="#0b0b0b" />
-
+    <meta name="theme-color" content="#0f0f0f" />
     <title>LETget • Как добавить на главный экран</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
 
     <link rel="stylesheet" href="./css/main.css" />
   </head>
 
-  <body data-page="help">
-    <div class="doc-shell">
-      <header class="doc-topbar">
-        <a class="doc-back" href="./index.html" aria-label="Назад">← Назад</a>
-        <div class="doc-brand">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span class="brand-name"><span class="brand-accent">LET</span>get</span>
+  <body>
+    <div class="page-shell">
+      <header class="page-top">
+        <a class="back" href="./index.html" aria-label="Назад">
+          ← Назад
+        </a>
+        <div class="page-head">
+          <div class="kicker">Подсказка</div>
+          <h1 class="page-title">Как добавить LETget на главный экран</h1>
+          <p class="page-subtitle">iPhone / iPad • Safari • 3 шага</p>
         </div>
-        <button class="ghost" type="button" data-action="toggle-theme">Тема</button>
       </header>
 
-      <main class="doc">
-        <h1 class="doc-title">Как добавить LETget на главный экран</h1>
-        <p class="doc-lead">
-          Это работает как “приложение”: открывается быстро, без лишних вкладок.
-        </p>
+      <main class="page-content">
+        <section class="step-card">
+          <div class="step-num">Шаг 1</div>
+          <p class="step-text">
+            Откройте LETget в <strong>Safari</strong> на iPhone или iPad.
+            Нажмите <strong>«Поделиться»</strong> (иконка со стрелкой вверх).
+          </p>
+          <img
+            src="./img/share letget.jpg"
+            alt="Кнопка «Поделиться» в Safari"
+            class="step-image"
+          />
+        </section>
 
-        <section class="help-grid">
-          <article class="help-card">
-            <div class="help-step">Шаг 1</div>
-            <div class="help-text">
-              Откройте LETget в <b>Safari</b> на iPhone/iPad. Нажмите <b>«Поделиться»</b>
-              (квадрат со стрелкой вверх).
-            </div>
-            <img src="./img/share letget.jpg" alt="Кнопка «Поделиться» в Safari" class="help-img" />
-          </article>
+        <section class="step-card">
+          <div class="step-num">Шаг 2</div>
+          <p class="step-text">
+            В меню выберите пункт <strong>«На экран “Домой”»</strong>.
+          </p>
+          <img
+            src="./img/letget add.jpg"
+            alt="Пункт «На экран Домой»"
+            class="step-image"
+          />
+        </section>
 
-          <article class="help-card">
-            <div class="help-step">Шаг 2</div>
-            <div class="help-text">
-              В меню выберите <b>«На экран “Домой”»</b>.
-            </div>
-            <img src="./img/letget add.jpg" alt="Пункт «На экран Домой»" class="help-img" />
-          </article>
+        <section class="step-card">
+          <div class="step-num">Шаг 3</div>
+          <p class="step-text">
+            Задайте имя (например, <strong>LETget</strong>) и нажмите
+            <strong>«Добавить»</strong>.
+          </p>
+          <img
+            src="./img/done2 letget.jpg"
+            alt="Подтверждение добавления"
+            class="step-image"
+          />
+        </section>
 
-          <article class="help-card">
-            <div class="help-step">Шаг 3</div>
-            <div class="help-text">
-              Задайте название (например, <b>LETget</b>) и нажмите <b>«Добавить»</b>.
-            </div>
-            <img src="./img/done2 letget.jpg" alt="Подтверждение добавления" class="help-img" />
-          </article>
-
-          <article class="help-card help-card--done">
-            <div class="help-step">Готово</div>
-            <div class="help-text">
-              Теперь LETget открывается в один тап: задачи, покупки, сниппеты и тренировки — всегда под рукой.
-            </div>
-          </article>
+        <section class="step-card step-card--done">
+          <div class="step-num">Готово</div>
+          <p class="step-text">
+            Иконка появится на рабочем столе — задачи, списки покупок и тренировки в один тап.
+          </p>
         </section>
       </main>
-    </div>
 
-    <script src="js/main.js"></script>
+      <footer class="page-footer">
+        <span class="muted">LETget • чёрный + бежевый • адаптив</span>
+      </footer>
+    </div>
   </body>
 </html>
