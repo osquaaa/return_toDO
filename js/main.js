@@ -1433,7 +1433,7 @@ bindRtePaste(editTaskBodyEl);
             '<div class="code-head">' +
               '<p class="code-title">' + escapeText(title) + "</p>" +
               (meta ? '<div class="item-meta">' + escapeText(meta) + "</div>" : "") +
-              '<pre class="code-pre"><code>' + escapeText(it.code || "") + "</code></pre>' +
+              '<pre class="code-pre"><code>' + escapeText(it.code || "") + "</code></pre>" +
             "</div>" +
             '<div class="item-actions">' +
               '<button class="mini" type="button" data-code-action="copy" aria-label="Копировать">' +
