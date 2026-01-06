@@ -1465,3 +1465,11 @@ html {
 @media (min-width: 861px) {
   .topbar-menu { display: none !important; }
 }
+@media (max-width: 860px) {
+  .input,
+  .search-input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
