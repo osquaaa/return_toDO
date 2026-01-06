@@ -1513,3 +1513,31 @@ a, button, .btn, .icon-btn, .mini, .check, .tool, .bottom-item {
   border: 0;
   background: transparent;
 }
+
+/* =========================================================
+   Syntax highlight (highlight.js) — overrides under LETget theme
+   ========================================================= */
+
+/* highlight.js часто ставит свой фон — убираем, фон у нас на pre уже есть */
+.hljs {
+  background: transparent !important;
+  color: inherit;
+}
+
+/* чтобы код выглядел аккуратно в твоих блоках */
+.item-title pre code.hljs,
+.rte pre code.hljs,
+.code-pre code.hljs {
+  display: block;
+  padding: 0 !important;
+  font-family: var(--font-mono);
+  line-height: inherit;
+  font-size: inherit;
+}
+
+/* на всякий — если тема подсветки меняет шрифт */
+.hljs,
+.hljs * {
+  font-family: var(--font-mono);
+}
+
