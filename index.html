@@ -2,28 +2,27 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <link rel="shortcut icon" href="./img/leaf.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="./img/leaf.svg" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="theme-color" content="#0b0b0b" />
-
-    <title>LETget • Задачи, покупки, код, тренировки</title>
+    <meta name="theme-color" content="#0f0f0f" />
+    <title>LETget • Списки и заметки</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Новая типографика (мягко/современно) -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
 
     <link rel="stylesheet" href="css/main.css" />
 
-    <!-- Yandex.Metrika counter (оставил как было) -->
+    <!-- Yandex.Metrika counter (оставил как было; при желании перенеси в конец body) -->
     <script type="text/javascript">
       (function (m, e, t, r, i, k, a) {
         m[i] =
@@ -33,13 +32,22 @@
           };
         m[i].l = 1 * new Date();
         for (var j = 0; j < document.scripts.length; j++) {
-          if (document.scripts[j].src === r) return;
+          if (document.scripts[j].src === r) {
+            return;
+          }
         }
-        (k = e.createElement(t)), (a = e.getElementsByTagName(t)[0]);
-        k.async = 1;
-        k.src = r;
-        a.parentNode.insertBefore(k, a);
-      })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+        (k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a);
+      })(
+        window,
+        document,
+        "script",
+        "https://mc.yandex.ru/metrika/tag.js",
+        "ym"
+      );
 
       ym(97203941, "init", {
         clickmap: true,
@@ -56,431 +64,635 @@
           alt=""
         /></div
     ></noscript>
-    <!-- /Yandex.Metrika counter -->
   </head>
 
-  <body data-page="app">
-    <div class="shell" id="app">
-      <!-- Sidebar -->
+  <body>
+    <!-- SVG sprite -->
+    <svg class="svg-sprite" aria-hidden="true">
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path d="M20 6 9 17l-5-5" />
+      </symbol>
+      <symbol id="i-list" viewBox="0 0 24 24">
+        <path d="M8 6h13M8 12h13M8 18h13" />
+        <path d="M4 6h.01M4 12h.01M4 18h.01" />
+      </symbol>
+      <symbol id="i-cart" viewBox="0 0 24 24">
+        <path
+          d="M6 6h15l-2 9H7L6 6Z"
+        />
+        <path d="M6 6 5 3H2" />
+        <path d="M9 20a1 1 0 1 0 0 .01M17 20a1 1 0 1 0 0 .01" />
+      </symbol>
+      <symbol id="i-code" viewBox="0 0 24 24">
+        <path d="M9 18 3 12l6-6" />
+        <path d="M15 6 21 12l-6 6" />
+        <path d="M10 20 14 4" />
+      </symbol>
+      <symbol id="i-dumbbell" viewBox="0 0 24 24">
+        <path d="M6 7v10" />
+        <path d="M18 7v10" />
+        <path d="M8 9h8" />
+        <path d="M8 15h8" />
+        <path d="M4.5 9.5v5" />
+        <path d="M19.5 9.5v5" />
+      </symbol>
+      <symbol id="i-search" viewBox="0 0 24 24">
+        <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
+        <path d="M21 21l-4.2-4.2" />
+      </symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24">
+        <path d="M12 5v14" />
+        <path d="M5 12h14" />
+      </symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24">
+        <path d="M4 7h16" />
+        <path d="M10 11v7" />
+        <path d="M14 11v7" />
+        <path d="M6 7l1 14h10l1-14" />
+        <path d="M9 7V4h6v3" />
+      </symbol>
+      <symbol id="i-edit" viewBox="0 0 24 24">
+        <path d="M12 20h9" />
+        <path
+          d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4 11.5-11.5Z"
+        />
+      </symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24">
+        <path d="M9 9h10v10H9z" />
+        <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+      </symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24">
+        <path d="M12 17v5" />
+        <path d="M6 9l6-6 6 6" />
+        <path d="M8 9v7h8V9" />
+      </symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24">
+        <path
+          d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
+        />
+        <path
+          d="M19.4 15a7.8 7.8 0 0 0 .1-2l2-1.2-2-3.4-2.3.6a7.1 7.1 0 0 0-1.7-1l-.3-2.4H11l-.3 2.4c-.6.2-1.2.6-1.7 1l-2.3-.6-2 3.4L6.7 13a7.8 7.8 0 0 0 .1 2l-2 1.2 2 3.4 2.3-.6c.5.4 1.1.8 1.7 1l.3 2.4h4.1l.3-2.4c.6-.2 1.2-.6 1.7-1l2.3.6 2-3.4-2-1.2Z"
+        />
+      </symbol>
+      <symbol id="i-help" viewBox="0 0 24 24">
+        <path d="M12 18h.01" />
+        <path d="M9.1 9a3 3 0 1 1 5.8 1c0 2-3 2-3 4" />
+        <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" />
+      </symbol>
+      <symbol id="i-x" viewBox="0 0 24 24">
+        <path d="M18 6 6 18" />
+        <path d="M6 6l12 12" />
+      </symbol>
+      <symbol id="i-bold" viewBox="0 0 24 24">
+        <path d="M8 12h6a3 3 0 0 0 0-6H8v6Z" />
+        <path d="M8 12h7a3 3 0 0 1 0 6H8v-6Z" />
+      </symbol>
+      <symbol id="i-italic" viewBox="0 0 24 24">
+        <path d="M19 4h-9" />
+        <path d="M14 20H5" />
+        <path d="M15 4 9 20" />
+      </symbol>
+      <symbol id="i-underline" viewBox="0 0 24 24">
+        <path d="M7 4v6a5 5 0 0 0 10 0V4" />
+        <path d="M5 20h14" />
+      </symbol>
+      <symbol id="i-ol" viewBox="0 0 24 24">
+        <path d="M10 6h11M10 12h11M10 18h11" />
+        <path d="M4 6h2M4 12h2M4 18h2" />
+      </symbol>
+      <symbol id="i-ul" viewBox="0 0 24 24">
+        <path d="M10 6h11M10 12h11M10 18h11" />
+        <path d="M4 6h.01M4 12h.01M4 18h.01" />
+      </symbol>
+      <symbol id="i-link" viewBox="0 0 24 24">
+        <path d="M10 13a5 5 0 0 0 7.1 0l2.1-2.1a5 5 0 0 0-7.1-7.1L11 4.9" />
+        <path d="M14 11a5 5 0 0 0-7.1 0L4.8 13.1a5 5 0 0 0 7.1 7.1L13 19.1" />
+      </symbol>
+    </svg>
+
+    <div class="app-shell" data-app>
+      <!-- Desktop sidebar -->
       <aside class="sidebar" aria-label="Навигация">
         <a class="brand" href="./index.html" aria-label="LETget">
           <span class="brand-mark" aria-hidden="true"></span>
-          <span class="brand-name"><span class="brand-accent">LET</span>get</span>
+          <span class="brand-text"><span class="brand-accent">LET</span>get</span>
         </a>
 
-        <nav class="nav" aria-label="Разделы">
-          <button class="nav-link is-active" type="button" data-nav="tasks" aria-current="page">
-            <span class="nav-ico" aria-hidden="true">✓</span>
+        <nav class="nav">
+          <button class="nav-item is-active" type="button" data-nav="tasks">
+            <svg class="icon" aria-hidden="true"><use href="#i-list"></use></svg>
             <span class="nav-label">Задачи</span>
-            <span class="nav-badge" data-badge="tasks"></span>
           </button>
 
-          <button class="nav-link" type="button" data-nav="shopping">
-            <span class="nav-ico" aria-hidden="true">🛒</span>
+          <button class="nav-item" type="button" data-nav="shopping">
+            <svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>
             <span class="nav-label">Покупки</span>
           </button>
 
-          <button class="nav-link" type="button" data-nav="code">
-            <span class="nav-ico" aria-hidden="true">&lt;/&gt;</span>
+          <button class="nav-item" type="button" data-nav="code">
+            <svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg>
             <span class="nav-label">Код</span>
-            <span class="nav-badge" data-badge="code"></span>
           </button>
 
-          <button class="nav-link" type="button" data-nav="workout">
-            <span class="nav-ico" aria-hidden="true">🏋</span>
+          <button class="nav-item" type="button" data-nav="workout">
+            <svg class="icon" aria-hidden="true"><use href="#i-dumbbell"></use></svg>
             <span class="nav-label">Тренировки</span>
           </button>
 
-          <a class="nav-link nav-link--anchor" href="./how-to-add.html">
-            <span class="nav-ico" aria-hidden="true">⌁</span>
-            <span class="nav-label">На главный экран</span>
-          </a>
+          <div class="nav-sep" aria-hidden="true"></div>
 
-          <button class="nav-link" type="button" data-nav="settings">
-            <span class="nav-ico" aria-hidden="true">⚙</span>
+          <button class="nav-item nav-item--ghost" type="button" data-open-settings>
+            <svg class="icon" aria-hidden="true"><use href="#i-settings"></use></svg>
             <span class="nav-label">Настройки</span>
           </button>
+
+          <a class="nav-item nav-item--ghost" href="./how-to-add.html">
+            <svg class="icon" aria-hidden="true"><use href="#i-help"></use></svg>
+            <span class="nav-label">Как добавить</span>
+          </a>
         </nav>
 
         <div class="sidebar-footer">
-          <div class="sidebar-mini">
-            <div class="mini-clock">
-              <div class="mini-time">
-                <span data-time="hours" class="mini-num">--</span><span class="mini-sep">:</span
-                ><span data-time="minutes" class="mini-num">--</span>
-              </div>
-              <div data-time="date" class="mini-date"></div>
+          <div class="sidebar-clock" aria-label="Текущее время">
+            <div class="clock-time">
+              <span class="clock-number" data-time="hours">--</span>
+              <span class="clock-sep">:</span>
+              <span class="clock-number" data-time="minutes">--</span>
             </div>
-            <button class="ghost" type="button" data-action="toggle-theme" aria-label="Переключить тему">
-              Тема
-            </button>
+            <div class="clock-date" data-time="date"></div>
           </div>
 
-          <div class="sidebar-note">
-            Всё хранится локально в браузере. Можно экспортировать в “Настройках”.
+          <div class="sidebar-hint">
+            Лаконично. Понятно. На каждый день.
           </div>
         </div>
       </aside>
 
       <!-- Main -->
       <div class="main">
-        <!-- Topbar -->
         <header class="topbar">
-          <div class="topbar-left">
-            <button class="icon-btn icon-btn--menu" type="button" data-action="open-mobile-menu" aria-label="Открыть меню">
-              ☰
-            </button>
+          <button class="icon-btn topbar-menu" type="button" data-open-drawer aria-label="Открыть меню">
+            <svg class="icon" aria-hidden="true"><use href="#i-list"></use></svg>
+          </button>
 
-            <div class="topbar-titleblock">
-              <div class="topbar-title" data-topbar-title>Задачи</div>
-              <div class="topbar-subtitle" data-topbar-subtitle>Чтобы не забыть важное</div>
-            </div>
+          <div class="topbar-search" role="search">
+            <svg class="icon topbar-search-icon" aria-hidden="true"><use href="#i-search"></use></svg>
+            <input
+              class="search-input"
+              id="global-search"
+              type="search"
+              inputmode="search"
+              placeholder="Поиск по задачам, покупкам, коду…"
+              autocomplete="off"
+            />
           </div>
 
-          <div class="topbar-right">
-            <div class="search">
-              <input
-                class="search-input"
-                id="global-search"
-                type="search"
-                placeholder="Поиск по задачам, коду и покупкам…"
-                autocomplete="off"
-              />
-              <button class="icon-btn" type="button" data-action="clear-search" aria-label="Очистить поиск">✕</button>
-            </div>
-
-            <button class="primary" type="button" data-action="quick-focus">
-              <span class="primary-label">Быстро добавить</span>
-              <span class="primary-ico" aria-hidden="true">+</span>
-            </button>
-          </div>
+          <button class="icon-btn" type="button" data-open-settings aria-label="Настройки">
+            <svg class="icon" aria-hidden="true"><use href="#i-settings"></use></svg>
+          </button>
         </header>
 
-        <!-- Views -->
-        <main class="views" id="views">
+        <main class="content" aria-live="polite">
           <!-- TASKS -->
-          <section class="view is-active" data-view="tasks" aria-label="Задачи">
-            <div class="view-head">
-              <div class="segmented" role="tablist" aria-label="Фильтр задач">
-                <button class="seg-btn is-active" type="button" data-task-filter="all">Все</button>
-                <button class="seg-btn" type="button" data-task-filter="active">Активные</button>
-                <button class="seg-btn" type="button" data-task-filter="done">Выполненные</button>
+          <section class="view is-active" data-view="tasks">
+            <header class="view-header">
+              <div>
+                <h1 class="view-title">Задачи</h1>
+                <p class="view-subtitle">С форматированием, пинами и быстрым поиском.</p>
               </div>
 
-              <div class="head-actions">
-                <select class="select" data-task-sort aria-label="Сортировка задач">
-                  <option value="pinned">Сначала закреплённые</option>
-                  <option value="newest">Сначала новые</option>
-                  <option value="oldest">Сначала старые</option>
-                  <option value="due">По ближайшей дате</option>
-                </select>
-
-                <button class="ghost" type="button" data-action="clear-done-tasks">Очистить выполненные</button>
-              </div>
-            </div>
-
-            <form class="composer" data-form="tasks" autocomplete="off">
-              <label class="composer-label" for="task-text">Новая задача</label>
-
-              <!-- Важно: textarea сохраняет переносы и структуру текста при вставке -->
-              <textarea
-                class="textarea"
-                id="task-text"
-                name="text"
-                rows="3"
-                placeholder="Вставь сюда текст — переносы строк сохранятся. Можно писать списком."
-                required
-              ></textarea>
-
-              <div class="composer-row">
-                <div class="composer-fields">
-                  <label class="field">
-                    <span class="field-label">Дата</span>
-                    <input class="input" type="date" name="due" />
-                  </label>
-
-                  <label class="checkline">
-                    <input type="checkbox" name="pinned" />
-                    <span>Закрепить</span>
-                  </label>
+              <div class="view-actions">
+                <div class="segmented" role="tablist" aria-label="Фильтр задач">
+                  <button class="segmented-btn is-active" type="button" data-task-filter="all">Все</button>
+                  <button class="segmented-btn" type="button" data-task-filter="active">Активные</button>
+                  <button class="segmented-btn" type="button" data-task-filter="done">Готовые</button>
                 </div>
 
-                <div class="composer-actions">
-                  <button class="ghost" type="button" data-action="tasks-add-batch" title="Добавить каждую строку как отдельную задачу">
-                    Добавить списком
+                <button class="btn btn-ghost" type="button" data-clear-done>
+                  <svg class="icon" aria-hidden="true"><use href="#i-trash"></use></svg>
+                  Очистить готовые
+                </button>
+              </div>
+            </header>
+
+            <section class="panel">
+              <div class="composer">
+                <div class="composer-toolbar" aria-label="Форматирование">
+                  <button class="tool" type="button" data-rte-cmd="bold" aria-label="Жирный">
+                    <svg class="icon" aria-hidden="true"><use href="#i-bold"></use></svg>
                   </button>
-                  <button class="primary" type="submit">Добавить</button>
+                  <button class="tool" type="button" data-rte-cmd="italic" aria-label="Курсив">
+                    <svg class="icon" aria-hidden="true"><use href="#i-italic"></use></svg>
+                  </button>
+                  <button class="tool" type="button" data-rte-cmd="underline" aria-label="Подчёркивание">
+                    <svg class="icon" aria-hidden="true"><use href="#i-underline"></use></svg>
+                  </button>
+                  <span class="tool-sep" aria-hidden="true"></span>
+                  <button class="tool" type="button" data-rte-cmd="insertUnorderedList" aria-label="Маркированный список">
+                    <svg class="icon" aria-hidden="true"><use href="#i-ul"></use></svg>
+                  </button>
+                  <button class="tool" type="button" data-rte-cmd="insertOrderedList" aria-label="Нумерованный список">
+                    <svg class="icon" aria-hidden="true"><use href="#i-ol"></use></svg>
+                  </button>
+                  <span class="tool-sep" aria-hidden="true"></span>
+                  <button class="tool" type="button" data-rte-link aria-label="Ссылка">
+                    <svg class="icon" aria-hidden="true"><use href="#i-link"></use></svg>
+                  </button>
+                </div>
+
+                <div
+                  class="rte"
+                  data-task-composer
+                  contenteditable="true"
+                  role="textbox"
+                  aria-multiline="true"
+                  aria-label="Новая задача"
+                  spellcheck="true"
+                ></div>
+
+                <div class="composer-footer">
+                  <div class="muted" data-tasks-counter>—</div>
+                  <button class="btn btn-primary" type="button" data-add-task>
+                    <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+                    Добавить
+                  </button>
                 </div>
               </div>
+            </section>
 
-              <div class="composer-hint">
-                Горячие клавиши: <span class="kbd">/</span> поиск • <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> добавить
-              </div>
-            </form>
-
-            <div class="list" data-list="tasks"></div>
+            <section class="panel">
+              <div class="list" data-tasks-list></div>
+            </section>
           </section>
 
           <!-- SHOPPING -->
-          <section class="view" data-view="shopping" aria-label="Покупки">
-            <div class="view-head">
-              <div class="view-title">Текущий поход</div>
-              <div class="head-actions">
-                <button class="ghost" type="button" data-shopping-action="copy-list">Скопировать список</button>
-                <button class="primary" type="button" data-shopping-action="new-trip">Новый поход</button>
+          <section class="view" data-view="shopping">
+            <header class="view-header">
+              <div>
+                <h1 class="view-title">Покупки</h1>
+                <p class="view-subtitle">Походы, повторение списков и “копировать в чат”.</p>
               </div>
-            </div>
 
-            <div class="cards">
-              <section class="card">
-                <div class="card-head">
-                  <div class="card-title">Добавить покупки</div>
-                  <div class="card-subtitle" data-shopping-current-meta></div>
+              <div class="view-actions">
+                <button class="btn btn-ghost" type="button" data-shopping-new-trip>
+                  <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+                  Новый поход
+                </button>
+                <button class="btn btn-ghost" type="button" data-shopping-copy>
+                  <svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg>
+                  Копировать список
+                </button>
+              </div>
+            </header>
+
+            <div class="grid-two">
+              <section class="panel">
+                <div class="panel-head">
+                  <div>
+                    <div class="kicker">Текущий поход</div>
+                    <div class="muted" data-shopping-current-meta>—</div>
+                  </div>
                 </div>
 
-                <form class="stack" data-form="shopping" autocomplete="off">
-                  <div class="grid-2">
-                    <input class="input" type="text" name="product" placeholder="Что купить?" required />
-                    <input class="input" type="text" name="qty" placeholder="Кол-во (опционально)" />
-                  </div>
-
-                  <div class="row">
-                    <button class="primary" type="submit">Добавить</button>
-                    <button class="ghost" type="button" data-shopping-action="add-batch">
-                      Добавить списком
-                    </button>
-                    <span class="muted">Подсказка: “молоко — 2”, “яйца x10”, по одной строке.</span>
-                  </div>
+                <form class="form-row" data-shopping-form autocomplete="off">
+                  <input class="input" type="text" name="product" placeholder="Что купить?" required />
+                  <input class="input input--small" type="text" name="qty" placeholder="Кол-во" />
+                  <button class="btn btn-primary" type="submit">
+                    <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+                    Добавить
+                  </button>
                 </form>
 
                 <div class="list" data-shopping-current></div>
               </section>
 
-              <section class="card">
-                <div class="card-head">
-                  <div class="card-title">История походов</div>
-                  <div class="card-subtitle">Нажми “Повторить” — и список вернётся в текущий.</div>
+              <section class="panel">
+                <div class="panel-head">
+                  <div>
+                    <div class="kicker">История походов</div>
+                    <div class="muted">Выбирай и жми “Повторить”.</div>
+                  </div>
                 </div>
+
                 <div class="list" data-shopping-history></div>
               </section>
             </div>
           </section>
 
           <!-- CODE -->
-          <section class="view" data-view="code" aria-label="Код">
-            <div class="view-head">
-              <div class="view-title">Сниппеты</div>
-              <div class="head-actions">
-                <button class="ghost" type="button" data-action="collapse-code">Свернуть длинные</button>
+          <section class="view" data-view="code">
+            <header class="view-header">
+              <div>
+                <h1 class="view-title">Код</h1>
+                <p class="view-subtitle">Сниппеты, команды и заметки — аккуратно, с копированием.</p>
               </div>
-            </div>
+            </header>
 
-            <form class="composer" data-form="code" autocomplete="off">
-              <div class="grid-2">
-                <label class="field">
-                  <span class="field-label">Название (опционально)</span>
-                  <input class="input" type="text" name="title" placeholder="Например: nginx conf / git fix" />
-                </label>
-
-                <label class="field">
-                  <span class="field-label">Теги (опционально)</span>
-                  <input class="input" type="text" name="tags" placeholder="frontend, git, server" />
-                </label>
-              </div>
-
-              <label class="field">
-                <span class="field-label">Код / заметка</span>
+            <section class="panel">
+              <form class="form-col" data-code-form autocomplete="off">
+                <input class="input" type="text" name="title" placeholder="Название (опционально)" />
                 <textarea
-                  class="textarea textarea--mono"
+                  class="input input--code"
                   name="code"
-                  rows="6"
-                  placeholder="Вставляй как есть — форматирование сохраняется."
+                  rows="5"
+                  placeholder="Вставь код или команду"
                   required
                 ></textarea>
-              </label>
 
-              <div class="composer-row">
-                <div class="composer-fields">
-                  <span class="muted">Скопировать можно одной кнопкой. Детали — в боковой панели.</span>
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">
+                    <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+                    Сохранить
+                  </button>
                 </div>
-                <div class="composer-actions">
-                  <button class="primary" type="submit">Сохранить</button>
-                </div>
-              </div>
-            </form>
+              </form>
+            </section>
 
-            <div class="list" data-list="code"></div>
+            <section class="panel">
+              <div class="list" data-code-list></div>
+            </section>
           </section>
 
           <!-- WORKOUT -->
-          <section class="view" data-view="workout" aria-label="Тренировки">
-            <div class="view-head">
-              <div class="view-title">Тренировки</div>
-              <div class="head-actions">
-                <button class="ghost" type="button" data-workout-action="reset-today">Сбросить сегодня</button>
-              </div>
-            </div>
-
-            <section class="card">
-              <div class="card-head">
-                <div class="card-title">Сегодня</div>
-                <div class="card-subtitle" data-workout-today></div>
+          <section class="view" data-view="workout">
+            <header class="view-header">
+              <div>
+                <h1 class="view-title">Тренировки</h1>
+                <p class="view-subtitle">Подходы, повторения и история. Без лишнего шума.</p>
               </div>
 
-              <div class="row wrap">
-                <button type="button" class="chip is-active" data-workout-exercise="pullups">Подтягивания</button>
-                <button type="button" class="chip" data-workout-exercise="dips">Брусья</button>
-                <button type="button" class="chip" data-workout-exercise="pushups">Отжимания</button>
+              <div class="view-actions">
+                <button class="btn btn-ghost" type="button" data-workout-reset-today>
+                  <svg class="icon" aria-hidden="true"><use href="#i-trash"></use></svg>
+                  Сбросить сегодня
+                </button>
+              </div>
+            </header>
+
+            <section class="panel">
+              <div class="chips" role="tablist" aria-label="Упражнение">
+                <button class="chip is-active" type="button" data-workout-exercise="pullups">Подтягивания</button>
+                <button class="chip" type="button" data-workout-exercise="dips">Брусья</button>
+                <button class="chip" type="button" data-workout-exercise="pushups">Отжимания</button>
               </div>
 
-              <div class="row between">
-                <div class="muted">Повторений в подходе</div>
-                <div class="counter">
-                  <button type="button" class="icon-btn" data-workout-action="dec-reps" aria-label="Уменьшить">−</button>
-                  <div class="counter-val" data-workout="reps-value">8</div>
-                  <button type="button" class="icon-btn" data-workout-action="inc-reps" aria-label="Увеличить">+</button>
+              <div class="workout-row">
+                <div class="workout-box">
+                  <div class="kicker">Повторений в подходе</div>
+                  <div class="counter">
+                    <button class="icon-btn" type="button" data-workout-dec aria-label="Меньше">
+                      <span class="counter-mark">−</span>
+                    </button>
+                    <div class="counter-value" data-workout-reps>8</div>
+                    <button class="icon-btn" type="button" data-workout-inc aria-label="Больше">
+                      <span class="counter-mark">+</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="workout-box">
+                  <div class="kicker">Сегодня</div>
+                  <div class="muted" data-workout-today>—</div>
+                  <button class="btn btn-primary btn-block" type="button" data-workout-add>
+                    <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+                    + Подход
+                  </button>
                 </div>
               </div>
-
-              <div class="row">
-                <button type="button" class="primary w-full" data-workout-action="add-set">+ Подход</button>
-              </div>
             </section>
 
-            <section class="card">
-              <div class="card-head">
-                <div class="card-title">Сводка</div>
-                <div class="card-subtitle">Всего за всё время.</div>
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <div class="kicker">Сводка</div>
+                  <div class="muted">Всего за всё время и за последние 7 дней.</div>
+                </div>
               </div>
-              <div class="grid-3" data-workout-summary></div>
+              <div class="stats" data-workout-stats></div>
             </section>
 
-            <section class="card">
-              <div class="card-head">
-                <div class="card-title">История</div>
-                <div class="card-subtitle">Последние 14 дней.</div>
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <div class="kicker">История</div>
+                  <div class="muted">Последние 14 дней.</div>
+                </div>
               </div>
-              <div data-workout-history></div>
+              <div class="history" data-workout-history></div>
             </section>
           </section>
 
-          <!-- SETTINGS -->
-          <section class="view" data-view="settings" aria-label="Настройки">
-            <div class="view-head">
-              <div class="view-title">Настройки</div>
-              <div class="head-actions">
-                <button class="ghost" type="button" data-action="toggle-theme">Переключить тему</button>
+          <!-- SEARCH RESULTS (overlay-like section) -->
+          <section class="view" data-view="search">
+            <header class="view-header">
+              <div>
+                <h1 class="view-title">Результаты поиска</h1>
+                <p class="view-subtitle" data-search-subtitle>—</p>
               </div>
-            </div>
-
-            <section class="card">
-              <div class="card-head">
-                <div class="card-title">Данные</div>
-                <div class="card-subtitle">Экспорт/импорт помогает переносить LETget между устройствами.</div>
+              <div class="view-actions">
+                <button class="btn btn-ghost" type="button" data-search-close>
+                  <svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg>
+                  Закрыть
+                </button>
               </div>
-
-              <div class="stack">
-                <div class="row wrap">
-                  <button class="primary" type="button" data-action="export-data">Экспорт JSON</button>
-
-                  <label class="ghost file-btn" role="button" tabindex="0">
-                    Импорт JSON
-                    <input type="file" accept="application/json" data-action="import-data" />
-                  </label>
-
-                  <button class="ghost" type="button" data-action="reset-all">Сбросить всё</button>
-                </div>
-
-                <div class="muted">
-                  Важно: импорт заменяет данные. Перед импортом лучше сделать экспорт.
-                </div>
-              </div>
-            </section>
-
-            <section class="card">
-              <div class="card-head">
-                <div class="card-title">О приложении</div>
-                <div class="card-subtitle">Минималистично, спокойно, удобно — для тебя и для родственников.</div>
-              </div>
-              <div class="stack">
-                <div class="muted">
-                  Поиск: поле сверху. Боковая панель: открой задачу/сниппет стрелкой справа.
-                </div>
-                <a class="ghost" href="./how-to-add.html">Как добавить на главный экран</a>
-              </div>
+            </header>
+            <section class="panel">
+              <div class="list" data-search-results></div>
             </section>
           </section>
         </main>
-
-        <!-- Bottom nav (mobile) -->
-        <nav class="bottom-nav" aria-label="Нижняя навигация">
-          <button class="bn-item is-active" type="button" data-nav="tasks" aria-label="Задачи">
-            <span class="bn-ico" aria-hidden="true">✓</span>
-            <span class="bn-label">Задачи</span>
-          </button>
-          <button class="bn-item" type="button" data-nav="shopping" aria-label="Покупки">
-            <span class="bn-ico" aria-hidden="true">🛒</span>
-            <span class="bn-label">Покупки</span>
-          </button>
-          <button class="bn-item" type="button" data-nav="code" aria-label="Код">
-            <span class="bn-ico" aria-hidden="true">&lt;/&gt;</span>
-            <span class="bn-label">Код</span>
-          </button>
-          <button class="bn-item" type="button" data-nav="workout" aria-label="Тренировки">
-            <span class="bn-ico" aria-hidden="true">🏋</span>
-            <span class="bn-label">Трен</span>
-          </button>
-          <button class="bn-item" type="button" data-nav="settings" aria-label="Настройки">
-            <span class="bn-ico" aria-hidden="true">⚙</span>
-            <span class="bn-label">Настр</span>
-          </button>
-        </nav>
       </div>
 
-      <!-- Drawer (details / edit) -->
-      <div class="drawer" data-drawer hidden>
-        <div class="drawer-backdrop" data-action="close-drawer" aria-hidden="true"></div>
-        <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="Детали">
+      <!-- Mobile bottom nav -->
+      <nav class="bottom-nav" aria-label="Навигация (мобильная)">
+        <button class="bottom-item is-active" type="button" data-nav="tasks" aria-label="Задачи">
+          <svg class="icon" aria-hidden="true"><use href="#i-list"></use></svg>
+          <span>Задачи</span>
+        </button>
+        <button class="bottom-item" type="button" data-nav="shopping" aria-label="Покупки">
+          <svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>
+          <span>Покупки</span>
+        </button>
+        <button class="bottom-item" type="button" data-nav="code" aria-label="Код">
+          <svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg>
+          <span>Код</span>
+        </button>
+        <button class="bottom-item" type="button" data-nav="workout" aria-label="Тренировки">
+          <svg class="icon" aria-hidden="true"><use href="#i-dumbbell"></use></svg>
+          <span>Трен</span>
+        </button>
+      </nav>
+
+      <!-- Mobile drawer -->
+      <div class="drawer" data-drawer aria-hidden="true">
+        <div class="drawer-backdrop" data-close-drawer></div>
+        <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="Меню">
           <div class="drawer-head">
-            <div class="drawer-title" data-drawer-title>Детали</div>
-            <button class="icon-btn" type="button" data-action="close-drawer" aria-label="Закрыть">✕</button>
-          </div>
-          <div class="drawer-body" data-drawer-body></div>
-        </div>
-      </div>
-
-      <!-- Toast -->
-      <div class="toast" data-toast hidden>
-        <div class="toast-text" data-toast-text></div>
-        <button class="ghost ghost--small" type="button" data-action="toast-undo">Отменить</button>
-      </div>
-
-      <!-- Mobile menu (overlay) -->
-      <div class="mobile-menu" data-mobile-menu hidden>
-        <div class="mobile-menu-backdrop" data-action="close-mobile-menu" aria-hidden="true"></div>
-        <div class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Меню">
-          <div class="mobile-menu-head">
-            <div class="brand-line">
+            <div class="brand-inline">
               <span class="brand-mark" aria-hidden="true"></span>
-              <span class="brand-name"><span class="brand-accent">LET</span>get</span>
+              <span class="brand-text"><span class="brand-accent">LET</span>get</span>
             </div>
-            <button class="icon-btn" type="button" data-action="close-mobile-menu" aria-label="Закрыть">✕</button>
+            <button class="icon-btn" type="button" data-close-drawer aria-label="Закрыть меню">
+              <svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg>
+            </button>
           </div>
 
-          <div class="mobile-menu-nav">
-            <button class="nav-link is-active" type="button" data-nav="tasks">✓ Задачи</button>
-            <button class="nav-link" type="button" data-nav="shopping">🛒 Покупки</button>
-            <button class="nav-link" type="button" data-nav="code">&lt;/&gt; Код</button>
-            <button class="nav-link" type="button" data-nav="workout">🏋 Тренировки</button>
-            <button class="nav-link" type="button" data-nav="settings">⚙ Настройки</button>
-            <a class="nav-link nav-link--anchor" href="./how-to-add.html">⌁ На главный экран</a>
-          </div>
+          <div class="drawer-nav">
+            <button class="nav-item is-active" type="button" data-nav="tasks">
+              <svg class="icon" aria-hidden="true"><use href="#i-list"></use></svg>
+              <span class="nav-label">Задачи</span>
+            </button>
+            <button class="nav-item" type="button" data-nav="shopping">
+              <svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>
+              <span class="nav-label">Покупки</span>
+            </button>
+            <button class="nav-item" type="button" data-nav="code">
+              <svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg>
+              <span class="nav-label">Код</span>
+            </button>
+            <button class="nav-item" type="button" data-nav="workout">
+              <svg class="icon" aria-hidden="true"><use href="#i-dumbbell"></use></svg>
+              <span class="nav-label">Тренировки</span>
+            </button>
 
-          <div class="mobile-menu-foot">
-            <button class="ghost w-full" type="button" data-action="toggle-theme">Переключить тему</button>
+            <div class="nav-sep" aria-hidden="true"></div>
+
+            <button class="nav-item nav-item--ghost" type="button" data-open-settings>
+              <svg class="icon" aria-hidden="true"><use href="#i-settings"></use></svg>
+              <span class="nav-label">Настройки</span>
+            </button>
+            <a class="nav-item nav-item--ghost" href="./how-to-add.html">
+              <svg class="icon" aria-hidden="true"><use href="#i-help"></use></svg>
+              <span class="nav-label">Как добавить</span>
+            </a>
           </div>
         </div>
       </div>
+
+      <!-- Settings modal -->
+      <div class="modal" data-modal="settings" aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close="settings"></div>
+        <div class="modal-card" role="dialog" aria-modal="true" aria-label="Настройки">
+          <div class="modal-head">
+            <div>
+              <div class="kicker">Настройки</div>
+              <div class="modal-title">Данные и резервная копия</div>
+            </div>
+            <button class="icon-btn" type="button" data-modal-close="settings" aria-label="Закрыть">
+              <svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <div class="settings-grid">
+              <button class="btn btn-ghost" type="button" data-export>
+                <svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg>
+                Экспорт (JSON)
+              </button>
+
+              <label class="btn btn-ghost file-btn">
+                <input type="file" accept="application/json" data-import hidden />
+                <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+                Импорт (JSON)
+              </label>
+
+              <button class="btn btn-danger" type="button" data-wipe>
+                <svg class="icon" aria-hidden="true"><use href="#i-trash"></use></svg>
+                Стереть всё
+              </button>
+            </div>
+
+            <div class="muted small">
+              Экспортируй перед крупными правками. Импорт аккуратно заменит текущие данные.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit task modal -->
+      <div class="modal" data-modal="edit-task" aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close="edit-task"></div>
+        <div class="modal-card" role="dialog" aria-modal="true" aria-label="Редактирование задачи">
+          <div class="modal-head">
+            <div>
+              <div class="kicker">Задача</div>
+              <div class="modal-title">Редактирование</div>
+            </div>
+            <button class="icon-btn" type="button" data-modal-close="edit-task" aria-label="Закрыть">
+              <svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <div class="composer-toolbar" aria-label="Форматирование (редактор)">
+              <button class="tool" type="button" data-edit-rte-cmd="bold" aria-label="Жирный">
+                <svg class="icon" aria-hidden="true"><use href="#i-bold"></use></svg>
+              </button>
+              <button class="tool" type="button" data-edit-rte-cmd="italic" aria-label="Курсив">
+                <svg class="icon" aria-hidden="true"><use href="#i-italic"></use></svg>
+              </button>
+              <button class="tool" type="button" data-edit-rte-cmd="underline" aria-label="Подчёркивание">
+                <svg class="icon" aria-hidden="true"><use href="#i-underline"></use></svg>
+              </button>
+              <span class="tool-sep" aria-hidden="true"></span>
+              <button class="tool" type="button" data-edit-rte-cmd="insertUnorderedList" aria-label="Маркированный список">
+                <svg class="icon" aria-hidden="true"><use href="#i-ul"></use></svg>
+              </button>
+              <button class="tool" type="button" data-edit-rte-cmd="insertOrderedList" aria-label="Нумерованный список">
+                <svg class="icon" aria-hidden="true"><use href="#i-ol"></use></svg>
+              </button>
+              <span class="tool-sep" aria-hidden="true"></span>
+              <button class="tool" type="button" data-edit-rte-link aria-label="Ссылка">
+                <svg class="icon" aria-hidden="true"><use href="#i-link"></use></svg>
+              </button>
+            </div>
+
+            <div class="rte rte--modal" data-edit-task-body contenteditable="true" role="textbox" aria-multiline="true"></div>
+
+            <div class="form-actions">
+              <button class="btn btn-primary" type="button" data-save-task>
+                <svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>
+                Сохранить
+              </button>
+              <button class="btn btn-ghost" type="button" data-modal-close="edit-task">Отмена</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit shopping item modal -->
+      <div class="modal" data-modal="edit-shopping" aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close="edit-shopping"></div>
+        <div class="modal-card" role="dialog" aria-modal="true" aria-label="Редактирование покупки">
+          <div class="modal-head">
+            <div>
+              <div class="kicker">Покупка</div>
+              <div class="modal-title">Редактирование</div>
+            </div>
+            <button class="icon-btn" type="button" data-modal-close="edit-shopping" aria-label="Закрыть">
+              <svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-col">
+              <input class="input" type="text" data-edit-shopping-name placeholder="Название" />
+              <input class="input input--small" type="text" data-edit-shopping-qty placeholder="Кол-во (опционально)" />
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-primary" type="button" data-save-shopping>
+                <svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>
+                Сохранить
+              </button>
+              <button class="btn btn-ghost" type="button" data-modal-close="edit-shopping">Отмена</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toasts -->
+      <div class="toasts" data-toasts aria-live="polite" aria-atomic="true"></div>
     </div>
 
     <script src="js/main.js"></script>
