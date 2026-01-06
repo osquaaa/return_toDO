@@ -1473,3 +1473,9 @@ html {
     font-size: 16px;
   }
 }
+body {
+  touch-action: manipulation;
+}
+a, button, .btn, .icon-btn, .mini, .check, .tool, .bottom-item {
+  touch-action: manipulation;
+}
