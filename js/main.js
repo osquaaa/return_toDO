@@ -797,7 +797,68 @@
     closeModal("edit-task");
     toast("Сохранено.");
   }
+function mdFencesToHtml(text) {
+  text = String(text || "");
 
+  // Если нет ``` — просто переносы строк
+  if (text.indexOf("```") === -1) {
+    return escapeText(text).replace(/\n/g, "<br>");
+  }
+
+  // Примитивный парсер ```...``` (язык после ``` игнорируем)
+  var out = "";
+  var parts = text.split("```");
+  for (var i = 0; i < parts.length; i++) {
+    if (i % 2 === 0) {
+      // обычный текст
+      out += escapeText(parts[i]).replace(/\n/g, "<br>");
+    } else {
+      // код-блок
+      var block = parts[i];
+      // уберём первую строку, если там "js"/"html"/etc
+      block = block.replace(/^\s*[a-z0-9_-]+\s*\n/i, "");
+      out += "<pre><code>" + escapeText(block.replace(/^\n/, "").replace(/\n$/, "")) + "</code></pre>";
+    }
+  }
+  return out;
+}
+
+function normalizeClipboardToSafeHtml(clipHtml, clipText) {
+  // 1) если есть HTML — санитайзим и используем
+  if (clipHtml && String(clipHtml).trim()) {
+    var safe = sanitizeHtml(String(clipHtml));
+    if (safe && safe.trim()) return safe;
+  }
+
+  // 2) иначе берём plain text и поддержим ``` ``` (чтобы код не “терялся”)
+  return mdFencesToHtml(clipText || "");
+}
+
+function insertHtmlAtCursor(html) {
+  try {
+    document.execCommand("insertHTML", false, html);
+  } catch (e) {
+    // fallback: хотя бы текст
+    try {
+      document.execCommand("insertText", false, stripHtmlToText(html));
+    } catch (e2) {}
+  }
+}
+
+function bindRtePaste(el) {
+  if (!el) return;
+  el.addEventListener("paste", function (e) {
+    // ВАЖНО: иначе браузер вставит “красивый” HTML со стилями
+    e.preventDefault();
+
+    var cd = e.clipboardData || window.clipboardData;
+    var clipHtml = cd ? cd.getData("text/html") : "";
+    var clipText = cd ? cd.getData("text/plain") : "";
+
+    var safeHtml = normalizeClipboardToSafeHtml(clipHtml, clipText);
+    insertHtmlAtCursor(safeHtml);
+  });
+}
   function initTasks() {
     // Add task
     var addBtn = qs("[data-add-task]");
@@ -886,7 +947,8 @@
     // Edit modal save
     var saveBtn = qs("[data-save-task]");
     if (saveBtn) saveBtn.addEventListener("click", saveEditTask);
-
+bindRtePaste(tasksComposerEl);
+bindRtePaste(editTaskBodyEl);
     // RTE toolbars
     initRteToolbar({
       container: document,
