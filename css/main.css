@@ -1294,3 +1294,174 @@ a {
     grid-template-columns: 1fr;
   }
 }
+/* =========================================================
+   FIX PACK (mobile layout + modals + bottom nav polish)
+   Добавь в КОНЕЦ main.css
+   ========================================================= */
+
+/* iOS/Safari иногда “масштабирует” мелкий текст (особенно pre/code) */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ---------- Карточки: делаем области, чтобы легко перестраивать ---------- */
+.card-item {
+  /* 3 колонки как раньше, но через areas */
+  grid-template-areas: "check body actions";
+  overflow: hidden; /* чтобы длинные куски не ломали сетку */
+}
+
+.check { grid-area: check; }
+.item-body { grid-area: body; min-width: 0; } /* важно: иначе текст не будет нормально сжиматься */
+.item-actions { grid-area: actions; }
+
+/* Агрессивнее переносим длинные слова/ссылки/кусочки кода в задачах */
+.item-title,
+.item-title * {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.item-title pre,
+.rte pre {
+  max-width: 100%;
+}
+
+/* Code cards: там нет check, поэтому отдельная схема */
+.code-item {
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "body actions";
+}
+.code-item .code-head { grid-area: body; min-width: 0; }
+.code-item .item-actions { grid-area: actions; }
+
+/* ---------- MOBILE: ключевой фикс “узкой полоски” ---------- */
+/* На телефоне переносим actions на вторую строку */
+@media (max-width: 520px) {
+  .card-item {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "check body"
+      "actions actions";
+  }
+
+  .item-actions {
+    justify-content: flex-end;
+  }
+
+  /* Кнопки чуть компактнее, чтобы было легче */
+  .check,
+  .mini {
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+  }
+  .item-actions { gap: 4px; }
+
+  /* Code item тоже в две строки, чтобы pre не сжимался из-за кнопок */
+  .code-item {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "body"
+      "actions";
+  }
+
+  /* На мобиле код читается лучше чуть крупнее */
+  .code-pre { font-size: 0.92rem; }
+}
+
+/* ---------- Верх страницы (заголовок + кнопки) перестаёт “плясать” ---------- */
+@media (max-width: 560px) {
+  .view-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .view-actions {
+    justify-content: flex-start;
+  }
+
+  /* фильтр/кнопки в шапке — в две строки и без сжатия */
+  .segmented {
+    width: 100%;
+    overflow: auto;
+  }
+  .segmented-btn { white-space: nowrap; }
+
+  .view-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ---------- Отступы: список после формы в Shopping ---------- */
+.panel .form-row + .list {
+  margin-top: 12px;
+}
+
+/* ---------- Модалки: больше не вылезают за экран ---------- */
+.modal-card {
+  /* dvh = нормальная высота на мобильных с динамической строкой браузера */
+  max-height: calc(100vh - 24px);
+  max-height: calc(100dvh - 24px);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+}
+
+/* На маленьких экранах лучше не “центрировать” модалку по вертикали */
+@media (max-width: 520px), (max-height: 720px) {
+  .modal-card {
+    top: 12px;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Отступ сверху у зоны редактирования в модалке задач */
+.modal-body .composer-toolbar + .rte {
+  margin-top: 10px;
+}
+
+/* ---------- Нижнее меню: ровный фон активной вкладки, иконки “красивее” ---------- */
+.bottom-item {
+  position: relative;
+  padding: 10px 0;
+  border-radius: 18px;
+}
+
+/* чтобы псевдо-фон не перекрывал контент */
+.bottom-item > * {
+  position: relative;
+  z-index: 1;
+}
+
+.bottom-item .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.bottom-item.is-active {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text);
+}
+
+/* Ровные inset-отступы у подсветки активной вкладки */
+.bottom-item.is-active::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 16px;
+  background: rgba(216, 199, 165, 0.10);
+  border: 1px solid var(--border2);
+}
+
+/* ---------- На всякий: бургер точно не появится на широких ---------- */
+@media (min-width: 861px) {
+  .topbar-menu { display: none !important; }
+}
