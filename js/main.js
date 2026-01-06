@@ -160,19 +160,35 @@
           }
 
           // Clean attributes
-          var attrs = Array.prototype.slice.call(child.attributes || []);
-          attrs.forEach(function (attr) {
-            var name = attr.name.toLowerCase();
+// Clean attributes
+var attrs = Array.prototype.slice.call(child.attributes || []);
+attrs.forEach(function (attr) {
+  var name = attr.name.toLowerCase();
 
-            // keep only href on <a>
-            if (tag === "A") {
-              if (name !== "href") child.removeAttribute(attr.name);
-              return;
-            }
+  // keep only href on <a>
+  if (tag === "A") {
+    if (name !== "href") child.removeAttribute(attr.name);
+    return;
+  }
 
-            // remove everything else
-            child.removeAttribute(attr.name);
-          });
+  // allow safe class on <code> (for language-xxx / hljs)
+  if (tag === "CODE" && name === "class") {
+    var raw = String(attr.value || "");
+    var safe = raw
+      .split(/\s+/)
+      .filter(function (c) {
+        return c === "hljs" || /^language-[a-z0-9_-]+$/i.test(c);
+      })
+      .join(" ");
+
+    child.removeAttribute(attr.name);
+    if (safe) child.setAttribute("class", safe);
+    return;
+  }
+
+  // remove everything else
+  child.removeAttribute(attr.name);
+});
 
           // Validate href
           if (tag === "A") {
@@ -431,6 +447,19 @@
   function qsa(sel, root) {
     return Array.prototype.slice.call((root || document).querySelectorAll(sel));
   }
+function highlightAllCode(root) {
+  if (!window.hljs) return;
+  var scope = root || document;
+  var blocks = scope.querySelectorAll("pre code");
+  blocks.forEach(function (el) {
+    try {
+      // не хайлайтим повторно один и тот же узел (на всякий)
+      if (el.getAttribute("data-hl") === "1") return;
+      window.hljs.highlightElement(el);
+      el.setAttribute("data-hl", "1");
+    } catch (e) {}
+  });
+}
 
   function setActiveClassByDataNav(view) {
     // buttons with data-nav
@@ -725,6 +754,7 @@
     }
 
     tasksListEl.innerHTML = tasks.map(taskItemHTML).join("");
+    highlightAllCode(tasksListEl);
   }
 
   function addTaskFromComposer() {
@@ -800,26 +830,34 @@
 function mdFencesToHtml(text) {
   text = String(text || "");
 
-  // Если нет ``` — просто переносы строк
   if (text.indexOf("```") === -1) {
     return escapeText(text).replace(/\n/g, "<br>");
   }
 
-  // Примитивный парсер ```...``` (язык после ``` игнорируем)
   var out = "";
   var parts = text.split("```");
+
   for (var i = 0; i < parts.length; i++) {
     if (i % 2 === 0) {
-      // обычный текст
       out += escapeText(parts[i]).replace(/\n/g, "<br>");
     } else {
-      // код-блок
-      var block = parts[i];
-      // уберём первую строку, если там "js"/"html"/etc
-      block = block.replace(/^\s*[a-z0-9_-]+\s*\n/i, "");
-      out += "<pre><code>" + escapeText(block.replace(/^\n/, "").replace(/\n$/, "")) + "</code></pre>";
+      var block = parts[i] || "";
+      var lang = "";
+
+      // ловим "```js\n"
+      var m = block.match(/^\s*([a-z0-9_-]+)\s*\n/i);
+      if (m) {
+        lang = String(m[1] || "").toLowerCase();
+        block = block.slice(m[0].length);
+      }
+
+      block = block.replace(/^\n/, "").replace(/\n$/, "");
+
+      var cls = lang ? ' class="language-' + escapeText(lang) + '"' : "";
+      out += "<pre><code" + cls + ">" + escapeText(block) + "</code></pre>";
     }
   }
+
   return out;
 }
 
@@ -1389,7 +1427,7 @@ bindRtePaste(editTaskBodyEl);
             '<div class="code-head">' +
               '<p class="code-title">' + escapeText(title) + "</p>" +
               (meta ? '<div class="item-meta">' + escapeText(meta) + "</div>" : "") +
-              '<pre class="code-pre">' + escapeText(it.code || "") + "</pre>" +
+              '<pre class="code-pre"><code>' + escapeText(it.code || "") + "</code></pre>' +
             "</div>" +
             '<div class="item-actions">' +
               '<button class="mini" type="button" data-code-action="copy" aria-label="Копировать">' +
@@ -1403,6 +1441,8 @@ bindRtePaste(editTaskBodyEl);
         );
       })
       .join("");
+    highlightAllCode(codeListEl);
+
   }
 
   function initCode() {
