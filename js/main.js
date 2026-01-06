@@ -152,12 +152,18 @@
         if (child.nodeType === 1) {
           var tag = child.tagName;
 
-          if (!ALLOWED_TAGS[tag]) {
-            // unwrap: replace element with its children
-            while (child.firstChild) node.insertBefore(child.firstChild, child);
-            node.removeChild(child);
-            return;
-          }
+if (!ALLOWED_TAGS[tag]) {
+  // unwrap, но каждую перенесённую ноду сразу чистим
+  while (child.firstChild) {
+    var moved = child.firstChild;
+    node.insertBefore(moved, child);
+    if (moved.nodeType === 1) {
+      walk(moved);
+    }
+  }
+  node.removeChild(child);
+  return;
+}
 
           // Clean attributes
 // Clean attributes
