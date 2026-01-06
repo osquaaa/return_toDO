@@ -1,20 +1,29 @@
+<!DOCTYPE html>
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
     <link rel="shortcut icon" href="./img/leaf.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="./img/leaf.svg" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="theme-color" content="#0b0b0b" />
+
     <title>LETget • Задачи, покупки, код, тренировки</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Новая типографика (мягко/современно) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
     <link rel="stylesheet" href="css/main.css" />
 
-    <!-- Yandex.Metrika counter -->
+    <!-- Yandex.Metrika counter (оставил как было) -->
     <script type="text/javascript">
       (function (m, e, t, r, i, k, a) {
         m[i] =
@@ -24,22 +33,13 @@
           };
         m[i].l = 1 * new Date();
         for (var j = 0; j < document.scripts.length; j++) {
-          if (document.scripts[j].src === r) {
-            return;
-          }
+          if (document.scripts[j].src === r) return;
         }
-        (k = e.createElement(t)),
-          (a = e.getElementsByTagName(t)[0]),
-          (k.async = 1),
-          (k.src = r),
-          a.parentNode.insertBefore(k, a);
-      })(
-        window,
-        document,
-        "script",
-        "https://mc.yandex.ru/metrika/tag.js",
-        "ym"
-      );
+        (k = e.createElement(t)), (a = e.getElementsByTagName(t)[0]);
+        k.async = 1;
+        k.src = r;
+        a.parentNode.insertBefore(k, a);
+      })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
       ym(97203941, "init", {
         clickmap: true,
@@ -48,308 +48,440 @@
         webvisor: true,
       });
     </script>
-    <noscript>
-      <div>
-        <img src="https://mc.yandex.ru/watch/97203941" style="position: absolute; left: -9999px" alt="" />
-      </div>
-    </noscript>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/97203941"
+          style="position: absolute; left: -9999px"
+          alt=""
+        /></div
+    ></noscript>
     <!-- /Yandex.Metrika counter -->
   </head>
 
-  <body>
-    <a class="skip-link" href="#main">Перейти к содержимому</a>
-
-    <div class="app-shell">
-      <!-- Sidebar (desktop) -->
+  <body data-page="app">
+    <div class="shell" id="app">
+      <!-- Sidebar -->
       <aside class="sidebar" aria-label="Навигация">
-        <div class="sidebar__top">
-          <div class="brand">
-            <span class="brand__mark" aria-hidden="true"></span>
-            <span class="brand__text"><span class="brand__accent">LET</span>get</span>
-          </div>
+        <a class="brand" href="./index.html" aria-label="LETget">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name"><span class="brand-accent">LET</span>get</span>
+        </a>
 
-          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Переключить тему">
-            <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
-            <span class="theme-toggle__thumb" aria-hidden="true"></span>
-            <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☼</span>
+        <nav class="nav" aria-label="Разделы">
+          <button class="nav-link is-active" type="button" data-nav="tasks" aria-current="page">
+            <span class="nav-ico" aria-hidden="true">✓</span>
+            <span class="nav-label">Задачи</span>
+            <span class="nav-badge" data-badge="tasks"></span>
           </button>
-        </div>
 
-        <div class="sidebar__clock" aria-label="Дата и время">
-          <div class="clock">
-            <div class="clock-time" aria-label="Текущее время">
-              <span data-time="hours" class="clock-number">--</span>
-              <span class="clock-separator" aria-hidden="true">:</span>
-              <span data-time="minutes" class="clock-number">--</span>
-            </div>
-            <div data-time="date" class="clock-date" aria-label="Сегодняшняя дата"></div>
-          </div>
-          <div class="sidebar__tagline">Один аккуратный экран для дел и заметок.</div>
-        </div>
+          <button class="nav-link" type="button" data-nav="shopping">
+            <span class="nav-ico" aria-hidden="true">🛒</span>
+            <span class="nav-label">Покупки</span>
+          </button>
 
-        <nav class="sidebar-nav" aria-label="Разделы">
-          <button class="nav-item is-active" type="button" data-tab="tasks">
-            <span class="nav-item__icon" aria-hidden="true">✓</span>
-            <span class="nav-item__label">Задачи</span>
+          <button class="nav-link" type="button" data-nav="code">
+            <span class="nav-ico" aria-hidden="true">&lt;/&gt;</span>
+            <span class="nav-label">Код</span>
+            <span class="nav-badge" data-badge="code"></span>
           </button>
-          <button class="nav-item" type="button" data-tab="shopping">
-            <span class="nav-item__icon" aria-hidden="true">🛒</span>
-            <span class="nav-item__label">Покупки</span>
+
+          <button class="nav-link" type="button" data-nav="workout">
+            <span class="nav-ico" aria-hidden="true">🏋</span>
+            <span class="nav-label">Тренировки</span>
           </button>
-          <button class="nav-item" type="button" data-tab="code">
-            <span class="nav-item__icon" aria-hidden="true">&lt;/&gt;</span>
-            <span class="nav-item__label">Код</span>
-          </button>
-          <button class="nav-item" type="button" data-tab="workout">
-            <span class="nav-item__icon" aria-hidden="true">🏋️‍♂️</span>
-            <span class="nav-item__label">Тренировки</span>
+
+          <a class="nav-link nav-link--anchor" href="./how-to-add.html">
+            <span class="nav-ico" aria-hidden="true">⌁</span>
+            <span class="nav-label">На главный экран</span>
+          </a>
+
+          <button class="nav-link" type="button" data-nav="settings">
+            <span class="nav-ico" aria-hidden="true">⚙</span>
+            <span class="nav-label">Настройки</span>
           </button>
         </nav>
 
-        <div class="sidebar__bottom">
-          <a href="how-to-add.html" class="sidebar-link">Как добавить на главный экран</a>
+        <div class="sidebar-footer">
+          <div class="sidebar-mini">
+            <div class="mini-clock">
+              <div class="mini-time">
+                <span data-time="hours" class="mini-num">--</span><span class="mini-sep">:</span
+                ><span data-time="minutes" class="mini-num">--</span>
+              </div>
+              <div data-time="date" class="mini-date"></div>
+            </div>
+            <button class="ghost" type="button" data-action="toggle-theme" aria-label="Переключить тему">
+              Тема
+            </button>
+          </div>
+
+          <div class="sidebar-note">
+            Всё хранится локально в браузере. Можно экспортировать в “Настройках”.
+          </div>
         </div>
       </aside>
 
       <!-- Main -->
-      <main class="app-main" id="main">
-        <!-- Mobile topbar -->
-        <header class="mobile-topbar" aria-label="Шапка">
-          <div class="brand brand--compact">
-            <span class="brand__mark" aria-hidden="true"></span>
-            <span class="brand__text"><span class="brand__accent">LET</span>get</span>
+      <div class="main">
+        <!-- Topbar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="icon-btn icon-btn--menu" type="button" data-action="open-mobile-menu" aria-label="Открыть меню">
+              ☰
+            </button>
+
+            <div class="topbar-titleblock">
+              <div class="topbar-title" data-topbar-title>Задачи</div>
+              <div class="topbar-subtitle" data-topbar-subtitle>Чтобы не забыть важное</div>
+            </div>
           </div>
 
-          <button class="theme-toggle" id="theme-toggle-mobile" type="button" aria-label="Переключить тему">
-            <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
-            <span class="theme-toggle__thumb" aria-hidden="true"></span>
-            <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☼</span>
-          </button>
+          <div class="topbar-right">
+            <div class="search">
+              <input
+                class="search-input"
+                id="global-search"
+                type="search"
+                placeholder="Поиск по задачам, коду и покупкам…"
+                autocomplete="off"
+              />
+              <button class="icon-btn" type="button" data-action="clear-search" aria-label="Очистить поиск">✕</button>
+            </div>
+
+            <button class="primary" type="button" data-action="quick-focus">
+              <span class="primary-label">Быстро добавить</span>
+              <span class="primary-ico" aria-hidden="true">+</span>
+            </button>
+          </div>
         </header>
 
-        <section class="panels">
-          <!-- Задачи -->
-          <section class="panel is-active" data-panel="tasks">
-            <header class="panel-header">
-              <div class="panel-header__title">
-                <h1 class="panel-title">Задачи</h1>
-                <p class="panel-subtitle">Список для «сделать сегодня» и «не забыть потом».</p>
+        <!-- Views -->
+        <main class="views" id="views">
+          <!-- TASKS -->
+          <section class="view is-active" data-view="tasks" aria-label="Задачи">
+            <div class="view-head">
+              <div class="segmented" role="tablist" aria-label="Фильтр задач">
+                <button class="seg-btn is-active" type="button" data-task-filter="all">Все</button>
+                <button class="seg-btn" type="button" data-task-filter="active">Активные</button>
+                <button class="seg-btn" type="button" data-task-filter="done">Выполненные</button>
               </div>
 
-              <div class="panel-header__actions">
-                <div class="search">
-                  <input class="input input--search" type="search" placeholder="Поиск по задачам…" aria-label="Поиск по задачам" data-task-search />
+              <div class="head-actions">
+                <select class="select" data-task-sort aria-label="Сортировка задач">
+                  <option value="pinned">Сначала закреплённые</option>
+                  <option value="newest">Сначала новые</option>
+                  <option value="oldest">Сначала старые</option>
+                  <option value="due">По ближайшей дате</option>
+                </select>
+
+                <button class="ghost" type="button" data-action="clear-done-tasks">Очистить выполненные</button>
+              </div>
+            </div>
+
+            <form class="composer" data-form="tasks" autocomplete="off">
+              <label class="composer-label" for="task-text">Новая задача</label>
+
+              <!-- Важно: textarea сохраняет переносы и структуру текста при вставке -->
+              <textarea
+                class="textarea"
+                id="task-text"
+                name="text"
+                rows="3"
+                placeholder="Вставь сюда текст — переносы строк сохранятся. Можно писать списком."
+                required
+              ></textarea>
+
+              <div class="composer-row">
+                <div class="composer-fields">
+                  <label class="field">
+                    <span class="field-label">Дата</span>
+                    <input class="input" type="date" name="due" />
+                  </label>
+
+                  <label class="checkline">
+                    <input type="checkbox" name="pinned" />
+                    <span>Закрепить</span>
+                  </label>
                 </div>
-                <button class="pill-button" type="button" data-task-action="clear-done" title="Удалить все выполненные">
-                  Очистить выполненные
-                </button>
-              </div>
-            </header>
 
-            <div class="panel-hint" data-hint-id="tasks">
-              <div class="panel-hint__header">
-                <span class="panel-hint__title">Подсказка</span>
-                <button type="button" class="panel-hint__close" data-hint-close>Скрыть</button>
+                <div class="composer-actions">
+                  <button class="ghost" type="button" data-action="tasks-add-batch" title="Добавить каждую строку как отдельную задачу">
+                    Добавить списком
+                  </button>
+                  <button class="primary" type="submit">Добавить</button>
+                </div>
               </div>
-              <ul class="panel-hint__list">
-                <li>Можно вставлять многострочный текст — формат не потеряется.</li>
-                <li><b>Enter</b> — добавить, <b>Shift+Enter</b> — новая строка.</li>
-                <li>Отмечайте ✓, когда сделали.</li>
-              </ul>
-            </div>
 
-            <div class="panel-controls panel-controls--tasks">
-              <div class="chip-group" role="tablist" aria-label="Фильтр задач">
-                <button class="chip is-active" type="button" data-task-filter="all">Все</button>
-                <button class="chip" type="button" data-task-filter="active">Активные</button>
-                <button class="chip" type="button" data-task-filter="done">Выполненные</button>
+              <div class="composer-hint">
+                Горячие клавиши: <span class="kbd">/</span> поиск • <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> добавить
               </div>
-              <div class="tasks-counter" data-tasks-counter></div>
-            </div>
-
-            <form class="panel-form task-form" data-category="tasks" autocomplete="off">
-              <textarea class="input input--textarea input--task" name="text" rows="3" placeholder="Что нужно сделать? Можно вставить текст списком…" required></textarea>
-              <button class="primary-button" type="submit">
-                <span>Добавить</span>
-                <span class="primary-button__icon" aria-hidden="true">+</span>
-              </button>
             </form>
 
-            <div class="items-list" data-category="tasks"></div>
+            <div class="list" data-list="tasks"></div>
           </section>
 
-          <!-- Покупки -->
-          <section class="panel" data-panel="shopping">
-            <header class="panel-header">
-              <div class="panel-header__title">
-                <h1 class="panel-title">Покупки</h1>
-                <p class="panel-subtitle">Походы в магазин объединены в списки, которые легко повторить.</p>
+          <!-- SHOPPING -->
+          <section class="view" data-view="shopping" aria-label="Покупки">
+            <div class="view-head">
+              <div class="view-title">Текущий поход</div>
+              <div class="head-actions">
+                <button class="ghost" type="button" data-shopping-action="copy-list">Скопировать список</button>
+                <button class="primary" type="button" data-shopping-action="new-trip">Новый поход</button>
               </div>
-            </header>
-
-            <div class="panel-hint" data-hint-id="shopping">
-              <div class="panel-hint__header">
-                <span class="panel-hint__title">Подсказка</span>
-                <button type="button" class="panel-hint__close" data-hint-close>Скрыть</button>
-              </div>
-              <ul class="panel-hint__list">
-                <li>Добавляйте продукты по одному с нужным количеством.</li>
-                <li>Кнопка «Новый поход» — для отдельного визита в магазин.</li>
-                <li>Внизу можно повторить любой прошлый список.</li>
-              </ul>
             </div>
 
-            <div class="shopping">
-              <div class="shopping-current card">
-                <div class="shopping-current-header">
-                  <div>
-                    <div class="section-label">Текущий поход</div>
-                    <div class="shopping-meta" data-shopping-current-meta></div>
-                  </div>
-                  <button type="button" class="pill-button" data-shopping-action="new-trip">Новый поход</button>
+            <div class="cards">
+              <section class="card">
+                <div class="card-head">
+                  <div class="card-title">Добавить покупки</div>
+                  <div class="card-subtitle" data-shopping-current-meta></div>
                 </div>
 
-                <form class="panel-form shopping-form" autocomplete="off">
-                  <div class="shopping-form-grid">
+                <form class="stack" data-form="shopping" autocomplete="off">
+                  <div class="grid-2">
                     <input class="input" type="text" name="product" placeholder="Что купить?" required />
-                    <input class="input input--qty" type="text" name="qty" placeholder="Кол-во" />
-                    <button class="primary-button" type="submit">
-                      <span>Добавить</span>
-                      <span class="primary-button__icon" aria-hidden="true">+</span>
+                    <input class="input" type="text" name="qty" placeholder="Кол-во (опционально)" />
+                  </div>
+
+                  <div class="row">
+                    <button class="primary" type="submit">Добавить</button>
+                    <button class="ghost" type="button" data-shopping-action="add-batch">
+                      Добавить списком
                     </button>
+                    <span class="muted">Подсказка: “молоко — 2”, “яйца x10”, по одной строке.</span>
                   </div>
                 </form>
 
-                <div class="items-list items-list--shopping" data-shopping-current></div>
-              </div>
+                <div class="list" data-shopping-current></div>
+              </section>
 
-              <div class="shopping-history card">
-                <div class="shopping-history-header">
-                  <div class="section-label">История походов</div>
-                  <div class="shopping-history-hint">Выбирайте прошлый список и жмите «Повторить».</div>
+              <section class="card">
+                <div class="card-head">
+                  <div class="card-title">История походов</div>
+                  <div class="card-subtitle">Нажми “Повторить” — и список вернётся в текущий.</div>
                 </div>
-                <div class="shopping-history-list" data-shopping-history></div>
-              </div>
+                <div class="list" data-shopping-history></div>
+              </section>
             </div>
           </section>
 
-          <!-- Код -->
-          <section class="panel" data-panel="code">
-            <header class="panel-header">
-              <div class="panel-header__title">
-                <h1 class="panel-title">Код</h1>
-                <p class="panel-subtitle">Мини-хранилище сниппетов и команд. Никаких IDE — только текст.</p>
+          <!-- CODE -->
+          <section class="view" data-view="code" aria-label="Код">
+            <div class="view-head">
+              <div class="view-title">Сниппеты</div>
+              <div class="head-actions">
+                <button class="ghost" type="button" data-action="collapse-code">Свернуть длинные</button>
               </div>
-
-              <div class="panel-header__actions">
-                <div class="search">
-                  <input class="input input--search" type="search" placeholder="Поиск по сниппетам…" aria-label="Поиск по сниппетам" data-code-search />
-                </div>
-                <button class="pill-button" type="button" data-code-action="export" title="Скачать резервную копию JSON">Экспорт</button>
-              </div>
-            </header>
-
-            <div class="panel-hint" data-hint-id="code">
-              <div class="panel-hint__header">
-                <span class="panel-hint__title">Подсказка</span>
-                <button type="button" class="panel-hint__close" data-hint-close>Скрыть</button>
-              </div>
-              <ul class="panel-hint__list">
-                <li>При желании дайте сниппету короткое имя.</li>
-                <li>Вставьте код или команду и нажмите «Сохранить».</li>
-                <li>Копируйте содержимое одним нажатием по ⧉.</li>
-              </ul>
             </div>
 
-            <form class="panel-form panel-form--code task-form" data-category="code" autocomplete="off">
-              <div class="form-row">
-                <input class="input" type="text" name="title" placeholder="Название сниппета (опционально)" />
+            <form class="composer" data-form="code" autocomplete="off">
+              <div class="grid-2">
+                <label class="field">
+                  <span class="field-label">Название (опционально)</span>
+                  <input class="input" type="text" name="title" placeholder="Например: nginx conf / git fix" />
+                </label>
+
+                <label class="field">
+                  <span class="field-label">Теги (опционально)</span>
+                  <input class="input" type="text" name="tags" placeholder="frontend, git, server" />
+                </label>
               </div>
-              <div class="form-row">
-                <textarea class="input input--textarea input--code" name="code" rows="4" placeholder="Вставьте сюда код или техническую заметку" required></textarea>
+
+              <label class="field">
+                <span class="field-label">Код / заметка</span>
+                <textarea
+                  class="textarea textarea--mono"
+                  name="code"
+                  rows="6"
+                  placeholder="Вставляй как есть — форматирование сохраняется."
+                  required
+                ></textarea>
+              </label>
+
+              <div class="composer-row">
+                <div class="composer-fields">
+                  <span class="muted">Скопировать можно одной кнопкой. Детали — в боковой панели.</span>
+                </div>
+                <div class="composer-actions">
+                  <button class="primary" type="submit">Сохранить</button>
+                </div>
               </div>
-              <button class="primary-button" type="submit">
-                <span>Сохранить</span>
-                <span class="primary-button__icon" aria-hidden="true">⭳</span>
-              </button>
             </form>
 
-            <div class="items-list items-list--code" data-category="code"></div>
+            <div class="list" data-list="code"></div>
           </section>
 
-          <!-- Тренировки -->
-          <section class="panel" data-panel="workout">
-            <header class="panel-header">
-              <div class="panel-header__title">
-                <h1 class="panel-title">Тренировки</h1>
-                <p class="panel-subtitle">Подтягивания, брусья, отжимания — счётчик подходов и простая статистика.</p>
+          <!-- WORKOUT -->
+          <section class="view" data-view="workout" aria-label="Тренировки">
+            <div class="view-head">
+              <div class="view-title">Тренировки</div>
+              <div class="head-actions">
+                <button class="ghost" type="button" data-workout-action="reset-today">Сбросить сегодня</button>
               </div>
-            </header>
-
-            <div class="panel-hint" data-hint-id="workout">
-              <div class="panel-hint__header">
-                <span class="panel-hint__title">Подсказка</span>
-                <button type="button" class="panel-hint__close" data-hint-close>Скрыть</button>
-              </div>
-              <ul class="panel-hint__list">
-                <li>Выберите упражнение сверху.</li>
-                <li>Настройте, сколько повторений в одном подходе.</li>
-                <li>После каждого подхода нажимайте «+ Подход».</li>
-              </ul>
             </div>
 
-            <div class="workout">
-              <div class="workout-current card">
-                <div class="workout-exercises">
-                  <button type="button" class="chip chip--workout is-active" data-workout-exercise="pullups">Подтягивания</button>
-                  <button type="button" class="chip chip--workout" data-workout-exercise="dips">Брусья</button>
-                  <button type="button" class="chip chip--workout" data-workout-exercise="pushups">Отжимания</button>
-                </div>
+            <section class="card">
+              <div class="card-head">
+                <div class="card-title">Сегодня</div>
+                <div class="card-subtitle" data-workout-today></div>
+              </div>
 
-                <div class="workout-controls">
-                  <div class="workout-counter">
-                    <div class="workout-counter-label">Повторений в подходе</div>
-                    <div class="workout-counter-controls" aria-label="Изменить повторы в подходе">
-                      <button type="button" class="counter-button" data-workout-action="dec-reps" aria-label="Уменьшить">−</button>
-                      <div class="workout-counter-value" data-workout="reps-value">8</div>
-                      <button type="button" class="counter-button" data-workout-action="inc-reps" aria-label="Увеличить">+</button>
-                    </div>
-                  </div>
+              <div class="row wrap">
+                <button type="button" class="chip is-active" data-workout-exercise="pullups">Подтягивания</button>
+                <button type="button" class="chip" data-workout-exercise="dips">Брусья</button>
+                <button type="button" class="chip" data-workout-exercise="pushups">Отжимания</button>
+              </div>
 
-                  <div class="workout-actions-row">
-                    <button type="button" class="primary-button primary-button--block" data-workout-action="add-set">
-                      <span>+ Подход</span>
-                    </button>
-                    <button type="button" class="pill-button pill-button--ghost" data-workout-action="reset-today">Сбросить сегодня</button>
-                  </div>
-
-                  <div class="workout-today" data-workout-today></div>
+              <div class="row between">
+                <div class="muted">Повторений в подходе</div>
+                <div class="counter">
+                  <button type="button" class="icon-btn" data-workout-action="dec-reps" aria-label="Уменьшить">−</button>
+                  <div class="counter-val" data-workout="reps-value">8</div>
+                  <button type="button" class="icon-btn" data-workout-action="inc-reps" aria-label="Увеличить">+</button>
                 </div>
               </div>
 
-              <div class="workout-summary" data-workout-summary></div>
-              <div class="workout-history" data-workout-history></div>
-            </div>
-          </section>
-        </section>
+              <div class="row">
+                <button type="button" class="primary w-full" data-workout-action="add-set">+ Подход</button>
+              </div>
+            </section>
 
-        <!-- Mobile help link -->
-        <footer class="mobile-footer">
-          <a href="how-to-add.html" class="sidebar-link">Как добавить на главный экран</a>
-        </footer>
-      </main>
+            <section class="card">
+              <div class="card-head">
+                <div class="card-title">Сводка</div>
+                <div class="card-subtitle">Всего за всё время.</div>
+              </div>
+              <div class="grid-3" data-workout-summary></div>
+            </section>
+
+            <section class="card">
+              <div class="card-head">
+                <div class="card-title">История</div>
+                <div class="card-subtitle">Последние 14 дней.</div>
+              </div>
+              <div data-workout-history></div>
+            </section>
+          </section>
+
+          <!-- SETTINGS -->
+          <section class="view" data-view="settings" aria-label="Настройки">
+            <div class="view-head">
+              <div class="view-title">Настройки</div>
+              <div class="head-actions">
+                <button class="ghost" type="button" data-action="toggle-theme">Переключить тему</button>
+              </div>
+            </div>
+
+            <section class="card">
+              <div class="card-head">
+                <div class="card-title">Данные</div>
+                <div class="card-subtitle">Экспорт/импорт помогает переносить LETget между устройствами.</div>
+              </div>
+
+              <div class="stack">
+                <div class="row wrap">
+                  <button class="primary" type="button" data-action="export-data">Экспорт JSON</button>
+
+                  <label class="ghost file-btn" role="button" tabindex="0">
+                    Импорт JSON
+                    <input type="file" accept="application/json" data-action="import-data" />
+                  </label>
+
+                  <button class="ghost" type="button" data-action="reset-all">Сбросить всё</button>
+                </div>
+
+                <div class="muted">
+                  Важно: импорт заменяет данные. Перед импортом лучше сделать экспорт.
+                </div>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head">
+                <div class="card-title">О приложении</div>
+                <div class="card-subtitle">Минималистично, спокойно, удобно — для тебя и для родственников.</div>
+              </div>
+              <div class="stack">
+                <div class="muted">
+                  Поиск: поле сверху. Боковая панель: открой задачу/сниппет стрелкой справа.
+                </div>
+                <a class="ghost" href="./how-to-add.html">Как добавить на главный экран</a>
+              </div>
+            </section>
+          </section>
+        </main>
+
+        <!-- Bottom nav (mobile) -->
+        <nav class="bottom-nav" aria-label="Нижняя навигация">
+          <button class="bn-item is-active" type="button" data-nav="tasks" aria-label="Задачи">
+            <span class="bn-ico" aria-hidden="true">✓</span>
+            <span class="bn-label">Задачи</span>
+          </button>
+          <button class="bn-item" type="button" data-nav="shopping" aria-label="Покупки">
+            <span class="bn-ico" aria-hidden="true">🛒</span>
+            <span class="bn-label">Покупки</span>
+          </button>
+          <button class="bn-item" type="button" data-nav="code" aria-label="Код">
+            <span class="bn-ico" aria-hidden="true">&lt;/&gt;</span>
+            <span class="bn-label">Код</span>
+          </button>
+          <button class="bn-item" type="button" data-nav="workout" aria-label="Тренировки">
+            <span class="bn-ico" aria-hidden="true">🏋</span>
+            <span class="bn-label">Трен</span>
+          </button>
+          <button class="bn-item" type="button" data-nav="settings" aria-label="Настройки">
+            <span class="bn-ico" aria-hidden="true">⚙</span>
+            <span class="bn-label">Настр</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Drawer (details / edit) -->
+      <div class="drawer" data-drawer hidden>
+        <div class="drawer-backdrop" data-action="close-drawer" aria-hidden="true"></div>
+        <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="Детали">
+          <div class="drawer-head">
+            <div class="drawer-title" data-drawer-title>Детали</div>
+            <button class="icon-btn" type="button" data-action="close-drawer" aria-label="Закрыть">✕</button>
+          </div>
+          <div class="drawer-body" data-drawer-body></div>
+        </div>
+      </div>
+
+      <!-- Toast -->
+      <div class="toast" data-toast hidden>
+        <div class="toast-text" data-toast-text></div>
+        <button class="ghost ghost--small" type="button" data-action="toast-undo">Отменить</button>
+      </div>
+
+      <!-- Mobile menu (overlay) -->
+      <div class="mobile-menu" data-mobile-menu hidden>
+        <div class="mobile-menu-backdrop" data-action="close-mobile-menu" aria-hidden="true"></div>
+        <div class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Меню">
+          <div class="mobile-menu-head">
+            <div class="brand-line">
+              <span class="brand-mark" aria-hidden="true"></span>
+              <span class="brand-name"><span class="brand-accent">LET</span>get</span>
+            </div>
+            <button class="icon-btn" type="button" data-action="close-mobile-menu" aria-label="Закрыть">✕</button>
+          </div>
+
+          <div class="mobile-menu-nav">
+            <button class="nav-link is-active" type="button" data-nav="tasks">✓ Задачи</button>
+            <button class="nav-link" type="button" data-nav="shopping">🛒 Покупки</button>
+            <button class="nav-link" type="button" data-nav="code">&lt;/&gt; Код</button>
+            <button class="nav-link" type="button" data-nav="workout">🏋 Тренировки</button>
+            <button class="nav-link" type="button" data-nav="settings">⚙ Настройки</button>
+            <a class="nav-link nav-link--anchor" href="./how-to-add.html">⌁ На главный экран</a>
+          </div>
+
+          <div class="mobile-menu-foot">
+            <button class="ghost w-full" type="button" data-action="toggle-theme">Переключить тему</button>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Bottom navigation (mobile) -->
-    <nav class="bottom-nav" aria-label="Разделы">
-      <button class="bottom-nav__item is-active" type="button" data-tab="tasks" aria-label="Задачи">✓</button>
-      <button class="bottom-nav__item" type="button" data-tab="shopping" aria-label="Покупки">🛒</button>
-      <button class="bottom-nav__item" type="button" data-tab="code" aria-label="Код">&lt;/&gt;</button>
-      <button class="bottom-nav__item" type="button" data-tab="workout" aria-label="Тренировки">🏋️‍♂️</button>
-    </nav>
-
-    <!-- Toast -->
-    <div class="toast" data-toast aria-live="polite" aria-atomic="true"></div>
 
     <script src="js/main.js"></script>
   </body>
