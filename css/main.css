@@ -1683,3 +1683,70 @@ html[data-theme="contrast"]{
   margin-top: 6px;
 }
 
+/* =========================================================
+   UX Pack v4.1 — focus/undo/search/offline (LETget)
+   Добавь в САМЫЙ КОНЕЦ main.css
+========================================================= */
+
+/* Красивый и заметный focus (клавиатура/доступность) */
+:focus-visible {
+  outline: 2px solid rgba(216, 199, 165, 0.55);
+  outline-offset: 2px;
+}
+.rte:focus-visible,
+.input:focus-visible,
+.search-input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(216, 199, 165, 0.55);
+  outline-offset: 2px;
+}
+
+/* Кнопки внутри toast для Undo/таймера */
+.toast-btn {
+  pointer-events: auto;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(216, 199, 165, 0.08);
+  color: var(--text);
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+}
+.toast-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--border2);
+  background: rgba(216, 199, 165, 0.12);
+}
+
+/* Подсветка совпадений в поиске (в рамках палитры LETget) */
+.mark {
+  background: rgba(216, 199, 165, 0.16);
+  color: var(--text);
+  padding: 0 0.14em;
+  border-radius: 8px;
+  border: 1px solid rgba(216, 199, 165, 0.20);
+}
+
+/* Оффлайн-индикатор */
+.net-badge {
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(216, 199, 165, 0.06);
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.net-badge.is-offline {
+  color: var(--text);
+  border-color: var(--border2);
+  background: rgba(216, 199, 165, 0.10);
+}
+@media (max-width: 560px) {
+  .net-badge { display: none; }
+}
