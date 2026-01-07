@@ -7,6 +7,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="./img/leaf.svg" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+<meta name="apple-mobile-web-app-title" content="LETget" />
     <meta name="theme-color" content="#0f0f0f" />
     <title>LETget • Списки и заметки</title>
 
@@ -247,7 +249,7 @@
               autocomplete="off"
             />
           </div>
-
+<div class="net-badge" data-net-badge hidden aria-live="polite">Оффлайн</div>
           <button class="icon-btn" type="button" data-open-settings aria-label="Настройки">
             <svg class="icon" aria-hidden="true"><use href="#i-settings"></use></svg>
           </button>
@@ -699,6 +701,20 @@
       <div class="toasts" data-toasts aria-live="polite" aria-atomic="true"></div>
     </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  (function () {
+    if (!("serviceWorker" in navigator)) return;
+    // SW не работает на file://
+    var isLocalhost =
+      location.hostname === "localhost" || location.hostname === "127.0.0.1";
+    var isHttps = location.protocol === "https:";
+    if (!isHttps && !isLocalhost) return;
+
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("./sw.js").catch(function () {});
+    });
+  })();
+</script>
 
     <script src="js/main.js"></script>
     
