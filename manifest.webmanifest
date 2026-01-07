@@ -1,0 +1,18 @@
+{
+  "name": "LETget",
+  "short_name": "LETget",
+  "description": "Списки, заметки, код и тренировки — локально и быстро.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#0f0f0f",
+  "icons": [
+    {
+      "src": "./img/leaf.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
