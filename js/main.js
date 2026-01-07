@@ -7,7 +7,9 @@
      ========================================================= */
   var STORAGE_KEY_V4 = "letget_v4";
   var STORAGE_KEY_V3 = "letget_v3";
-
+var DRAFT_TASK_KEY = "letget_v4_draft_task";
+var DRAFT_CODE_KEY = "letget_v4_draft_code";
+var DRAFT_CODE_TITLE_KEY = "letget_v4_draft_code_title";
   var CATEGORIES = ["tasks", "shopping", "code", "workout"];
 
   function nowId() {
@@ -453,6 +455,15 @@ attrs.forEach(function (attr) {
   function qsa(sel, root) {
     return Array.prototype.slice.call((root || document).querySelectorAll(sel));
   }
+
+  function debounce(fn, wait) {
+  var t = null;
+  return function () {
+    var args = arguments;
+    if (t) clearTimeout(t);
+    t = setTimeout(function () { fn.apply(null, args); }, wait);
+  };
+}
 function highlightAllCode(root) {
   if (!window.hljs) return;
   var scope = root || document;
@@ -479,43 +490,62 @@ function highlightAllCode(root) {
      ========================================================= */
   var toastsEl = qs("[data-toasts]");
 
-  function toast(text, opts) {
-    if (!toastsEl) return;
+function toast(text, opts) {
+  if (!toastsEl) return null;
+  opts = opts || {};
+  var ttl = typeof opts.ttl === "number" ? opts.ttl : 3200;
+  var actions = Array.isArray(opts.actions) ? opts.actions : [];
 
-    opts = opts || {};
-    var ttl = typeof opts.ttl === "number" ? opts.ttl : 3200;
+  var el = document.createElement("div");
+  el.className = "toast";
 
-    var el = document.createElement("div");
-    el.className = "toast";
-    el.innerHTML =
-      '<div class="toast-text"></div>' +
-      '<div class="toast-actions">' +
-      '<button class="mini" type="button" aria-label="Закрыть">' +
-      '<svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg>' +
-      "</button>" +
-      "</div>";
+  var textEl = document.createElement("div");
+  textEl.className = "toast-text";
+  textEl.textContent = String(text || "");
 
-    qs(".toast-text", el).textContent = text;
+  var actionsEl = document.createElement("div");
+  actionsEl.className = "toast-actions";
 
-    var closeBtn = qs("button", el);
-    closeBtn.addEventListener("click", function () {
-      try {
-        toastsEl.removeChild(el);
-      } catch (e) {}
+  // action buttons
+  actions.forEach(function (a) {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "toast-btn";
+    btn.textContent = String((a && a.label) || "OK");
+    btn.addEventListener("click", function () {
+      try { if (a && typeof a.onClick === "function") a.onClick(); } catch (e) {}
+      close();
     });
+    actionsEl.appendChild(btn);
+  });
 
-    toastsEl.appendChild(el);
+  // close button
+  var closeBtn = document.createElement("button");
+  closeBtn.className = "mini";
+  closeBtn.type = "button";
+  closeBtn.setAttribute("aria-label", "Закрыть");
+  closeBtn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg>';
+  closeBtn.addEventListener("click", close);
+  actionsEl.appendChild(closeBtn);
 
-    if (ttl > 0) {
-      setTimeout(function () {
-        if (el && el.parentNode === toastsEl) {
-          try {
-            toastsEl.removeChild(el);
-          } catch (e) {}
-        }
-      }, ttl);
-    }
+  el.appendChild(textEl);
+  el.appendChild(actionsEl);
+
+  toastsEl.appendChild(el);
+
+  function close() {
+    try {
+      if (el && el.parentNode === toastsEl) toastsEl.removeChild(el);
+    } catch (e) {}
   }
+
+  if (ttl > 0) {
+    setTimeout(close, ttl);
+  }
+
+  return el;
+}
+
 
   /* =========================================================
      Clock
