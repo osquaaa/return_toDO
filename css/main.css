@@ -1540,4 +1540,146 @@ a, button, .btn, .icon-btn, .mini, .check, .tool, .bottom-item {
 .hljs * {
   font-family: var(--font-mono);
 }
+/* =========================================================
+   LETget v5 additions: bulkbar, selection, drag, tags, badges, themes
+   ========================================================= */
+
+/* ---------- Accent + High-contrast themes (applied via html data-attrs) ---------- */
+:root{
+  --accent: var(--beige); /* default */
+  --hc-text: rgba(216, 199, 165, 0.92);
+  --hc-muted: rgba(216, 199, 165, 0.64);
+  --hc-border: rgba(216, 199, 165, 0.16);
+}
+html[data-accent="beige"]{ --accent: #d8c7a5; }
+html[data-accent="mint"] { --accent: #7ee2c8; }
+html[data-accent="blue"] { --accent: #7aa7ff; }
+html[data-accent="pink"] { --accent: #ff8fb1; }
+html[data-accent="amber"]{ --accent: #ffc46b; }
+
+html[data-theme="accent"] .btn-primary{
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--black);
+}
+html[data-theme="accent"] .brand-mark::after{ background: var(--accent); }
+html[data-theme="accent"] .segmented-btn.is-active{
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}
+html[data-theme="accent"] .nav-item.is-active{
+  border-color: color-mix(in srgb, var(--accent) 35%, rgba(216,199,165,0.24));
+  background: color-mix(in srgb, var(--accent) 10%, rgba(216,199,165,0.085));
+}
+html[data-theme="contrast"]{
+  --text: rgba(216, 199, 165, 0.98);
+  --muted: rgba(216, 199, 165, 0.78);
+  --muted2: rgba(216, 199, 165, 0.62);
+  --border: rgba(216, 199, 165, 0.24);
+  --border2: rgba(216, 199, 165, 0.38);
+}
+
+/* ---------- Badges (tags/status/due) ---------- */
+.badges{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.badge{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:6px 10px; border-radius:999px;
+  border:1px solid var(--border); background: rgba(216,199,165,0.05);
+  color: var(--muted); font-size:0.82rem; font-weight:700;
+}
+.badge--accent{ border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); color: color-mix(in srgb, var(--accent) 75%, var(--text)); }
+.badge--danger{ border-color: rgba(216,199,165,0.34); background: rgba(216,199,165,0.10); color: rgba(216,199,165,0.95); }
+.card-item.is-overdue{ border-color: rgba(216,199,165,0.36); background: rgba(216,199,165,0.075); }
+
+/* ---------- Drag & Drop ---------- */
+.card-item[draggable="true"]{ cursor: grab; }
+.card-item.is-dragging{ opacity:0.55; cursor: grabbing; }
+.card-item.is-drop-target{ outline: 2px dashed rgba(216,199,165,0.34); outline-offset: 2px; }
+
+/* ---------- Multi-select ---------- */
+.card-item.is-selected{
+  border-color: var(--border2);
+  background: rgba(216,199,165,0.10);
+}
+.select-pill{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 10px; border-radius:999px;
+  border:1px solid var(--border); background: rgba(216,199,165,0.05);
+  color: var(--muted); font-weight:800; font-size:0.86rem;
+}
+
+/* ---------- Bulkbar ---------- */
+.bulkbar{
+  position: fixed;
+  left: 12px; right: 12px;
+  bottom: calc(var(--bottom-h) + 12px);
+  z-index: 85;
+  display: none;
+  border-radius: 22px;
+  border: 1px solid var(--border2);
+  background: rgba(15,15,15,0.96);
+  box-shadow: var(--shadow);
+  padding: 10px;
+  gap: 10px;
+}
+.bulkbar.is-open{ display:flex; align-items:center; justify-content:space-between; }
+.bulkbar-left{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.bulkbar-right{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.bulkbar .btn{ padding: 9px 12px; }
+.bulkbar .btn-ghost{ color: var(--muted); }
+.bulkbar .btn-ghost:hover{ color: var(--text); }
+.bulkbar-count{ font-variant-numeric: tabular-nums; }
+
+/* ---------- Inline meta controls injected by JS ---------- */
+.meta-row{
+  display:flex; gap:10px; flex-wrap:wrap;
+  padding:10px;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  background: rgba(216,199,165,0.04);
+}
+.meta-row .input{ padding: 10px 10px; }
+.meta-row .input--tiny{ max-width: 150px; }
+
+/* ---------- Code collapsing ---------- */
+.code-pre.is-collapsed{
+  max-height: 180px;
+  overflow: hidden;
+  position: relative;
+}
+.code-pre.is-collapsed::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:0;
+  height: 64px;
+  background: linear-gradient(180deg, rgba(15,15,15,0), rgba(15,15,15,0.95));
+  pointer-events:none;
+}
+.code-expand{
+  margin-top: 8px;
+  display:flex; justify-content:flex-start;
+}
+
+/* ---------- Workout mini chart ---------- */
+.wchart{
+  display:flex; align-items:flex-end; gap:6px;
+  height: 84px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: rgba(216,199,165,0.04);
+}
+.wbar{
+  flex:1;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(216,199,165,0.09);
+  height: var(--h, 10%);
+}
+.wbar.is-today{ border-color: var(--border2); background: rgba(216,199,165,0.14); }
+.wchart-labels{
+  display:flex; justify-content:space-between;
+  color: var(--muted2);
+  font-size: 0.78rem;
+  margin-top: 6px;
+}
 
