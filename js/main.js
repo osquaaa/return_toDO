@@ -577,7 +577,26 @@ function toast(text, opts) {
     updateClock();
     setInterval(updateClock, 60 * 1000);
   }
+var netBadgeEl = qs("[data-net-badge]");
 
+function updateNetworkBadge() {
+  if (!netBadgeEl) return;
+  var offline = !navigator.onLine;
+  netBadgeEl.hidden = !offline;
+  netBadgeEl.classList.toggle("is-offline", offline);
+}
+
+function initNetworkBadge() {
+  updateNetworkBadge();
+  window.addEventListener("online", function () {
+    updateNetworkBadge();
+    toast("Снова онлайн.");
+  });
+  window.addEventListener("offline", function () {
+    updateNetworkBadge();
+    toast("Оффлайн. Всё сохраняется локально.");
+  });
+}
   /* =========================================================
      Drawer (mobile)
      ========================================================= */
@@ -817,12 +836,28 @@ function toast(text, opts) {
       updatedAt: "",
     };
 
-    state.data.tasks.unshift(task);
-    saveState();
+state.data.tasks.unshift(task);
+saveState();
+tasksComposerEl.innerHTML = "";
+clearDraft(DRAFT_TASK_KEY);
+renderTasks();
 
-    tasksComposerEl.innerHTML = "";
-    renderTasks();
-    toast("Задача добавлена.");
+toast("Задача добавлена.", {
+  ttl: 6000,
+  actions: [{
+    label: "Отменить",
+    onClick: function () {
+      var tasks = state.data.tasks || [];
+      var idx = tasks.findIndex(function (x) { return String(x.id) === String(task.id); });
+      if (idx !== -1) {
+        tasks.splice(idx, 1);
+        saveState();
+        renderTasks();
+        toast("Отменено.");
+      }
+    }
+  }]
+});
   }
 
   function openEditTask(taskId) {
@@ -963,10 +998,32 @@ function bindRtePaste(el) {
     // Clear done
     if (clearDoneBtn) {
       clearDoneBtn.addEventListener("click", function () {
-        var before = (state.data.tasks || []).length;
-        state.data.tasks = (state.data.tasks || []).filter(function (t) { return !t.done; });
+var prev = (state.data.tasks || []).slice();
+var before = prev.length;
+
+var next = prev.filter(function (t) { return !t.done; });
+state.data.tasks = next;
+
+saveState();
+renderTasks();
+
+var after = next.length;
+if (before === after) {
+  toast("Готовых задач нет.");
+} else {
+  toast("Готовые задачи удалены.", {
+    ttl: 7000,
+    actions: [{
+      label: "Отменить",
+      onClick: function () {
+        state.data.tasks = prev;
         saveState();
         renderTasks();
+        toast("Отменено.");
+      }
+    }]
+  });
+}
         var after = state.data.tasks.length;
         if (before === after) toast("Готовых задач нет.");
         else toast("Готовые задачи удалены.");
@@ -1009,11 +1066,28 @@ function bindRtePaste(el) {
         }
 
         if (action === "delete") {
-          tasks.splice(idx, 1);
-          saveState();
-          renderTasks();
-          toast("Удалено.");
-          return;
+var removed = tasks[idx];
+tasks.splice(idx, 1);
+saveState();
+renderTasks();
+
+toast("Удалено.", {
+  ttl: 7000,
+  actions: [{
+    label: "Отменить",
+    onClick: function () {
+      // если уже вернули — не дублим
+      var exists = tasks.some(function (x) { return String(x.id) === String(removed.id); });
+      if (exists) return;
+      tasks.unshift(removed);
+      state.data.tasks = tasks;
+      saveState();
+      renderTasks();
+      toast("Отменено.");
+    }
+  }]
+});
+return;
         }
       });
     }
@@ -1264,11 +1338,28 @@ bindRtePaste(editTaskBodyEl);
       return;
     }
 
-    trips.splice(idx, 1);
-    state.data.shopping = trips;
-    saveState();
-    renderShopping();
-    toast("Поход удалён.");
+var removedTrip = trips[idx];
+trips.splice(idx, 1);
+state.data.shopping = trips;
+saveState();
+renderShopping();
+
+toast("Поход удалён.", {
+  ttl: 8000,
+  actions: [{
+    label: "Отменить",
+    onClick: function () {
+      var arr = state.data.shopping || [];
+      var exists = arr.some(function (t) { return String(t.id) === String(removedTrip.id); });
+      if (exists) return;
+      arr.splice(Math.min(idx, arr.length), 0, removedTrip);
+      state.data.shopping = arr;
+      saveState();
+      renderShopping();
+      toast("Отменено.");
+    }
+  }]
+});
   }
 
   function openEditShoppingItem(itemId) {
@@ -1374,11 +1465,32 @@ bindRtePaste(editTaskBodyEl);
 
         var trip = ensureActiveTrip();
         trip.items = Array.isArray(trip.items) ? trip.items : [];
-        trip.items.unshift({ id: nowId(), name: name, qty: q, done: false });
+var newItem = { id: nowId(), name: name, qty: q, done: false };
+trip.items.unshift(newItem);
 
+saveState();
+renderShopping();
+
+toast("Добавлено в список.", {
+  ttl: 6000,
+  actions: [{
+    label: "Отменить",
+    onClick: function () {
+      var t = ensureActiveTrip();
+      var items = t.items || [];
+      var idx = items.findIndex(function (x) { return String(x.id) === String(newItem.id); });
+      if (idx !== -1) {
+        items.splice(idx, 1);
         saveState();
         renderShopping();
-        product.value = "";
+        toast("Отменено.");
+      }
+    }
+  }]
+});
+
+product.value = "";
+if (qty) qty.value = "";
         if (qty) qty.value = "";
       });
     }
@@ -1423,11 +1535,28 @@ bindRtePaste(editTaskBodyEl);
         }
 
         if (action === "delete") {
-          items.splice(idx, 1);
-          saveState();
-          renderShopping();
-          toast("Удалено.");
-          return;
+var removed = items[idx];
+items.splice(idx, 1);
+saveState();
+renderShopping();
+
+toast("Удалено.", {
+  ttl: 7000,
+  actions: [{
+    label: "Отменить",
+    onClick: function () {
+      var t = ensureActiveTrip();
+      t.items = Array.isArray(t.items) ? t.items : [];
+      var exists = t.items.some(function (x) { return String(x.id) === String(removed.id); });
+      if (exists) return;
+      t.items.splice(Math.min(idx, t.items.length), 0, removed);
+      saveState();
+      renderShopping();
+      toast("Отменено.");
+    }
+  }]
+});
+return;
         }
 
         if (action === "edit") {
@@ -1494,19 +1623,40 @@ bindRtePaste(editTaskBodyEl);
         if (!code) return;
 
         var now = new Date();
-        state.data.code.unshift({
-          id: nowId(),
-          title: title,
-          code: code,
-          createdAt: formatDateTimeShort(now),
-        });
+var item = {
+  id: nowId(),
+  title: title,
+  code: code,
+  createdAt: formatDateTimeShort(now)
+};
 
+state.data.code.unshift(item);
+
+saveState();
+renderCode();
+
+if (titleInput) titleInput.value = "";
+codeInput.value = "";
+
+clearDraft(DRAFT_CODE_KEY);
+clearDraft(DRAFT_CODE_TITLE_KEY);
+
+toast("Сохранено.", {
+  ttl: 7000,
+  actions: [{
+    label: "Отменить",
+    onClick: function () {
+      var items = state.data.code || [];
+      var idx = items.findIndex(function (x) { return String(x.id) === String(item.id); });
+      if (idx !== -1) {
+        items.splice(idx, 1);
         saveState();
         renderCode();
-
-        if (titleInput) titleInput.value = "";
-        codeInput.value = "";
-        toast("Сохранено.");
+        toast("Отменено.");
+      }
+    }
+  }]
+});
       });
     }
 
@@ -1525,11 +1675,28 @@ bindRtePaste(editTaskBodyEl);
         if (idx === -1) return;
 
         if (action === "delete") {
-          items.splice(idx, 1);
-          saveState();
-          renderCode();
-          toast("Удалено.");
-          return;
+var removed = items[idx];
+items.splice(idx, 1);
+saveState();
+renderCode();
+
+toast("Удалено.", {
+  ttl: 8000,
+  actions: [{
+    label: "Отменить",
+    onClick: function () {
+      var arr = state.data.code || [];
+      var exists = arr.some(function (x) { return String(x.id) === String(removed.id); });
+      if (exists) return;
+      arr.unshift(removed);
+      state.data.code = arr;
+      saveState();
+      renderCode();
+      toast("Отменено.");
+    }
+  }]
+});
+return;
         }
 
         if (action === "copy") {
@@ -1601,14 +1768,63 @@ bindRtePaste(editTaskBodyEl);
     state.data.workout = sessions;
     saveState();
     renderWorkout();
+
+    var sessionId = session.id;
+var exKey = ex;
+
+toast("Подход добавлен.", {
+  ttl: 7000,
+  actions: [
+    {
+      label: "Отменить",
+      onClick: function () {
+        var sessions = state.data.workout || [];
+        var s = sessions.find(function (x) { return String(x.id) === String(sessionId); });
+        if (!s) return;
+
+        // откат 1 подхода
+        s.sets = Math.max(0, (s.sets || 0) - 1);
+        s.totalReps = Math.max(0, (s.totalReps || 0) - state.workoutRepsPerSet);
+
+        // если стало пусто — удалим запись дня/упражнения
+        if ((s.sets || 0) === 0 && (s.totalReps || 0) === 0) {
+          state.data.workout = sessions.filter(function (x) { return String(x.id) !== String(sessionId); });
+        } else {
+          state.data.workout = sessions;
+        }
+
+        saveState();
+        renderWorkout();
+        toast("Отменено.");
+      }
+    },
+    {
+      label: "Отдых 60с",
+      onClick: function () { startRestTimer(60); }
+    }
+  ]
+});
   }
 
   function workoutResetToday() {
     var todayKey = getDateKey(new Date());
-    state.data.workout = (state.data.workout || []).filter(function (s) { return s.dateKey !== todayKey; });
-    saveState();
-    renderWorkout();
-    toast("Сегодня сброшено.");
+var prev = (state.data.workout || []).slice();
+state.data.workout = prev.filter(function (s) { return s.dateKey !== todayKey; });
+saveState();
+renderWorkout();
+
+toast("Сегодня сброшено.", {
+  ttl: 8000,
+  actions: [{
+    label: "Отменить",
+    onClick: function () {
+      state.data.workout = prev;
+      saveState();
+      renderWorkout();
+      toast("Отменено.");
+    }
+  }]
+});
   }
 
   function renderWorkout() {
@@ -1745,6 +1961,52 @@ bindRtePaste(editTaskBodyEl);
     }
     return out;
   }
+function startRestTimer(seconds) {
+  var sec = Number(seconds || 60) || 60;
+  if (sec < 5) sec = 5;
+
+  var toastEl = toast("Отдых: " + sec + "с", { ttl: 0 });
+  if (!toastEl) return;
+
+  var textEl = qs(".toast-text", toastEl);
+  var closed = false;
+
+  function closeTimer() {
+    if (closed) return;
+    closed = true;
+    try {
+      if (toastEl && toastEl.parentNode === toastsEl) toastsEl.removeChild(toastEl);
+    } catch (e) {}
+  }
+
+  // вставим “Стоп” перед крестиком
+  var actionsEl = qs(".toast-actions", toastEl);
+  if (actionsEl) {
+    var stopBtn = document.createElement("button");
+    stopBtn.type = "button";
+    stopBtn.className = "toast-btn";
+    stopBtn.textContent = "Стоп";
+    stopBtn.addEventListener("click", function () {
+      closeTimer();
+    });
+    actionsEl.insertBefore(stopBtn, actionsEl.firstChild);
+  }
+
+  var timer = setInterval(function () {
+    if (closed) { clearInterval(timer); return; }
+    sec -= 1;
+
+    if (sec <= 0) {
+      clearInterval(timer);
+      closeTimer();
+      toast("Отдых закончен ✅", { ttl: 2600 });
+      try { if (navigator.vibrate) navigator.vibrate([120, 80, 120]); } catch (e) {}
+      return;
+    }
+
+    if (textEl) textEl.textContent = "Отдых: " + sec + "с";
+  }, 1000);
+}
 
   function initWorkout() {
     // Chips (exercise)
@@ -1820,6 +2082,31 @@ bindRtePaste(editTaskBodyEl);
       }
     });
   }
+function escapeRegExp(s) {
+  return String(s || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function highlightMatch(text, query) {
+  var t = String(text || "");
+  var q = String(query || "");
+  if (!q) return escapeText(t);
+
+  var re;
+  try { re = new RegExp(escapeRegExp(q), "ig"); } catch (e) { return escapeText(t); }
+
+  var out = [];
+  var last = 0;
+
+  t.replace(re, function (m, offset) {
+    out.push(escapeText(t.slice(last, offset)));
+    out.push('<mark class="mark">' + escapeText(m) + "</mark>");
+    last = offset + m.length;
+    return m;
+  });
+
+  out.push(escapeText(t.slice(last)));
+  return out.join("");
+}
 
   function isSearchActive() {
     return !!(searchView && searchView.classList.contains("is-active"));
@@ -1977,7 +2264,7 @@ bindRtePaste(editTaskBodyEl);
               '<svg class="icon" aria-hidden="true"><use href="' + icon + '"></use></svg>' +
             "</button>" +
             '<div class="item-body">' +
-              '<p class="item-title">' + escapeText(r.title) + "</p>" +
+              '<p class="item-title">' + highlightMatch(r.title, query) + "</p>" +
               (r.meta ? '<div class="item-meta">' + escapeText(r.meta) + "</div>" : "") +
             "</div>" +
             '<div class="item-actions">' +
@@ -2094,7 +2381,49 @@ bindRtePaste(editTaskBodyEl);
       });
     }
   }
+function loadDraft(key) {
+  try { return localStorage.getItem(key) || ""; } catch (e) { return ""; }
+}
+function saveDraft(key, val) {
+  try { localStorage.setItem(key, String(val || "")); } catch (e) {}
+}
+function clearDraft(key) {
+  try { localStorage.removeItem(key); } catch (e) {}
+}
 
+function initDrafts() {
+  // Tasks draft
+  if (tasksComposerEl) {
+    var tDraft = loadDraft(DRAFT_TASK_KEY);
+    if (tDraft && rteIsEmpty(tasksComposerEl)) {
+      tasksComposerEl.innerHTML = tDraft;
+    }
+    var saveTaskDraft = debounce(function () {
+      saveDraft(DRAFT_TASK_KEY, tasksComposerEl.innerHTML || "");
+    }, 250);
+    tasksComposerEl.addEventListener("input", saveTaskDraft);
+  }
+
+  // Code draft
+  if (codeForm) {
+    var titleInput = qs('input[name="title"]', codeForm);
+    var codeInput = qs('textarea[name="code"]', codeForm);
+
+    var cTitle = loadDraft(DRAFT_CODE_TITLE_KEY);
+    var cDraft = loadDraft(DRAFT_CODE_KEY);
+
+    if (titleInput && cTitle && !titleInput.value) titleInput.value = cTitle;
+    if (codeInput && cDraft && !codeInput.value) codeInput.value = cDraft;
+
+    var saveCodeDraft = debounce(function () {
+      if (titleInput) saveDraft(DRAFT_CODE_TITLE_KEY, titleInput.value || "");
+      if (codeInput) saveDraft(DRAFT_CODE_KEY, codeInput.value || "");
+    }, 250);
+
+    if (titleInput) titleInput.addEventListener("input", saveCodeDraft);
+    if (codeInput) codeInput.addEventListener("input", saveCodeDraft);
+  }
+}
   /* =========================================================
      Render all
      ========================================================= */
@@ -2104,27 +2433,72 @@ bindRtePaste(editTaskBodyEl);
     renderCode();
     renderWorkout();
   }
+function initShortcuts() {
+  document.addEventListener("keydown", function (e) {
+    var meta = e.ctrlKey || e.metaKey;
+    if (!meta) return;
+
+    var key = String(e.key || "").toLowerCase();
+
+    // Ctrl/Cmd+K — поиск
+    if (key === "k") {
+      e.preventDefault();
+      if (searchInput) {
+        try { searchInput.focus(); searchInput.select(); } catch (e1) {}
+      }
+      return;
+    }
+
+    // Ctrl/Cmd+Shift+1..4 — разделы
+    if (e.shiftKey) {
+      var map = { "1": "tasks", "2": "shopping", "3": "code", "4": "workout" };
+      var target = map[String(e.key || "")];
+      if (target) {
+        e.preventDefault();
+        clearSearchUI();
+        setActiveView(target);
+        renderAll();
+        return;
+      }
+    }
+
+    // Ctrl/Cmd+N — фокус на “добавление” в текущем разделе
+    if (key === "n") {
+      e.preventDefault();
+      var v = currentVisibleView();
+      if (v === "tasks" && tasksComposerEl) { try { tasksComposerEl.focus(); } catch (e2) {} }
+      if (v === "code" && codeForm) {
+        var ci = qs('textarea[name="code"]', codeForm);
+        if (ci) try { ci.focus(); } catch (e3) {}
+      }
+    }
+  });
+}
 
   /* =========================================================
      Boot
      ========================================================= */
-  function boot() {
-    initClock();
-    initDrawer();
-    initModals();
-    initNavigation();
+function boot() {
+  initClock();
+  initNetworkBadge();
 
-    initTasks();
-    initShopping();
-    initCode();
-    initWorkout();
-    initSearch();
-    initSettings();
+  initDrawer();
+  initModals();
+  initNavigation();
 
-    // initial view
-    setActiveView(state.activeView || "tasks");
-    renderAll();
-  }
+  initTasks();
+  initShopping();
+  initCode();
+  initWorkout();
+  initSearch();
+  initSettings();
+
+  initDrafts();
+  initShortcuts();
+
+  setActiveView(state.activeView || "tasks");
+  renderAll();
+}
 
   boot();
 })();
