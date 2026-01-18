@@ -467,14 +467,18 @@ attrs.forEach(function (attr) {
 function highlightAllCode(root) {
   if (!window.hljs) return;
   var scope = root || document;
-  var blocks = scope.querySelectorAll("pre code");
-  blocks.forEach(function (el) {
-    try {
-      // не хайлайтим повторно один и тот же узел (на всякий)
-      if (el.getAttribute("data-hl") === "1") return;
-      window.hljs.highlightElement(el);
-      el.setAttribute("data-hl", "1");
-    } catch (e) {}
+  var blocks = scope.querySelectorAll("pre code:not([data-hl])");
+
+  if (blocks.length === 0) return;
+
+  // Подсвечиваем асинхронно, чтобы не тормозить UI
+  requestAnimationFrame(() => {
+    blocks.forEach(function (el) {
+      try {
+        el.setAttribute("data-hl", "1");
+        hljs.highlightElement(el);
+      } catch (e) {}
+    });
   });
 }
 
@@ -701,6 +705,21 @@ function initNetworkBadge() {
     }
 
     closeDrawer();
+
+    switch (view) {
+    case "tasks":
+      renderTasks();
+      break;
+    case "shopping":
+      renderShopping();
+      break;
+    case "code":
+      renderCode();
+      break;
+    case "workout":
+      renderWorkout();
+      break;
+  }
   }
 
   function initNavigation() {
@@ -711,7 +730,6 @@ function initNetworkBadge() {
         if (!view) return;
         clearSearchUI();
         setActiveView(view);
-        renderAll(); // keep UI fresh
       });
     });
   }
