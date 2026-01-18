@@ -827,7 +827,6 @@ function initNetworkBadge() {
     }
 
     tasksListEl.innerHTML = tasks.map(taskItemHTML).join("");
-    highlightAllCode(tasksListEl);
   }
 
   function addTaskFromComposer() {
@@ -2193,7 +2192,6 @@ function highlightMatch(text, query) {
       lastNonSearchView = cat;
       closeSearch();
       setActiveView(cat);
-      renderAll();
     });
   }
 
@@ -2475,7 +2473,6 @@ function initShortcuts() {
         e.preventDefault();
         clearSearchUI();
         setActiveView(target);
-        renderAll();
         return;
       }
     }
