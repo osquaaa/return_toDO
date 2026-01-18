@@ -732,6 +732,12 @@ function initNetworkBadge() {
         setActiveView(view);
       });
     });
+    qsa('a[href="./how-to-add.html"]').forEach(function (link) {
+  link.addEventListener("click", function (e) {
+    e.preventDefault(); // отменяем обычный переход
+    window.open("./how-to-add.html", "_blank"); // открываем в новой вкладке
+  });
+});
   }
 
   /* =========================================================
