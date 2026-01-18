@@ -827,6 +827,7 @@ function initNetworkBadge() {
     }
 
     tasksListEl.innerHTML = tasks.map(taskItemHTML).join("");
+    highlightAllCode(tasksListEl);
   }
 
   function addTaskFromComposer() {
