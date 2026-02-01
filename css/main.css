@@ -1750,3 +1750,58 @@ button:focus-visible {
 @media (max-width: 560px) {
   .net-badge { display: none; }
 }
+/* Добавь это в main.css */
+
+/* Улучшенное отображение кода в задачах */
+.task-html code {
+  font-family: var(--font-mono);
+  background: rgba(216, 199, 165, 0.12);
+  padding: 0.2em 0.4em;
+  border-radius: var(--r-sm);
+  font-size: 0.9em;
+  border: 1px solid var(--border);
+}
+
+.task-html pre {
+  background: #161616; /* Чуть темнее основного для глубины */
+  padding: 12px;
+  border-radius: var(--r-md);
+  overflow-x: auto;
+  border: 1px solid var(--border2);
+  margin: 8px 0;
+}
+
+.task-html pre code {
+  background: transparent;
+  padding: 0;
+  border: none;
+  display: block;
+  line-height: 1.5;
+}
+
+/* Стили для цитат и заголовков */
+.task-html blockquote {
+  border-left: 3px solid var(--beige);
+  margin: 8px 0;
+  padding-left: 12px;
+  color: var(--muted);
+}
+
+.task-html h1, .task-html h2 {
+  font-size: 1.2rem;
+  margin: 12px 0 4px;
+  color: var(--beige);
+}
+
+/* Оптимизация мобильной верстки */
+@media (max-width: 768px) {
+  .app-shell {
+    grid-template-columns: 1fr; /* Убираем сайдбар из потока */
+  }
+  .content {
+    padding: 12px 10px 100px;
+  }
+  .view-title {
+    font-size: 1.3rem;
+  }
+}
