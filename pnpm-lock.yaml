@@ -117,6 +117,9 @@ importers:
       drizzle-orm:
         specifier: ^0.36.0
         version: 0.36.4(@types/react@19.2.14)(kysely@0.28.16)(postgres@3.4.9)(react@19.2.5)
+      highlight.js:
+        specifier: ^11.11.1
+        version: 11.11.1
       ioredis:
         specifier: ^5.4.1
         version: 5.10.1
@@ -2550,6 +2553,10 @@ packages:
 
   help-me@5.0.0:
     resolution: {integrity: sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg==}
+
+  highlight.js@11.11.1:
+    resolution: {integrity: sha512-Xwwo44whKBVCYoliBQwaPvtd/2tYFkRQtXDWj1nackaV2JPXx3L0+Jvd8/qCJ2p+ML0/XVkJ2q+Mr+UVdpJK5w==}
+    engines: {node: '>=12.0.0'}
 
   html-encoding-sniffer@6.0.0:
     resolution: {integrity: sha512-CV9TW3Y3f8/wT0BRFc1/KAVQ3TUHiXmaAb6VW9vtiMFf7SLoMd1PdAc4W3KFOFETBJUb90KatHqlsZMWV+R9Gg==}
@@ -5752,6 +5759,8 @@ snapshots:
       function-bind: 1.1.2
 
   help-me@5.0.0: {}
+
+  highlight.js@11.11.1: {}
 
   html-encoding-sniffer@6.0.0(@noble/hashes@2.2.0):
     dependencies:

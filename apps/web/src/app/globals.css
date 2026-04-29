@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'highlight.js/styles/atom-one-light.css';
 
 @theme {
   --color-canvas: #fcf8f1;
