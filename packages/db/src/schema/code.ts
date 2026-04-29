@@ -1,8 +1,8 @@
 import { sql } from 'drizzle-orm';
 import { boolean, customType, index, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
-import { genId } from '../id.js';
-import { users } from './auth.js';
+import { genId } from '../id';
+import { users } from './auth';
 
 const tsvector = customType<{ data: string }>({
   dataType() {

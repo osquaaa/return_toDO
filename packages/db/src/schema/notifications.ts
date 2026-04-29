@@ -13,8 +13,8 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 
-import { genId } from '../id.js';
-import { users } from './auth.js';
+import { genId } from '../id';
+import { users } from './auth';
 
 export const eventTypeEnum = pgEnum('event_type', [
   'morning_digest',

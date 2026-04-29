@@ -1,3 +1,3 @@
-export * from './schema/index.js';
-export * from './client.js';
-export { genId } from './id.js';
+export * from './schema/index';
+export * from './client';
+export { genId } from './id';

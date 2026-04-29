@@ -10,8 +10,8 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 
-import { genId } from '../id.js';
-import { users } from './auth.js';
+import { genId } from '../id';
+import { users } from './auth';
 
 export const shoppingTrips = pgTable(
   'shopping_trips',

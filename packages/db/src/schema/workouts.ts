@@ -1,8 +1,8 @@
 import { sql } from 'drizzle-orm';
 import { index, integer, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 
-import { genId } from '../id.js';
-import { users } from './auth.js';
+import { genId } from '../id';
+import { users } from './auth';
 
 export const workoutExercises = pgTable(
   'workout_exercises',

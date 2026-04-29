@@ -1,8 +1,8 @@
 import { sql } from 'drizzle-orm';
 import { boolean, index, jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
-import { genId } from '../id.js';
-import { users } from './auth.js';
+import { genId } from '../id';
+import { users } from './auth';
 
 export const adminAuditLog = pgTable(
   'admin_audit_log',

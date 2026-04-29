@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 
-import { createDbClient } from './client.js';
+import { createDbClient } from './client';
 
 async function runMigrate() {
   const { db, sql } = createDbClient();

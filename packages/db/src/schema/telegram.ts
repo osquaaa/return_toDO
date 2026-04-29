@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { bigint, pgTable, text, timestamp, uuid, uniqueIndex } from 'drizzle-orm/pg-core';
 
-import { users } from './auth.js';
+import { users } from './auth';
 
 export const telegramLinks = pgTable(
   'telegram_links',
