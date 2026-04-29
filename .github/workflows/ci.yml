@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: letget
+          POSTGRES_PASSWORD: ci_password_placeholder
+          POSTGRES_DB: letget
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U letget"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+
+    env:
+      DB_HOST: localhost
+      DB_PORT: '5432'
+      DB_NAME: letget
+      DB_USER: letget
+      DB_PASSWORD: ci_password_placeholder
+      REDIS_HOST: localhost
+      REDIS_PORT: '6379'
+      REDIS_DB: '0'
+      APP_URL: http://localhost:3040
+      TELEGRAM_BOT_TOKEN: disabled
+      TELEGRAM_BOT_USERNAME: letget_bot
+      TELEGRAM_USE_LONG_POLLING: 'false'
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.0'
+          cache: 'pnpm'
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: DB migrate
+        run: pnpm --filter @letget/db migrate
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
