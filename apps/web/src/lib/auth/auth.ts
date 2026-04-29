@@ -57,11 +57,12 @@ export const auth = betterAuth({
           data: { ...user, role: resolveRoleForEmail(user.email) },
         }),
         after: async (user) => {
-          // Seed preferences row. Lazy-import avoids circular module init at app boot.
+          // Seed preferences + default workout exercises. Lazy-import avoids
+          // circular module init at app boot.
           const { createDbClient } = await import('@letget/db/client');
-          const { userPreferences } = await import('@letget/db/schema');
+          const { seedNewUser } = await import('./seed-new-user');
           const { db: hookDb } = createDbClient();
-          await hookDb.insert(userPreferences).values({ userId: user.id }).onConflictDoNothing();
+          await seedNewUser(hookDb, user.id);
         },
       },
     },
