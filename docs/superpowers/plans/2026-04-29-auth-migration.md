@@ -98,8 +98,9 @@
 
 ```bash
 pnpm -F @letget/web add better-auth bcryptjs isomorphic-dompurify resend
-pnpm -F @letget/web add -D @types/bcryptjs
 ```
+
+> **Note:** `bcryptjs@3+` ships its own TypeScript types — do NOT install `@types/bcryptjs` (deprecated and redundant).
 
 - [ ] **Step 2: Verify versions in package.json**
 
