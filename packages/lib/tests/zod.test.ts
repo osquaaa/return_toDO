@@ -5,22 +5,37 @@ import { makeNoUpper, makeShort, makeValid } from './helpers.js';
 
 describe('auth zod schemas', () => {
   it('signUpSchema accepts valid email + strong password', () => {
-    const input = { email: 'user@example.com', name: 'Иван', password: makeValid() };
+    const pwd = makeValid();
+    const input = { email: 'user@example.com', name: 'Иван', password: pwd, confirmPassword: pwd };
     expect(signUpSchema.safeParse(input).success).toBe(true);
   });
 
   it('signUpSchema rejects short password', () => {
-    const input = { email: 'user@example.com', password: makeShort() };
+    const pwd = makeShort();
+    const input = { email: 'user@example.com', name: 'Иван', password: pwd, confirmPassword: pwd };
     expect(signUpSchema.safeParse(input).success).toBe(false);
   });
 
   it('signUpSchema rejects password without uppercase', () => {
-    const input = { email: 'user@example.com', password: makeNoUpper() };
+    const pwd = makeNoUpper();
+    const input = { email: 'user@example.com', name: 'Иван', password: pwd, confirmPassword: pwd };
     expect(signUpSchema.safeParse(input).success).toBe(false);
   });
 
   it('signUpSchema rejects invalid email', () => {
-    const input = { email: 'not-email', password: makeValid() };
+    const pwd = makeValid();
+    const input = { email: 'not-email', name: 'Иван', password: pwd, confirmPassword: pwd };
+    expect(signUpSchema.safeParse(input).success).toBe(false);
+  });
+
+  it('signUpSchema rejects mismatched confirmPassword', () => {
+    const pwd = makeValid();
+    const input = {
+      email: 'user@example.com',
+      name: 'Иван',
+      password: pwd,
+      confirmPassword: pwd + 'x',
+    };
     expect(signUpSchema.safeParse(input).success).toBe(false);
   });
 

@@ -29,7 +29,7 @@ export function SignUpForm() {
         <input
           name="name"
           required
-          className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2"
+          className="mt-1 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-ink)] outline-none focus:border-[var(--color-ink-soft)]"
         />
       </label>
       <label className="block">
@@ -38,7 +38,7 @@ export function SignUpForm() {
           type="email"
           name="email"
           required
-          className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2"
+          className="mt-1 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-ink)] outline-none focus:border-[var(--color-ink-soft)]"
         />
       </label>
       <label className="block">
@@ -48,7 +48,7 @@ export function SignUpForm() {
           name="password"
           required
           minLength={8}
-          className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2"
+          className="mt-1 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-ink)] outline-none focus:border-[var(--color-ink-soft)]"
         />
       </label>
       <label className="block">
@@ -58,7 +58,7 @@ export function SignUpForm() {
           name="confirmPassword"
           required
           minLength={8}
-          className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2"
+          className="mt-1 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-ink)] outline-none focus:border-[var(--color-ink-soft)]"
         />
       </label>
       {error && <p className="text-sm text-red-700">{error}</p>}

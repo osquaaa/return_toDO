@@ -8,11 +8,17 @@ const passwordSchema = z
   .regex(/[A-Z]/, 'Хотя бы одна заглавная буква')
   .regex(/[0-9]/, 'Хотя бы одна цифра');
 
-export const signUpSchema = z.object({
-  email: z.string().email('Некорректный email').max(255),
-  password: passwordSchema,
-  name: z.string().min(1).max(100).optional(),
-});
+export const signUpSchema = z
+  .object({
+    email: z.string().email('Некорректный email').max(255),
+    password: passwordSchema,
+    confirmPassword: z.string().min(1, 'Повторите пароль'),
+    name: z.string().min(1, 'Введите имя').max(100),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Пароли не совпадают',
+    path: ['confirmPassword'],
+  });
 
 export const signInSchema = z.object({
   email: z.string().email().max(255),
