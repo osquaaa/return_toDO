@@ -47,7 +47,7 @@ describe('v1MigrationSchema', () => {
     expect(r.success).toBe(true);
     if (r.success) {
       expect(r.data.tasks.length).toBe(2);
-      expect(r.data.workouts.exercises[0].name).toBe('Подтягивания');
+      expect(r.data.workouts.exercises[0]?.name).toBe('Подтягивания');
     }
   });
 
