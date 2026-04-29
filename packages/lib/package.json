@@ -9,6 +9,7 @@
     ".": "./src/index.ts",
     "./zod": "./src/zod/index.ts",
     "./zod/auth": "./src/zod/auth.ts",
+    "./zod/migrate": "./src/zod/migrate.ts",
     "./types": "./src/types/index.ts",
     "./tests/helpers": "./tests/helpers.ts"
   },
