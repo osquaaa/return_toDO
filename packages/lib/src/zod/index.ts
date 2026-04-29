@@ -4,3 +4,4 @@ export * from './tasks';
 export * from './shopping';
 export * from './code';
 export * from './workouts';
+export * from './notifications';
