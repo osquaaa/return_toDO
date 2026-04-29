@@ -12,6 +12,7 @@ export default tseslint.config(
       '**/drizzle',
       'legacy/**',
       'tapalka/**',
+      'apps/web/**',
       '*.config.mjs',
     ],
   },

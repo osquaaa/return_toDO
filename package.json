@@ -32,7 +32,7 @@
     "typescript-eslint": "^8.59.1"
   },
   "lint-staged": {
-    "*.{ts,tsx,js}": [
+    "!(apps/web/**/*)*.{ts,tsx,js}": [
       "eslint --fix --max-warnings 0"
     ],
     "*.{ts,tsx,mjs,js,json,md,yml,yaml,css}": [
