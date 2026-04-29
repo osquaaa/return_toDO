@@ -12,7 +12,7 @@ process.env.DB_NAME = 'letget';
 process.env.DB_USER = 'letget';
 process.env.DB_PASSWORD = dbPwd;
 process.env.REDIS_HOST = 'localhost';
-process.env.REDIS_PORT = '6379';
+process.env.REDIS_PORT = '6382';
 process.env.REDIS_DB = '0';
 process.env.APP_URL = 'http://localhost:3040';
 // Test stub for Better Auth — not a real secret, just satisfies the ≥32 chars zod check
