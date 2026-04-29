@@ -5,6 +5,7 @@ const navItems = [
   { href: '/shopping', label: 'Покупки', icon: '🛒' },
   { href: '/code', label: 'Код', icon: '⌨' },
   { href: '/workouts', label: 'Тренировки', icon: '💪' },
+  { href: '/settings', label: 'Настройки', icon: '⚙' },
 ];
 
 export function Sidebar() {
