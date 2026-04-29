@@ -15,6 +15,6 @@ export async function requireUser() {
 
 export async function requireAdmin() {
   const user = await requireUser();
-  if ((user as unknown as { role: 'user' | 'admin' }).role !== 'admin') redirect('/');
+  if (user.role !== 'admin') redirect('/');
   return user;
 }
