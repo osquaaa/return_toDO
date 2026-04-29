@@ -5,6 +5,7 @@ import { genId } from '@letget/db';
 import { tasks, type Task } from '@letget/db/schema';
 import type { CreateTaskInput, UpdateTaskInput } from '@letget/lib/zod/tasks';
 
+import { scheduleTaskDeadlineNotification } from '../notifications/scheduler';
 import { sanitizeHtml, htmlToPlainText } from '../sanitize';
 
 const { db } = createDbClient();
@@ -23,6 +24,7 @@ export async function createTask(userId: string, input: CreateTaskInput): Promis
       deadline: input.deadline ? new Date(input.deadline) : null,
     })
     .returning();
+  await scheduleTaskDeadlineNotification(row);
   return row;
 }
 
@@ -52,7 +54,11 @@ export async function updateTask(
     .set(patch)
     .where(and(eq(tasks.id, taskId), eq(tasks.userId, userId), isNull(tasks.deletedAt)))
     .returning();
-  return rows[0] ?? null;
+  const updated = rows[0] ?? null;
+  if (updated) {
+    await scheduleTaskDeadlineNotification(updated);
+  }
+  return updated;
 }
 
 export async function softDeleteTask(userId: string, taskId: string): Promise<boolean> {
