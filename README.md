@@ -90,6 +90,32 @@ legacy/         Старая версия v1 (reference)
 - **Telegram link:** `/settings` → "Подключить Telegram" → deep-link в бота → /start link\_<token> → `telegram_links` row.
 - **v1 migration:** при первом входе клиент читает `letget:*` из localStorage и шлёт на `/api/migrate/v1` (идемпотентно через `user_preferences.migratedV1At`).
 
+## Bot — production webhook setup
+
+В проде бот работает в webhook-режиме (без long polling). nginx терминирует TLS и проксирует POST на `127.0.0.1:3041/webhook`.
+
+```bash
+# 1. Запустить бота с webhook env
+TELEGRAM_USE_LONG_POLLING=false \
+TELEGRAM_WEBHOOK_SECRET=<random-32+-chars> \
+... остальные env ... \
+pnpm --filter @letget/bot start
+
+# 2. Зарегистрировать webhook у Telegram
+curl -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://letget.example.com/tg/webhook",
+    "secret_token": "'"${TELEGRAM_WEBHOOK_SECRET}"'",
+    "drop_pending_updates": true
+  }'
+
+# 3. Проверить
+curl "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo"
+```
+
+Telegram передаёт секрет в заголовке `x-telegram-bot-api-secret-token`. Бот сверяет и при несовпадении возвращает 401. Если секрет не задан — бот логирует warning и принимает все запросы (для локальной отладки за туннелем).
+
 ## License
 
 Private.

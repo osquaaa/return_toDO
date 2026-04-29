@@ -5,15 +5,16 @@ import { logger } from './logger';
 import { createServer } from './server';
 
 async function main() {
-  const server = createServer();
-  await server.listen();
-
   if (env.TELEGRAM_BOT_TOKEN === 'disabled') {
+    const server = createServer();
+    await server.listen();
     logger.warn('Bot token is "disabled" — bot will not connect to Telegram');
     return;
   }
 
   const bot = createBot();
+  const server = createServer({ bot });
+  await server.listen();
 
   startCron(bot);
 
