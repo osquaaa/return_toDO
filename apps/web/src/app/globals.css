@@ -1,9 +1,92 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-canvas: #fcf8f1;
+  --color-panel: #f5ecd7;
+  --color-border: #e5d9c4;
+  --color-surface: #ffffff;
+  --color-ink: #1a1410;
+  --color-ink-soft: #5a4a3a;
+  --color-ink-faint: #8a7458;
+
+  --color-brand-from: #ffb347;
+  --color-brand-to: #ff7e5f;
+
+  --color-tasks-from: #4ade80;
+  --color-tasks-to: #16a34a;
+  --color-shopping-from: #ff7e5f;
+  --color-shopping-to: #e85a3e;
+  --color-code-from: #c06bff;
+  --color-code-to: #9333ea;
+  --color-workout-from: #ff6b9d;
+  --color-workout-to: #db2777;
+
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  --duration-instant: 100ms;
+  --duration-fast: 160ms;
+  --duration-base: 220ms;
+  --duration-slow: 320ms;
+  --duration-slower: 480ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(120, 100, 80, 0.06);
+  --shadow-md:
+    0 1px 0 rgba(0, 0, 0, 0.04), 0 4px 10px -4px rgba(120, 100, 80, 0.12),
+    0 2px 4px rgba(120, 100, 80, 0.06);
+  --shadow-lg:
+    0 1px 0 rgba(0, 0, 0, 0.04), 0 12px 24px -8px rgba(120, 100, 80, 0.2),
+    0 4px 8px rgba(120, 100, 80, 0.08);
+  --shadow-xl:
+    0 1px 0 rgba(0, 0, 0, 0.04), 0 24px 48px -12px rgba(120, 100, 80, 0.3),
+    0 8px 16px rgba(120, 100, 80, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-canvas: #16110d;
+    --color-panel: #1f1812;
+    --color-border: #3a2f24;
+    --color-surface: #1f1812;
+    --color-ink: #f5ecd7;
+    --color-ink-soft: #c9b89a;
+    --color-ink-faint: #8a7458;
+  }
+}
+
 @layer base {
   html,
   body {
     margin: 0;
     padding: 0;
+    font-family: var(--font-sans);
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+  * {
+    box-sizing: border-box;
+  }
+  *:focus-visible {
+    outline: 2px solid var(--color-brand-from);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
