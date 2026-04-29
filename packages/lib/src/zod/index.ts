@@ -3,3 +3,4 @@ export * from './migrate';
 export * from './tasks';
 export * from './shopping';
 export * from './code';
+export * from './workouts';
