@@ -15,6 +15,7 @@
     "@letget/db": "workspace:*",
     "@letget/lib": "workspace:*",
     "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.36.0",
     "fastify": "^5.1.0",
     "grammy": "^1.32.0",
     "ioredis": "^5.4.1",

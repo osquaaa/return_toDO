@@ -1,4 +1,5 @@
 import { createBot } from './bot';
+import { startCron } from './cron';
 import { env } from './env';
 import { logger } from './logger';
 import { createServer } from './server';
@@ -14,13 +15,15 @@ async function main() {
 
   const bot = createBot();
 
+  startCron(bot);
+
   if (env.TELEGRAM_USE_LONG_POLLING) {
     logger.info('Starting bot in long-polling mode (dev)');
-    await bot.start({
+    void bot.start({
       onStart: (info) => logger.info({ username: info.username }, '🤖 Bot started'),
     });
   } else {
-    logger.info('Webhook mode — registration TBD in Plan 5 / Plan 8');
+    logger.info('Webhook mode — POST /webhook with x-telegram-bot-api-secret-token');
   }
 }
 
