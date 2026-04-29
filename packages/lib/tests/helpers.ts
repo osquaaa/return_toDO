@@ -2,6 +2,8 @@ export function makeValid(): string {
   return ['a', 'a', 'B', 'B', '1', '1', 'c', 'c'].join('');
 }
 
+export const makeValidPassword = makeValid;
+
 export function makeShort(): string {
   return ['a', 'B', '1'].join('');
 }

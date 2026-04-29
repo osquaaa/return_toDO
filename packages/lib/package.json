@@ -8,7 +8,9 @@
   "exports": {
     ".": "./src/index.ts",
     "./zod": "./src/zod/index.ts",
-    "./types": "./src/types/index.ts"
+    "./zod/auth": "./src/zod/auth.ts",
+    "./types": "./src/types/index.ts",
+    "./tests/helpers": "./tests/helpers.ts"
   },
   "scripts": {
     "lint": "eslint src",
