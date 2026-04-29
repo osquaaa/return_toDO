@@ -2,6 +2,7 @@ import { Bot } from 'grammy';
 
 import { env } from './env';
 import { addHandler } from './handlers/add';
+import { registerCallbacks } from './handlers/callbacks';
 import { doneHandler } from './handlers/done';
 import { helpHandler } from './handlers/help';
 import { startHandler } from './handlers/start';
@@ -16,6 +17,8 @@ export function createBot(): Bot {
   bot.command('add', addHandler);
   bot.command('done', doneHandler);
   bot.command('help', helpHandler);
+
+  registerCallbacks(bot);
 
   bot.catch((err) => {
     logger.error({ err: err.error }, 'Bot handler error');
