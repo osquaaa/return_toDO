@@ -12,4 +12,5 @@ node_modules/
 .vercel/
 dist/
 build/
+*.tsbuildinfo
 infra/docker/db_password.txt
