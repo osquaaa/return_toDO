@@ -1,0 +1,30 @@
+{
+  "name": "letget",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.18.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter './apps/*' run dev",
+    "build": "pnpm -r --filter './apps/*' run build",
+    "lint": "pnpm -r run lint",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test",
+    "db:up": "docker compose -f infra/docker/docker-compose.dev.yml up -d",
+    "db:down": "docker compose -f infra/docker/docker-compose.dev.yml down",
+    "db:migrate": "pnpm --filter @letget/db migrate",
+    "db:studio": "pnpm --filter @letget/db studio",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.4.0",
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@10.0.0"
+}
