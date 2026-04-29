@@ -14,6 +14,10 @@
   "dependencies": {
     "@letget/db": "workspace:*",
     "@letget/lib": "workspace:*",
+    "@tiptap/extension-link": "^3.22.5",
+    "@tiptap/extension-placeholder": "^3.22.5",
+    "@tiptap/react": "^3.22.5",
+    "@tiptap/starter-kit": "^3.22.5",
     "bcryptjs": "^3.0.3",
     "better-auth": "^1.6.9",
     "drizzle-orm": "^0.36.0",
