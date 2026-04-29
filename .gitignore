@@ -4,8 +4,12 @@ node_modules/
 .env
 .env.local
 .env.*.local
+**/.env
+**/.env.local
+**/.env.*.local
 *.log
 .next/
 .vercel/
 dist/
 build/
+infra/docker/db_password.txt
