@@ -11,6 +11,7 @@
     "./zod/auth": "./src/zod/auth.ts",
     "./zod/migrate": "./src/zod/migrate.ts",
     "./zod/tasks": "./src/zod/tasks.ts",
+    "./zod/shopping": "./src/zod/shopping.ts",
     "./types": "./src/types/index.ts",
     "./tests/helpers": "./tests/helpers.ts"
   },
