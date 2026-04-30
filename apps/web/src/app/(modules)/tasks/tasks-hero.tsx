@@ -39,16 +39,16 @@ export function TasksHero({ name, stats }: { name: string | null; stats: Stats }
   const firstName = name?.split(' ')[0] ?? '';
 
   return (
-    <header className="space-y-5">
-      <div className="space-y-1">
-        <div className="text-xs font-medium tracking-widest text-[var(--color-fg-tertiary)] uppercase">
+    <header className="space-y-4">
+      <div className="space-y-0.5">
+        <div className="text-[10px] font-medium tracking-widest text-[var(--color-fg-tertiary)] uppercase">
           {today.weekday}, {today.date}
         </div>
-        <h1 className="text-balance text-[40px] leading-[1.05] font-semibold tracking-tight text-[var(--color-fg-primary)] md:text-[56px]">
+        <h1 className="text-balance text-[32px] leading-[1.05] font-semibold tracking-tight text-[var(--color-fg-primary)] md:text-[48px]">
           {greeting()}
           {firstName ? `, ${firstName}` : ''}
         </h1>
-        <p className="pt-1 text-base text-[var(--color-fg-secondary)]">
+        <p className="pt-1 text-sm text-[var(--color-fg-secondary)] md:text-base">
           {stats.total === 0
             ? 'Тут пока пусто. Добавь первую задачу.'
             : stats.done === stats.total
@@ -57,30 +57,30 @@ export function TasksHero({ name, stats }: { name: string | null; stats: Stats }
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
+      <div className="grid grid-cols-4 gap-1.5 md:gap-2.5">
         <Stat
-          icon={<ListTodo size={16} />}
+          icon={<ListTodo size={14} />}
           label="всего"
           value={stats.total}
           tint="var(--color-fg-secondary)"
           softBg="var(--color-bg-subtle)"
         />
         <Stat
-          icon={<CheckCircle2 size={16} />}
+          icon={<CheckCircle2 size={14} />}
           label="сделано"
           value={stats.done}
           tint="var(--color-accent-tasks)"
           softBg="var(--color-accent-tasks-soft)"
         />
         <Stat
-          icon={<Pin size={16} />}
-          label="закреплено"
+          icon={<Pin size={14} />}
+          label="пин"
           value={stats.pinned}
           tint="var(--color-accent-shopping)"
           softBg="var(--color-accent-shopping-soft)"
         />
         <Stat
-          icon={<AlertCircle size={16} />}
+          icon={<AlertCircle size={14} />}
           label="просрочено"
           value={stats.overdue}
           tint={stats.overdue > 0 ? 'var(--color-danger)' : 'var(--color-fg-tertiary)'}
@@ -105,16 +105,16 @@ function Stat({
   softBg: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-3.5 py-3">
+    <div className="flex flex-col gap-1 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-2.5 py-2.5 md:flex-row md:items-center md:gap-3 md:px-3.5 md:py-3">
       <span
-        className="flex size-9 shrink-0 items-center justify-center rounded-xl"
+        className="flex size-7 shrink-0 items-center justify-center rounded-lg md:size-9 md:rounded-xl"
         style={{ background: softBg, color: tint }}
       >
         {icon}
       </span>
       <div className="min-w-0">
-        <div className="text-xl leading-none font-semibold tracking-tight">{value}</div>
-        <div className="mt-0.5 truncate text-[11px] tracking-wider text-[var(--color-fg-tertiary)] uppercase">
+        <div className="text-lg leading-none font-semibold tracking-tight md:text-xl">{value}</div>
+        <div className="mt-0.5 truncate text-[10px] tracking-wider text-[var(--color-fg-tertiary)] uppercase md:text-[11px]">
           {label}
         </div>
       </div>

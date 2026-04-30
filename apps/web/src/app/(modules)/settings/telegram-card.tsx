@@ -2,8 +2,10 @@
 
 import { CheckCircle2, ExternalLink, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type Status = { linked: false } | { linked: true; username: string | null; linkedAt: string };
@@ -11,6 +13,8 @@ type Status = { linked: false } | { linked: true; username: string | null; linke
 export function TelegramCard() {
   const [status, setStatus] = useState<Status | null>(null);
   const [linkInfo, setLinkInfo] = useState<{ deepLink: string } | null>(null);
+  const [confirmUnlink, setConfirmUnlink] = useState(false);
+  const [unlinking, setUnlinking] = useState(false);
 
   const refresh = async () => {
     const r = await fetch('/api/telegram/status');
@@ -53,17 +57,26 @@ export function TelegramCard() {
             </div>
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={async () => {
-            if (!confirm('Отвязать Telegram?')) return;
-            await fetch('/api/telegram/unlink', { method: 'POST' });
-            await refresh();
-          }}
-        >
+        <Button variant="ghost" size="sm" onClick={() => setConfirmUnlink(true)}>
           Отвязать
         </Button>
+        <ConfirmDialog
+          open={confirmUnlink}
+          onClose={() => setConfirmUnlink(false)}
+          title="Отвязать Telegram?"
+          description="Push-уведомления и команды бота перестанут работать. Привязать заново можно в любое время."
+          confirmLabel="Отвязать"
+          variant="danger"
+          loading={unlinking}
+          onConfirm={async () => {
+            setUnlinking(true);
+            await fetch('/api/telegram/unlink', { method: 'POST' });
+            await refresh();
+            setUnlinking(false);
+            setConfirmUnlink(false);
+            toast.success('Telegram отвязан');
+          }}
+        />
       </div>
     );
   }

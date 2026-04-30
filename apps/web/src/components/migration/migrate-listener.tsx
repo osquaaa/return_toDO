@@ -73,7 +73,8 @@ export function MigrateListener() {
           const c = data.counts;
           const summary = `Импортировано: ${c.tasks ?? 0} задач, ${c.shoppingTrips ?? 0} походов, ${c.codeSnippets ?? 0} сниппетов, ${c.workoutSets ?? 0} подходов`;
           console.info(summary);
-          alert(summary);
+          const { toast } = await import('sonner');
+          toast.success('Данные перенесены', { description: summary, duration: 6000 });
         }
       } catch (err) {
         console.warn('migration failed', err);

@@ -5,3 +5,4 @@ export { Card } from './card';
 export { Badge } from './badge';
 export { Avatar } from './avatar';
 export { Skeleton } from './skeleton';
+export { ConfirmDialog, Dialog } from './dialog';

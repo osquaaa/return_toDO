@@ -4,6 +4,7 @@ import { GeistMono } from 'geist/font/mono';
 
 import { SwRegister } from '@/components/pwa/sw-register';
 import { SystemThemeWatcher } from '@/components/pwa/system-theme-watcher';
+import { Toaster } from '@/components/ui/toaster';
 
 import './globals.css';
 
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="antialiased">
         <SwRegister />
         <SystemThemeWatcher />
+        <Toaster />
         {children}
       </body>
     </html>

@@ -50,7 +50,7 @@ export default async function TasksPage({
   }));
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 px-4 py-6 md:px-8 md:py-10">
+    <div className="mx-auto max-w-3xl space-y-5 px-4 py-5 md:px-8 md:py-10">
       <TasksHero name={user.name} stats={stats} />
       <TaskFilters initialFilter={opts.filter} initialQuery={opts.q ?? ''} />
       <TaskList items={serialized} />

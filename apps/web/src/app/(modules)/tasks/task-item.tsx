@@ -2,8 +2,10 @@
 
 import { Check, Clock, Pin, PinOff, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { Checkbox } from '@/components/ui/checkbox';
+import { ConfirmDialog } from '@/components/ui/dialog';
 import { cn } from '@/lib/cn';
 
 import { deleteTaskAction, toggleDoneAction, togglePinAction, updateTaskAction } from './actions';
@@ -75,6 +77,8 @@ export function TaskItem({
   onToggleSelect: () => void;
 }) {
   const [editing, setEditing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   if (editing) {
     return (
@@ -182,15 +186,31 @@ export function TaskItem({
         </button>
         <button
           type="button"
-          onClick={() => {
-            if (confirm('Удалить задачу?')) void deleteTaskAction(task.id);
-          }}
+          onClick={() => setConfirmDelete(true)}
           className="flex size-7 items-center justify-center rounded-lg text-[var(--color-fg-tertiary)] hover:bg-[var(--color-danger-soft)] hover:text-[var(--color-danger)]"
           aria-label="Удалить"
         >
           <Trash2 size={14} />
         </button>
       </div>
+
+      <ConfirmDialog
+        open={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+        title="Удалить задачу?"
+        description="Задача будет помещена в корзину. Восстановить её можно позже."
+        confirmLabel="Удалить"
+        variant="danger"
+        loading={deleting}
+        onConfirm={async () => {
+          setDeleting(true);
+          const r = await deleteTaskAction(task.id);
+          setDeleting(false);
+          setConfirmDelete(false);
+          if (r.ok) toast.success('Задача удалена');
+          else toast.error(r.error);
+        }}
+      />
     </li>
   );
 }
