@@ -20,8 +20,10 @@
     "@tiptap/starter-kit": "^3.22.5",
     "bcryptjs": "^3.0.3",
     "better-auth": "^1.6.9",
+    "clsx": "^2.1.1",
     "drizzle-orm": "^0.36.0",
     "framer-motion": "^12.38.0",
+    "geist": "^1.7.0",
     "highlight.js": "^11.11.1",
     "ioredis": "^5.4.1",
     "isomorphic-dompurify": "^3.10.0",
@@ -31,6 +33,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "resend": "^6.12.2",
+    "tailwind-merge": "^3.5.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
