@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   Code2,
   Dumbbell,
+  Repeat,
   Settings,
   ShoppingBag,
   type LucideIcon,
@@ -28,6 +29,13 @@ export const NAV_ITEMS: NavItem[] = [
     icon: CheckCircle2,
     accent: 'var(--color-accent-tasks)',
     accentSoft: 'var(--color-accent-tasks-soft)',
+  },
+  {
+    href: '/habits',
+    label: 'Привычки',
+    icon: Repeat,
+    accent: 'var(--color-accent-habits)',
+    accentSoft: 'var(--color-accent-habits-soft)',
   },
   {
     href: '/shopping',

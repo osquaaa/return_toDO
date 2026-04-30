@@ -15,6 +15,7 @@
     "./zod/code": "./src/zod/code.ts",
     "./zod/workouts": "./src/zod/workouts.ts",
     "./zod/notifications": "./src/zod/notifications.ts",
+    "./zod/habits": "./src/zod/habits.ts",
     "./types": "./src/types/index.ts",
     "./tests/helpers": "./tests/helpers.ts"
   },
