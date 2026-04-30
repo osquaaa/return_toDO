@@ -15,7 +15,11 @@ export function middleware(req: NextRequest) {
   if (pathname.startsWith('/_next') || pathname.startsWith('/api/health'))
     return NextResponse.next();
 
-  const sessionCookie = req.cookies.get('better-auth.session_token');
+  // Cookie name has `__Secure-` prefix when running over HTTPS (production),
+  // plain `better-auth.session_token` over HTTP (local dev).
+  const sessionCookie =
+    req.cookies.get('__Secure-better-auth.session_token') ??
+    req.cookies.get('better-auth.session_token');
   if (!sessionCookie) {
     const url = req.nextUrl.clone();
     url.pathname = '/sign-in';
