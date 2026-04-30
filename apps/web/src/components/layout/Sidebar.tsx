@@ -4,22 +4,19 @@ import { SidebarNav } from './sidebar-nav';
 
 export function Sidebar() {
   return (
-    <aside className="hidden w-[240px] flex-col border-r border-[var(--color-border)] bg-[var(--color-panel)] p-5 lg:flex">
-      <div className="mb-8 flex items-center gap-2.5">
-        <div className="flex size-8 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] shadow-[var(--shadow-sm)]">
-          <Sparkles size={16} strokeWidth={2.5} className="text-white" />
+    <aside className="hidden w-[240px] shrink-0 flex-col border-r border-[var(--color-border-subtle)] bg-[var(--color-bg-subtle)] p-4 lg:flex">
+      <div className="mb-8 flex items-center gap-2.5 px-2 pt-2">
+        <div className="flex size-9 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] shadow-[var(--shadow-sm)]">
+          <Sparkles size={18} strokeWidth={2.5} className="text-[var(--color-brand-fg)]" />
         </div>
         <div>
-          <div className="text-base font-semibold tracking-tight leading-tight">LETget</div>
-          <div className="text-[10px] uppercase tracking-widest text-[var(--color-ink-faint)]">
+          <div className="text-base leading-tight font-semibold tracking-tight">LETget</div>
+          <div className="text-[10px] tracking-widest text-[var(--color-fg-tertiary)] uppercase">
             Daily ops
           </div>
         </div>
       </div>
       <SidebarNav />
-      <div className="mt-auto rounded-xl bg-[var(--color-canvas)]/60 p-3 text-xs text-[var(--color-ink-faint)]">
-        Лаконично. Понятно. На каждый день.
-      </div>
     </aside>
   );
 }
