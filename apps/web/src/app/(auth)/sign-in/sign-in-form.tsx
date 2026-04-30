@@ -8,8 +8,6 @@ import { useState, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-import { signIn } from './actions';
-
 export function SignInForm() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -51,10 +49,35 @@ export function SignInForm() {
         onSubmit={(e) => {
           e.preventDefault();
           const fd = new FormData(e.currentTarget);
+          const email = String(fd.get('email') ?? '').trim();
+          const password = String(fd.get('password') ?? '');
+          if (!email || !password) {
+            setError('Заполни email и пароль');
+            return;
+          }
+          setError(null);
           startTransition(async () => {
-            const res = await signIn(Object.fromEntries(fd));
-            if (!res.ok) setError(res.error);
-            else router.push('/');
+            try {
+              const res = await fetch('/api/auth/sign-in/email', {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ email, password }),
+              });
+              if (res.ok) {
+                router.push('/');
+                router.refresh();
+                return;
+              }
+              const data = (await res.json().catch(() => null)) as { message?: string } | null;
+              const code = data?.message ?? '';
+              if (code.toLowerCase().includes('verif'))
+                setError('Email не подтверждён. Проверь почту.');
+              else if (res.status === 429) setError('Слишком много попыток. Подожди 15 минут.');
+              else setError(code || 'Неверный email или пароль');
+            } catch {
+              setError('Сеть недоступна. Попробуй ещё раз.');
+            }
           });
         }}
         className="space-y-4"
