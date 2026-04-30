@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { getCurrentUser } from '@/lib/auth/session';
 
 import { SignOutButton } from './sign-out-button';
@@ -15,6 +17,14 @@ export async function Topbar() {
       </div>
       {user && (
         <div className="flex items-center gap-3 text-sm">
+          {user.role === 'admin' && (
+            <Link
+              href="/admin"
+              className="rounded-lg px-2 py-1 text-[--color-ink-soft] hover:bg-[--color-panel] hover:text-[--color-ink]"
+            >
+              Админ
+            </Link>
+          )}
           <span className="text-[--color-ink-soft]">{user.name ?? user.email}</span>
           <SignOutButton />
         </div>
