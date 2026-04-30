@@ -33,9 +33,16 @@ export const viewport: Viewport = {
   themeColor: '#1a1410',
 };
 
+// Static, build-time string — no user input. Runs before paint to set data-theme
+// from localStorage to prevent FOUC when switching between light/dark modes.
+const themeInitScript = `(function(){try{var t=localStorage.getItem('letget:theme')||'system';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={`${manrope.variable} ${jetbrains.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="antialiased">
         <SwRegister />
         {children}

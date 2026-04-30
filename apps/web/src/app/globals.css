@@ -51,8 +51,19 @@
     0 8px 16px rgba(120, 100, 80, 0.12);
 }
 
+[data-theme='dark'] {
+  --color-canvas: #16110d;
+  --color-panel: #1f1812;
+  --color-border: #3a2f24;
+  --color-surface: #1f1812;
+  --color-ink: #f5ecd7;
+  --color-ink-soft: #c9b89a;
+  --color-ink-faint: #8a7458;
+}
+
 @media (prefers-color-scheme: dark) {
-  @theme {
+  :root:not([data-theme]),
+  [data-theme='system'] {
     --color-canvas: #16110d;
     --color-panel: #1f1812;
     --color-border: #3a2f24;
