@@ -11,17 +11,28 @@ function getClient(): Resend | null {
   return resendInstance;
 }
 
+// EMAIL_FROM may be overridden via env once a domain is verified at Resend.
+// Default falls back to Resend's onboarding sandbox address — works without
+// domain verification, but Resend only delivers to the account owner's email.
+function getFromAddress(): string {
+  return process.env.EMAIL_FROM ?? 'LETget <onboarding@resend.dev>';
+}
+
 export async function sendEmail(args: SendArgs): Promise<void> {
   const client = getClient();
   if (!client) {
     console.info('[email:dev-stub]', { to: args.to, subject: args.subject, text: args.text });
     return;
   }
-  await client.emails.send({
-    from: 'LETget <noreply@letget.spassonic.ru>',
+  const result = await client.emails.send({
+    from: getFromAddress(),
     to: args.to,
     subject: args.subject,
     html: args.html,
     text: args.text,
   });
+  if (result.error) {
+    console.error('[email:resend]', { to: args.to, error: result.error });
+    throw new Error(`Resend error: ${result.error.message}`);
+  }
 }
