@@ -78,17 +78,33 @@ export function QuickAddBar({ onExpand, autoFocus = false }: Props) {
     });
   };
 
+  const dateInputRef = useRef<HTMLInputElement | null>(null);
+  const openDatePicker = () => {
+    const el = dateInputRef.current;
+    if (!el) return;
+    if (typeof el.showPicker === 'function') {
+      try {
+        el.showPicker();
+        return;
+      } catch {
+        /* fallback */
+      }
+    }
+    el.focus();
+    el.click();
+  };
+
   return (
     <div className="sticky top-14 z-10 -mx-4 border-b border-[var(--color-border-subtle)] bg-[var(--color-bg-app)]/85 px-4 py-2.5 backdrop-blur-xl md:top-16 md:-mx-8 md:px-8">
-      <div className="flex items-start gap-2 rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] px-3 py-2.5 shadow-[var(--shadow-xs)] transition-shadow focus-within:border-[var(--color-fg-tertiary)] focus-within:shadow-[var(--shadow-sm)]">
+      <div className="flex min-h-12 items-center gap-2 rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] px-3 py-2 shadow-[var(--shadow-xs)] transition-shadow focus-within:border-[var(--color-fg-tertiary)] focus-within:shadow-[var(--shadow-sm)]">
         <button
           type="button"
           onClick={submit}
           disabled={!text.trim() || isPending}
           aria-label="Добавить"
-          className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] text-[var(--color-brand-fg)] transition-opacity disabled:opacity-30"
+          className="flex size-8 shrink-0 items-center justify-center self-center rounded-lg bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] text-[var(--color-brand-fg)] shadow-[var(--shadow-xs)] transition-all hover:shadow-[var(--shadow-sm)] disabled:opacity-30 disabled:shadow-none"
         >
-          <Plus size={14} strokeWidth={2.6} />
+          <Plus size={16} strokeWidth={2.8} />
         </button>
         <textarea
           ref={inputRef}
@@ -115,39 +131,44 @@ export function QuickAddBar({ onExpand, autoFocus = false }: Props) {
               inputRef.current?.blur();
             }
           }}
-          placeholder="Что нужно сделать?  Enter — сохранить · ⇧Enter — новая строка"
-          className="min-w-0 flex-1 resize-none bg-transparent text-sm leading-6 text-[var(--color-fg-primary)] outline-none placeholder:text-[var(--color-fg-tertiary)]"
+          placeholder="Что нужно сделать?"
+          className="my-0.5 min-w-0 flex-1 resize-none self-center bg-transparent text-base leading-7 text-[var(--color-fg-primary)] outline-none placeholder:text-[var(--color-fg-tertiary)] sm:text-sm sm:leading-6"
         />
-        <div className="flex shrink-0 items-center gap-1 self-start pt-0.5">
-          <label
+        <div className="flex shrink-0 items-center gap-1 self-center">
+          <button
+            type="button"
+            onClick={openDatePicker}
+            aria-label={deadline ? `Дедлайн: ${fmtDeadline(deadline)}` : 'Установить дедлайн'}
             className={cn(
-              'relative flex h-7 cursor-pointer items-center gap-1 rounded-lg px-2 text-xs transition-colors',
+              'relative flex h-8 cursor-pointer items-center gap-1.5 rounded-lg px-2 text-xs font-medium transition-colors',
               deadline
                 ? 'bg-[var(--color-accent-tasks-soft)] text-[var(--color-accent-tasks)]'
                 : 'text-[var(--color-fg-tertiary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-primary)]',
             )}
           >
-            <Calendar size={13} strokeWidth={2.4} />
-            <input
-              type="datetime-local"
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
-              aria-label="Дедлайн"
-              className="absolute inset-0 cursor-pointer opacity-0"
-            />
+            <Calendar size={14} strokeWidth={2.4} />
             <span className="hidden whitespace-nowrap sm:inline">
               {deadline ? fmtDeadline(deadline) : 'Дедлайн'}
             </span>
-          </label>
+            <input
+              ref={dateInputRef}
+              type="datetime-local"
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
+              tabIndex={-1}
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-0"
+            />
+          </button>
           <Button
             size="sm"
             variant="ghost"
             onClick={onExpand}
             aria-label="Расширенный редактор"
-            className="!h-7 !px-2"
+            className="!h-8 !px-2"
             title="⌘+Enter"
           >
-            <MoreHorizontal size={14} />
+            <MoreHorizontal size={16} />
           </Button>
         </div>
       </div>

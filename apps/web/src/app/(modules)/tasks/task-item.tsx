@@ -166,19 +166,22 @@ export function TaskItem({ task, selected, onToggleSelect, selectionMode }: Prop
             void toggleDoneAction(task.id);
           }}
           className={cn(
-            'mt-px flex size-5 shrink-0 items-center justify-center rounded-full border-2 transition-all',
+            'group/done mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border-2 transition-all',
             task.isDone
-              ? 'border-[var(--color-accent-tasks)] bg-[var(--color-accent-tasks)]'
-              : 'border-[var(--color-border-strong)] bg-transparent hover:border-[var(--color-accent-tasks)]',
+              ? 'border-[var(--color-accent-tasks)] bg-[var(--color-accent-tasks)] shadow-[var(--shadow-xs)]'
+              : 'border-[var(--color-border-strong)] bg-[var(--color-bg-app)] hover:scale-110 hover:border-[var(--color-accent-tasks)] hover:bg-[var(--color-accent-tasks-soft)]',
           )}
           aria-label={task.isDone ? 'Снять отметку' : 'Отметить выполненным'}
+          title={task.isDone ? 'Снять отметку выполнения' : 'Отметить выполненным'}
         >
           <Check
-            size={12}
+            size={14}
             strokeWidth={3.5}
             className={cn(
-              'text-white transition-all',
-              task.isDone ? 'scale-100 opacity-100' : 'scale-50 opacity-0',
+              'transition-all',
+              task.isDone
+                ? 'scale-100 text-white opacity-100'
+                : 'scale-50 text-[var(--color-accent-tasks)] opacity-0 group-hover/done:scale-100 group-hover/done:opacity-60',
             )}
           />
         </button>
