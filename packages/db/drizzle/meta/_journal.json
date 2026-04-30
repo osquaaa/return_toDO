@@ -8,6 +8,13 @@
       "when": 1777462690542,
       "tag": "0000_lethal_gideon",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1777552536681,
+      "tag": "0001_aberrant_forge",
+      "breakpoints": true
     }
   ]
 }

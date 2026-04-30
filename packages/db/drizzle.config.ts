@@ -13,6 +13,13 @@ export default defineConfig({
     './src/schema/shopping.ts',
     './src/schema/code.ts',
     './src/schema/workouts.ts',
+    './src/schema/habits.ts',
+    './src/schema/finance.ts',
+    './src/schema/calendar.ts',
+    './src/schema/reading.ts',
+    './src/schema/recipes.ts',
+    './src/schema/contacts.ts',
+    './src/schema/time-tracker.ts',
   ],
   out: './drizzle',
   dbCredentials: {

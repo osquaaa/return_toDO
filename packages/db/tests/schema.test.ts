@@ -14,7 +14,7 @@ describe('db schema integration', () => {
     expect(result[0]?.one).toBe(1);
   });
 
-  it('all 16 expected tables exist', async () => {
+  it('all 25 expected tables exist', async () => {
     const rows = await sql<Array<{ tablename: string }>>`
       SELECT tablename FROM pg_tables
       WHERE schemaname = 'public' AND tablename NOT LIKE '%drizzle%'
@@ -24,15 +24,26 @@ describe('db schema integration', () => {
     expect(names).toEqual([
       'accounts',
       'admin_audit_log',
+      'books',
+      'calendar_events',
       'code_snippets',
+      'contacts',
+      'finance_categories',
+      'finance_transactions',
+      'habit_checkins',
+      'habits',
       'login_history',
       'notification_prefs',
       'notifications_queue',
+      'recipe_ingredients',
+      'recipes',
       'sessions',
       'shopping_items',
       'shopping_trips',
       'tasks',
       'telegram_links',
+      'time_activities',
+      'time_sessions',
       'user_preferences',
       'users',
       'verifications',
