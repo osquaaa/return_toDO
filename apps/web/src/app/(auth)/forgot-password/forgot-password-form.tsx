@@ -1,13 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Loader2, Mail, MailCheck } from 'lucide-react';
+import { ArrowRight, MailCheck, Mail } from 'lucide-react';
+import Link from 'next/link';
 import { useState, useTransition } from 'react';
 
-import { requestReset } from './actions';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
-const inputBase =
-  'w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] py-2.5 pl-10 pr-3 text-sm text-[var(--color-ink)] outline-none transition-colors placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-ink-soft)] focus:bg-[var(--color-surface)]';
+import { requestReset } from './actions';
 
 export function ForgotPasswordForm() {
   const [done, setDone] = useState(false);
@@ -16,79 +17,109 @@ export function ForgotPasswordForm() {
   if (done) {
     return (
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col items-center gap-4 py-4 text-center"
+        className="flex flex-col items-center gap-5 py-2 text-center"
       >
+        <div className="mb-10 flex items-center gap-2.5 self-start lg:hidden">
+          <div className="flex size-9 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] shadow-[var(--shadow-sm)]">
+            <Mail size={16} strokeWidth={2.5} className="text-white" />
+          </div>
+          <span className="text-base font-semibold tracking-tight">LETget</span>
+        </div>
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.1, type: 'spring', stiffness: 380, damping: 22 }}
-          className="flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-tasks-from)] to-[var(--color-tasks-to)] shadow-[var(--shadow-md)]"
+          className="flex size-16 items-center justify-center rounded-3xl bg-[var(--color-success-soft)]"
         >
-          <MailCheck size={26} strokeWidth={2.5} className="text-white" />
+          <MailCheck size={30} strokeWidth={2.4} className="text-[var(--color-success)]" />
         </motion.div>
-        <div>
-          <h2 className="text-lg font-semibold tracking-tight">Проверь почту</h2>
-          <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
-            Если такой email есть в системе, мы отправили инструкцию для сброса.
+        <div className="space-y-1.5">
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--color-fg-primary)]">
+            Проверь почту
+          </h2>
+          <p className="text-sm text-[var(--color-fg-secondary)]">
+            Если такой email есть в системе, мы отправили инструкцию для сброса. Ссылка
+            действительна 1 час.
           </p>
         </div>
+        <Link
+          href="/sign-in"
+          className="text-sm font-medium text-[var(--color-fg-primary)] hover:underline"
+        >
+          Назад ко входу
+        </Link>
       </motion.div>
     );
   }
 
   return (
-    <motion.form
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      onSubmit={(e) => {
-        e.preventDefault();
-        const fd = new FormData(e.currentTarget);
-        startTransition(async () => {
-          await requestReset(Object.fromEntries(fd));
-          setDone(true);
-        });
-      }}
-      className="space-y-4"
-    >
-      <div className="text-center">
-        <h2 className="text-xl font-semibold tracking-tight">Сброс пароля</h2>
-        <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
-          Введи email — пришлём ссылку для сброса.
+    <div>
+      <div className="mb-10 flex items-center gap-2.5 lg:hidden">
+        <div className="flex size-9 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] shadow-[var(--shadow-sm)]">
+          <Mail size={16} strokeWidth={2.5} className="text-white" />
+        </div>
+        <span className="text-base font-semibold tracking-tight">LETget</span>
+      </div>
+
+      <div className="mb-8">
+        <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-fg-primary)]">
+          Сброс пароля
+        </h1>
+        <p className="mt-2 text-sm text-[var(--color-fg-secondary)]">
+          Пришлём ссылку на email — открой её, чтобы задать новый пароль.
         </p>
       </div>
 
-      <div>
-        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
-          Email
-        </label>
-        <div className="relative">
-          <Mail
-            size={16}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-ink-faint)]"
-          />
-          <input
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const fd = new FormData(e.currentTarget);
+          startTransition(async () => {
+            await requestReset(Object.fromEntries(fd));
+            setDone(true);
+          });
+        }}
+        className="space-y-4"
+      >
+        <div>
+          <label className="mb-1.5 block text-xs font-medium tracking-wide text-[var(--color-fg-secondary)] uppercase">
+            Email
+          </label>
+          <Input
             type="email"
             name="email"
             required
             autoComplete="email"
             placeholder="you@example.com"
-            className={inputBase}
+            inputSize="lg"
+            iconLeft={<Mail size={16} />}
           />
         </div>
-      </div>
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[var(--color-ink)] to-[var(--color-ink-soft)] text-sm font-semibold text-[var(--color-canvas)] shadow-[var(--shadow-md)] transition-all hover:shadow-[var(--shadow-lg)] active:scale-[0.98] disabled:opacity-60"
-      >
-        {isPending && <Loader2 size={16} className="animate-spin" />}
-        {isPending ? 'Отправляем…' : 'Прислать ссылку'}
-      </button>
-    </motion.form>
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          fullWidth
+          loading={isPending}
+          iconRight={!isPending ? <ArrowRight size={16} /> : undefined}
+        >
+          {isPending ? 'Отправляем…' : 'Прислать ссылку'}
+        </Button>
+      </form>
+
+      <p className="mt-8 text-center text-sm text-[var(--color-fg-secondary)]">
+        Вспомнил пароль?{' '}
+        <Link
+          href="/sign-in"
+          className="font-medium text-[var(--color-fg-primary)] hover:underline"
+        >
+          Войти
+        </Link>
+      </p>
+    </div>
   );
 }

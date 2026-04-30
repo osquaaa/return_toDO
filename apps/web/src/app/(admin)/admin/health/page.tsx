@@ -1,6 +1,8 @@
 import os from 'node:os';
 
 import { sql } from 'drizzle-orm';
+import { Activity, Cpu, Database, HardDrive, Heart, KeyRound, Server } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 import { createDbClient } from '@letget/db/client';
 
@@ -53,53 +55,105 @@ export default async function HealthPage() {
   const freeMemMB = Math.round(os.freemem() / 1024 / 1024);
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Здоровье системы</h1>
+    <div className="mx-auto max-w-5xl space-y-6">
+      <header className="space-y-1">
+        <div className="flex items-center gap-2 text-[10px] font-medium tracking-widest text-[var(--color-fg-tertiary)] uppercase">
+          <Heart size={12} strokeWidth={2.4} />
+          Админ
+        </div>
+        <h1 className="text-balance text-[32px] leading-[1.05] font-semibold tracking-tight text-[var(--color-fg-primary)] md:text-[44px]">
+          Здоровье
+        </h1>
+        <p className="pt-1 text-sm text-[var(--color-fg-secondary)] md:text-base">
+          Состояние сервисов и памяти.
+        </p>
+      </header>
 
-      <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Card title="Postgres">
-          <Stat label="Статус" value={dbPing.ok ? '✓ OK' : '✗ FAIL'} />
+      <section className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <Card icon={<Database size={16} />} title="Postgres" ok={dbPing.ok}>
           <Stat label="Latency" value={`${dbPing.ms} ms`} />
           <Stat label="Размер БД" value={fmtBytes(dbSizeRows[0]?.bytes ?? 0)} />
-          {dbPing.error && <p className="text-xs text-red-700">{dbPing.error}</p>}
+          {dbPing.error && (
+            <p className="mt-2 truncate font-mono text-[10px] text-[var(--color-danger)]">
+              {dbPing.error}
+            </p>
+          )}
         </Card>
-        <Card title="Redis">
-          <Stat label="Статус" value={redisPing.ok ? '✓ OK' : '✗ FAIL'} />
-          <Stat label="Latency" value={`${redisPing.ms} ms`} />
-          {redisPing.error && <p className="text-xs text-red-700">{redisPing.error}</p>}
-        </Card>
-      </section>
 
-      <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Card title="Web процесс">
+        <Card icon={<HardDrive size={16} />} title="Redis" ok={redisPing.ok}>
+          <Stat label="Latency" value={`${redisPing.ms} ms`} />
+          {redisPing.error && (
+            <p className="mt-2 truncate font-mono text-[10px] text-[var(--color-danger)]">
+              {redisPing.error}
+            </p>
+          )}
+        </Card>
+
+        <Card icon={<KeyRound size={16} />} title="Сессии" ok>
+          <Stat label="Active" value={(sessionsRows[0]?.count ?? 0).toString()} />
+        </Card>
+
+        <Card icon={<Cpu size={16} />} title="Web процесс" ok>
           <Stat label="Uptime" value={fmtDuration(uptimeSec)} />
           <Stat label="RSS" value={`${(mem.rss / 1024 / 1024).toFixed(1)} MB`} />
           <Stat label="Heap used" value={`${(mem.heapUsed / 1024 / 1024).toFixed(1)} MB`} />
         </Card>
-        <Card title="Сервер">
+
+        <Card icon={<Server size={16} />} title="Сервер" ok>
           <Stat label="Total RAM" value={`${totalMemMB} MB`} />
           <Stat label="Free RAM" value={`${freeMemMB} MB`} />
-          <Stat label="Active sessions" value={(sessionsRows[0]?.count ?? 0).toString()} />
+        </Card>
+
+        <Card icon={<Activity size={16} />} title="Метрики" ok>
+          <Stat label="Heap total" value={`${(mem.heapTotal / 1024 / 1024).toFixed(1)} MB`} />
+          <Stat label="External" value={`${(mem.external / 1024 / 1024).toFixed(1)} MB`} />
         </Card>
       </section>
     </div>
   );
 }
 
-function Card({ title, children }: { title: string; children: React.ReactNode }) {
+function Card({
+  icon,
+  title,
+  ok,
+  children,
+}: {
+  icon: ReactNode;
+  title: string;
+  ok: boolean;
+  children: ReactNode;
+}) {
   return (
-    <div className="rounded-2xl bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
-      <h2 className="mb-3 font-medium">{title}</h2>
-      <div className="space-y-1 text-sm">{children}</div>
+    <div className="rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] p-5">
+      <header className="mb-4 flex items-center gap-3">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-bg-subtle)] text-[var(--color-fg-secondary)]">
+          {icon}
+        </span>
+        <h2 className="flex-1 text-base font-semibold tracking-tight text-[var(--color-fg-primary)]">
+          {title}
+        </h2>
+        <span
+          className="size-2 rounded-full"
+          style={{
+            background: ok ? 'var(--color-success)' : 'var(--color-danger)',
+            boxShadow: ok
+              ? '0 0 0 4px var(--color-success-soft)'
+              : '0 0 0 4px var(--color-danger-soft)',
+          }}
+          aria-label={ok ? 'OK' : 'FAIL'}
+        />
+      </header>
+      <div className="space-y-1.5">{children}</div>
     </div>
   );
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between">
-      <span className="text-[var(--color-ink-soft)]">{label}</span>
-      <span className="font-mono">{value}</span>
+    <div className="flex items-center justify-between text-sm">
+      <span className="text-[var(--color-fg-secondary)]">{label}</span>
+      <span className="font-mono text-xs text-[var(--color-fg-primary)]">{value}</span>
     </div>
   );
 }

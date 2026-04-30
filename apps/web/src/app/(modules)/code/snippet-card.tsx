@@ -1,6 +1,13 @@
 'use client';
 
+import { ChevronDown, ChevronUp, Copy, Pencil, Pin, PinOff, Trash2 } from 'lucide-react';
 import { useState, useTransition } from 'react';
+import { toast } from 'sonner';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/dialog';
+import { cn } from '@/lib/cn';
 
 import { CodeBlock } from './code-block';
 import { deleteSnippetAction, togglePinAction, updateSnippetAction } from './actions';
@@ -25,6 +32,8 @@ export function SnippetCard({ snippet }: { snippet: SnippetRow }) {
   const [editTitle, setEditTitle] = useState(snippet.title ?? '');
   const [editCode, setEditCode] = useState(snippet.code);
   const [editLang, setEditLang] = useState(snippet.language ?? 'auto');
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [, startTransition] = useTransition();
 
   const lineCount = snippet.code.split('\n').length;
@@ -33,8 +42,8 @@ export function SnippetCard({ snippet }: { snippet: SnippetRow }) {
   const copy = () => {
     void navigator.clipboard
       .writeText(snippet.code)
-      .then(() => alert('Скопировано'))
-      .catch(() => alert('Не удалось скопировать'));
+      .then(() => toast.success('Скопировано'))
+      .catch(() => toast.error('Не удалось скопировать'));
   };
 
   const submitEdit = () => {
@@ -47,13 +56,13 @@ export function SnippetCard({ snippet }: { snippet: SnippetRow }) {
         language: editLang === 'auto' ? null : editLang,
       });
       if (r.ok) setEditing(false);
-      else alert(r.error);
+      else toast.error(r.error);
     });
   };
 
   if (editing) {
     return (
-      <li className="space-y-2 rounded-2xl bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
+      <li className="space-y-2 rounded-3xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] p-4 shadow-[var(--shadow-sm)]">
         <div className="flex flex-wrap gap-2 sm:flex-nowrap">
           <input
             type="text"
@@ -61,12 +70,12 @@ export function SnippetCard({ snippet }: { snippet: SnippetRow }) {
             onChange={(e) => setEditTitle(e.target.value)}
             placeholder="Название (опц.)"
             maxLength={200}
-            className="min-w-0 flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-2 text-sm focus:border-[var(--color-code-to)] focus:outline-none"
+            className="min-w-0 flex-1 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] px-3 py-2 text-sm text-[var(--color-fg-primary)] outline-none placeholder:text-[var(--color-fg-tertiary)] focus:border-[var(--color-accent-code)]"
           />
           <select
             value={editLang}
             onChange={(e) => setEditLang(e.target.value)}
-            className="rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-2 text-sm focus:border-[var(--color-code-to)] focus:outline-none"
+            className="rounded-xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] px-3 py-2 text-sm text-[var(--color-fg-primary)] outline-none focus:border-[var(--color-accent-code)]"
           >
             {LANGUAGES.map((l) => (
               <option key={l.value} value={l.value}>
@@ -79,33 +88,25 @@ export function SnippetCard({ snippet }: { snippet: SnippetRow }) {
           value={editCode}
           onChange={(e) => setEditCode(e.target.value)}
           rows={Math.min(20, Math.max(8, lineCount))}
-          className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-2 font-mono text-xs leading-relaxed focus:border-[var(--color-code-to)] focus:outline-none"
+          className="w-full rounded-xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] px-3 py-2 font-mono text-xs leading-relaxed text-[var(--color-fg-primary)] outline-none focus:border-[var(--color-accent-code)]"
           spellCheck={false}
         />
-        <div className="flex justify-end gap-2">
-          <button
-            type="button"
+        <div className="flex justify-end gap-2 pt-1">
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => {
               setEditTitle(snippet.title ?? '');
               setEditCode(snippet.code);
               setEditLang(snippet.language ?? 'auto');
               setEditing(false);
             }}
-            className="rounded-xl px-4 py-2 text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
           >
             Отмена
-          </button>
-          <button
-            type="button"
-            onClick={submitEdit}
-            disabled={!editCode.trim()}
-            className="rounded-xl px-4 py-2 text-sm font-medium text-white shadow-[var(--shadow-sm)] transition hover:opacity-90 disabled:opacity-50"
-            style={{
-              background: 'linear-gradient(135deg, var(--color-code-from), var(--color-code-to))',
-            }}
-          >
+          </Button>
+          <Button variant="primary" size="md" onClick={submitEdit} disabled={!editCode.trim()}>
             Сохранить
-          </button>
+          </Button>
         </div>
       </li>
     );
@@ -113,74 +114,114 @@ export function SnippetCard({ snippet }: { snippet: SnippetRow }) {
 
   return (
     <li
-      className={`group rounded-2xl bg-[var(--color-surface)] p-3 shadow-[var(--shadow-sm)] ${
-        snippet.isPinned ? 'border-l-4 border-[var(--color-code-from)]' : ''
-      }`}
+      className={cn(
+        'group rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] p-3.5 transition-colors hover:border-[var(--color-border-default)]',
+        snippet.isPinned && 'border-l-[3px] border-l-[var(--color-accent-code)]',
+      )}
     >
       <div className="flex items-center gap-2">
-        <h3 className="flex-1 truncate text-sm font-medium">
-          {snippet.title || <span className="text-[var(--color-ink-soft)]">Без названия</span>}
+        <h3 className="min-w-0 flex-1 truncate text-sm font-semibold tracking-tight text-[var(--color-fg-primary)]">
+          {snippet.title || (
+            <span className="font-normal text-[var(--color-fg-tertiary)]">Без названия</span>
+          )}
         </h3>
+        {snippet.isPinned && (
+          <Pin size={12} strokeWidth={2.6} className="shrink-0 text-[var(--color-accent-code)]" />
+        )}
         {snippet.language && (
-          <span
-            className="rounded-md px-2 py-0.5 text-xs font-medium text-white"
-            style={{
-              background: 'linear-gradient(135deg, var(--color-code-from), var(--color-code-to))',
-            }}
-          >
+          <Badge variant="code" size="sm">
             {snippet.language}
-          </span>
+          </Badge>
         )}
       </div>
 
       <div
         onClick={() => hasOverflow && setExpanded((v) => !v)}
-        className={hasOverflow ? 'mt-2 cursor-pointer' : 'mt-2'}
+        className={cn('mt-2.5', hasOverflow && 'cursor-pointer')}
       >
         <CodeBlock
           code={snippet.code}
           language={snippet.language}
           preview={expanded ? undefined : 5}
         />
-        {hasOverflow && !expanded && (
-          <div className="mt-1 text-center text-xs text-[var(--color-ink-soft)]">
-            Показать ещё {lineCount - 5}
+        {hasOverflow && (
+          <div className="mt-1 flex items-center justify-center gap-1 text-xs text-[var(--color-fg-tertiary)]">
+            {expanded ? (
+              <>
+                <ChevronUp size={12} />
+                Свернуть
+              </>
+            ) : (
+              <>
+                <ChevronDown size={12} />
+                Показать ещё {lineCount - 5}
+              </>
+            )}
           </div>
         )}
       </div>
 
-      <div className="mt-2 flex items-center gap-1 text-xs">
+      <div className="mt-3 flex items-center gap-0.5 opacity-0 transition-opacity group-hover:opacity-100">
         <button
           type="button"
           onClick={copy}
-          className="rounded-md px-2 py-1 text-[var(--color-ink-soft)] hover:bg-[var(--color-panel)] hover:text-[var(--color-ink)]"
+          className="flex h-7 items-center gap-1 rounded-lg px-2 text-xs text-[var(--color-fg-tertiary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-primary)]"
         >
+          <Copy size={12} />
           Копировать
         </button>
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="rounded-md px-2 py-1 text-[var(--color-ink-soft)] hover:bg-[var(--color-panel)] hover:text-[var(--color-ink)]"
+          className="flex h-7 items-center gap-1 rounded-lg px-2 text-xs text-[var(--color-fg-tertiary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-primary)]"
         >
+          <Pencil size={12} />
           Редактировать
         </button>
         <button
           type="button"
           onClick={() => void togglePinAction(snippet.id)}
-          className="rounded-md px-2 py-1 text-[var(--color-ink-soft)] hover:bg-[var(--color-panel)] hover:text-[var(--color-ink)]"
+          className="flex h-7 items-center gap-1 rounded-lg px-2 text-xs text-[var(--color-fg-tertiary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-primary)]"
         >
-          {snippet.isPinned ? 'Открепить' : 'Закрепить'}
+          {snippet.isPinned ? (
+            <>
+              <PinOff size={12} />
+              Открепить
+            </>
+          ) : (
+            <>
+              <Pin size={12} />
+              Закрепить
+            </>
+          )}
         </button>
         <button
           type="button"
-          onClick={() => {
-            if (confirm('Удалить сниппет?')) void deleteSnippetAction(snippet.id);
-          }}
-          className="ml-auto rounded-md px-2 py-1 text-[var(--color-ink-soft)] hover:bg-red-50 hover:text-red-600"
+          onClick={() => setConfirmDelete(true)}
+          className="ml-auto flex size-7 items-center justify-center rounded-lg text-[var(--color-fg-tertiary)] hover:bg-[var(--color-danger-soft)] hover:text-[var(--color-danger)]"
+          aria-label="Удалить"
         >
-          Удалить
+          <Trash2 size={12} />
         </button>
       </div>
+
+      <ConfirmDialog
+        open={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+        title="Удалить сниппет?"
+        description="Сниппет будет удалён без возможности восстановления."
+        confirmLabel="Удалить"
+        variant="danger"
+        loading={deleting}
+        onConfirm={async () => {
+          setDeleting(true);
+          const r = await deleteSnippetAction(snippet.id);
+          setDeleting(false);
+          setConfirmDelete(false);
+          if (r.ok) toast.success('Сниппет удалён');
+          else toast.error(r.error);
+        }}
+      />
     </li>
   );
 }

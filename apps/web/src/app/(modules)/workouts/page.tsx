@@ -1,3 +1,5 @@
+import { Dumbbell } from 'lucide-react';
+
 import { requireUser } from '@/lib/auth/session';
 import { listExercises, listSetsForRange, listSetsForToday, summary } from '@/lib/workouts/queries';
 
@@ -22,25 +24,26 @@ export default async function WorkoutsPage() {
     listSetsForRange(user.id, fourteenDaysAgo, now),
   ]);
 
+  const todayReps = todaySets.reduce((acc, s) => acc + s.reps, 0);
+  const todaySetsCount = todaySets.length;
+
   return (
-    <div className="mx-auto max-w-3xl space-y-6 p-6">
-      <header className="flex items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Тренировки</h1>
-          <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
-            {exercises.length === 0
-              ? 'Добавьте первое упражнение'
-              : `${exercises.length} ${pluralExercises(exercises.length)}`}
-          </p>
+    <div className="mx-auto max-w-3xl space-y-5 px-4 py-5 md:px-8 md:py-10">
+      <header className="space-y-1">
+        <div className="flex items-center gap-2 text-[10px] font-medium tracking-widest text-[var(--color-fg-tertiary)] uppercase">
+          <Dumbbell size={12} strokeWidth={2.4} />
+          Тренировки
         </div>
-        <span
-          className="hidden h-10 w-10 rounded-full sm:block"
-          style={{
-            background:
-              'linear-gradient(135deg, var(--color-workout-from), var(--color-workout-to))',
-          }}
-          aria-hidden
-        />
+        <h1 className="text-balance text-[32px] leading-[1.05] font-semibold tracking-tight text-[var(--color-fg-primary)] md:text-[44px]">
+          Сегодня
+        </h1>
+        <p className="pt-1 text-sm text-[var(--color-fg-secondary)] md:text-base">
+          {exercises.length === 0
+            ? 'Добавь первое упражнение и сделай первый подход.'
+            : todaySetsCount === 0
+              ? 'Подходов сегодня ещё нет. Время начать.'
+              : `${todaySetsCount} ${pluralSets(todaySetsCount)} · ${todayReps} ${pluralReps(todayReps)}.`}
+        </p>
       </header>
 
       <WorkoutsRoot
@@ -66,10 +69,18 @@ export default async function WorkoutsPage() {
   );
 }
 
-function pluralExercises(n: number): string {
+function pluralSets(n: number): string {
   const mod10 = n % 10;
   const mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return 'упражнение';
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'упражнения';
-  return 'упражнений';
+  if (mod10 === 1 && mod100 !== 11) return 'подход';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'подхода';
+  return 'подходов';
+}
+
+function pluralReps(n: number): string {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'повторение';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'повторения';
+  return 'повторений';
 }

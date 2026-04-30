@@ -45,7 +45,7 @@ export function CodeBlock({
   }, [display, language]);
 
   return (
-    <pre className="overflow-x-auto rounded-xl bg-[var(--color-canvas)] p-3 text-xs leading-relaxed">
+    <pre className="overflow-x-auto rounded-xl bg-[var(--color-bg-subtle)] p-3 text-xs leading-relaxed">
       <code
         className={`hljs ${language ? `language-${language}` : ''}`}
         dangerouslySetInnerHTML={{ __html: highlighted }}

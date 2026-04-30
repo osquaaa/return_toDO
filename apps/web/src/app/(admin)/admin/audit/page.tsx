@@ -1,5 +1,8 @@
+import { Activity, ArrowLeft, ArrowRight, Search } from 'lucide-react';
 import Link from 'next/link';
 
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { requireAdminContext } from '@/lib/admin/guard';
 import { listAuditActions, listAuditLog } from '@/lib/admin/audit-log';
 
@@ -32,26 +35,38 @@ export default async function AdminAuditPage({
   };
 
   return (
-    <div className="space-y-4">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">Audit log</h1>
-        <p className="text-sm text-[var(--color-ink-soft)]">
+    <div className="mx-auto max-w-5xl space-y-6">
+      <header className="space-y-1">
+        <div className="flex items-center gap-2 text-[10px] font-medium tracking-widest text-[var(--color-fg-tertiary)] uppercase">
+          <Activity size={12} strokeWidth={2.4} />
+          Админ
+        </div>
+        <h1 className="text-balance text-[32px] leading-[1.05] font-semibold tracking-tight text-[var(--color-fg-primary)] md:text-[44px]">
+          Audit log
+        </h1>
+        <p className="pt-1 text-sm text-[var(--color-fg-secondary)] md:text-base">
           Действия администраторов. Только чтение.
         </p>
       </header>
 
-      <form className="flex flex-wrap items-center gap-3" method="get">
-        <input
-          type="search"
-          name="search"
-          defaultValue={search}
-          placeholder="Email админа…"
-          className="min-w-[240px] flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-from)]"
-        />
+      <form className="flex flex-wrap items-center gap-2" method="get">
+        <div className="relative h-10 min-w-[240px] flex-1">
+          <Search
+            size={14}
+            className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[var(--color-fg-tertiary)]"
+          />
+          <input
+            type="search"
+            name="search"
+            defaultValue={search}
+            placeholder="Email админа…"
+            className="h-full w-full rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] pr-3.5 pl-9 text-sm text-[var(--color-fg-primary)] outline-none transition-colors placeholder:text-[var(--color-fg-tertiary)] focus:border-[var(--color-fg-tertiary)]"
+          />
+        </div>
         <select
           name="action"
           defaultValue={action}
-          className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm"
+          className="h-10 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-3 text-sm text-[var(--color-fg-primary)] outline-none focus:border-[var(--color-fg-tertiary)]"
         >
           <option value="">Все действия</option>
           {actions.map((a) => (
@@ -60,72 +75,54 @@ export default async function AdminAuditPage({
             </option>
           ))}
         </select>
-        <button
-          type="submit"
-          className="rounded-xl bg-[var(--color-brand-from)] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
-        >
+        <Button type="submit" variant="primary" size="md">
           Фильтр
-        </button>
+        </Button>
       </form>
 
-      <div className="overflow-x-auto rounded-2xl bg-[var(--color-surface)] shadow-[var(--shadow-sm)]">
-        <table className="min-w-full text-sm">
-          <thead className="bg-[var(--color-panel)] text-left text-xs uppercase text-[var(--color-ink-soft)]">
-            <tr>
-              <th className="px-3 py-2">Когда</th>
-              <th className="px-3 py-2">Админ</th>
-              <th className="px-3 py-2">Действие</th>
-              <th className="px-3 py-2">Цель</th>
-              <th className="px-3 py-2">Метаданные</th>
-              <th className="px-3 py-2">IP</th>
-            </tr>
-          </thead>
-          <tbody>
-            {result.rows.map((r) => (
-              <tr key={r.id} className="border-t border-[var(--color-border)] align-top">
-                <td className="px-3 py-2 font-mono text-xs">
-                  {new Date(r.createdAt).toLocaleString('ru-RU')}
-                </td>
-                <td className="px-3 py-2 font-mono text-xs">{r.adminEmail}</td>
-                <td className="px-3 py-2">
-                  <span className="rounded bg-[var(--color-canvas)] px-1.5 py-0.5 text-xs">
-                    {r.action}
-                  </span>
-                </td>
-                <td className="px-3 py-2 text-xs">
-                  {r.targetType ? (
-                    <div>
-                      <span className="text-[var(--color-ink-soft)]">{r.targetType}:</span>{' '}
-                      <span className="font-mono">{r.targetId ?? '—'}</span>
-                    </div>
-                  ) : (
-                    '—'
-                  )}
-                </td>
-                <td className="max-w-[300px] px-3 py-2 font-mono text-xs">
-                  {r.metadata ? (
-                    <pre className="whitespace-pre-wrap break-words text-[10px] leading-tight text-[var(--color-ink-soft)]">
-                      {JSON.stringify(r.metadata, null, 2)}
-                    </pre>
-                  ) : (
-                    ''
-                  )}
-                </td>
-                <td className="px-3 py-2 font-mono text-xs">{r.ipAddress ?? ''}</td>
-              </tr>
-            ))}
-            {result.rows.length === 0 && (
-              <tr>
-                <td colSpan={6} className="px-3 py-8 text-center text-[var(--color-ink-soft)]">
-                  Пусто.
-                </td>
-              </tr>
+      <ul className="space-y-2">
+        {result.rows.map((r) => (
+          <li
+            key={r.id}
+            className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] p-4 transition-colors hover:border-[var(--color-border-default)]"
+          >
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-mono text-xs text-[var(--color-fg-tertiary)]">
+                {new Date(r.createdAt).toLocaleString('ru-RU')}
+              </span>
+              <Badge variant="neutral" size="sm">
+                {r.action}
+              </Badge>
+              <span className="font-mono text-xs text-[var(--color-fg-primary)]">
+                {r.adminEmail}
+              </span>
+              {r.ipAddress && (
+                <span className="ml-auto font-mono text-xs text-[var(--color-fg-tertiary)]">
+                  {r.ipAddress}
+                </span>
+              )}
+            </div>
+            {r.targetType && (
+              <div className="mt-2 text-xs text-[var(--color-fg-secondary)]">
+                <span className="text-[var(--color-fg-tertiary)]">{r.targetType}:</span>{' '}
+                <span className="font-mono">{r.targetId ?? '—'}</span>
+              </div>
             )}
-          </tbody>
-        </table>
-      </div>
+            {r.metadata && (
+              <pre className="mt-2 overflow-x-auto rounded-xl bg-[var(--color-bg-subtle)] p-2.5 font-mono text-[10px] leading-tight text-[var(--color-fg-secondary)]">
+                {JSON.stringify(r.metadata, null, 2)}
+              </pre>
+            )}
+          </li>
+        ))}
+        {result.rows.length === 0 && (
+          <li className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-4 py-12 text-center text-sm text-[var(--color-fg-secondary)]">
+            Пусто.
+          </li>
+        )}
+      </ul>
 
-      <div className="flex items-center justify-between text-sm text-[var(--color-ink-soft)]">
+      <div className="flex items-center justify-between text-sm text-[var(--color-fg-secondary)]">
         <div>
           Страница {result.page} / {totalPages} · всего {result.total}
         </div>
@@ -133,17 +130,19 @@ export default async function AdminAuditPage({
           {result.page > 1 && (
             <Link
               href={buildHref(result.page - 1)}
-              className="rounded-lg border border-[var(--color-border)] px-3 py-1 hover:bg-[var(--color-canvas)]"
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-3 text-sm font-medium text-[var(--color-fg-secondary)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-primary)]"
             >
-              ← Назад
+              <ArrowLeft size={14} />
+              Назад
             </Link>
           )}
           {result.page < totalPages && (
             <Link
               href={buildHref(result.page + 1)}
-              className="rounded-lg border border-[var(--color-border)] px-3 py-1 hover:bg-[var(--color-canvas)]"
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-3 text-sm font-medium text-[var(--color-fg-secondary)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-primary)]"
             >
-              Вперёд →
+              Вперёд
+              <ArrowRight size={14} />
             </Link>
           )}
         </div>

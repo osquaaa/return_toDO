@@ -1,104 +1,175 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { AlertCircle, Loader2, Lock } from 'lucide-react';
+import { AlertCircle, ArrowRight, Check, Lock } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useMemo, useState, useTransition } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/cn';
 
 import { performReset } from './actions';
 
-const inputBase =
-  'w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] py-2.5 pl-10 pr-3 text-sm text-[var(--color-ink)] outline-none transition-colors placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-ink-soft)] focus:bg-[var(--color-surface)]';
+type Check = { label: string; ok: boolean };
+
+function checkPassword(pwd: string, confirm: string): Check[] {
+  return [
+    { label: '8+ символов', ok: pwd.length >= 8 },
+    { label: 'строчная буква', ok: /[a-z]/.test(pwd) },
+    { label: 'заглавная буква', ok: /[A-Z]/.test(pwd) },
+    { label: 'цифра', ok: /[0-9]/.test(pwd) },
+    { label: 'пароли совпадают', ok: pwd.length > 0 && pwd === confirm },
+  ];
+}
 
 export function ResetPasswordForm() {
   const router = useRouter();
   const params = useSearchParams();
   const token = params.get('token') ?? '';
   const [error, setError] = useState<string | null>(null);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [touched, setTouched] = useState(false);
   const [isPending, startTransition] = useTransition();
 
+  const checks = useMemo(
+    () => checkPassword(password, confirmPassword),
+    [password, confirmPassword],
+  );
+  const allChecksPass = checks.every((c) => c.ok);
+  const canSubmit = !!token && allChecksPass && !isPending;
+
   return (
-    <motion.form
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      onSubmit={(e) => {
-        e.preventDefault();
-        const fd = new FormData(e.currentTarget);
-        startTransition(async () => {
-          const res = await performReset({ ...Object.fromEntries(fd), token });
-          if (!res.ok) setError(res.error);
-          else router.push('/sign-in?reset=1');
-        });
-      }}
-      className="space-y-4"
-    >
-      <div className="text-center">
-        <h2 className="text-xl font-semibold tracking-tight">Новый пароль</h2>
-        <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
-          Придумай надёжный — минимум 8 символов.
+    <div>
+      <div className="mb-10 flex items-center gap-2.5 lg:hidden">
+        <div className="flex size-9 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] shadow-[var(--shadow-sm)]">
+          <Lock size={16} strokeWidth={2.5} className="text-white" />
+        </div>
+        <span className="text-base font-semibold tracking-tight">LETget</span>
+      </div>
+
+      <div className="mb-8">
+        <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-fg-primary)]">
+          Новый пароль
+        </h1>
+        <p className="mt-2 text-sm text-[var(--color-fg-secondary)]">
+          Придумай надёжный — потом не вспоминай.
         </p>
       </div>
 
-      <div>
-        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
-          Новый пароль
-        </label>
-        <div className="relative">
-          <Lock
-            size={16}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-ink-faint)]"
-          />
-          <input
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setTouched(true);
+          if (!canSubmit) return;
+          startTransition(async () => {
+            const res = await performReset({ password, confirmPassword, token });
+            if (!res.ok) setError(res.error);
+            else router.push('/sign-in?reset=1');
+          });
+        }}
+        className="space-y-4"
+      >
+        <div>
+          <label className="mb-1.5 block text-xs font-medium tracking-wide text-[var(--color-fg-secondary)] uppercase">
+            Новый пароль
+          </label>
+          <Input
             type="password"
             name="password"
             required
             minLength={8}
+            autoComplete="new-password"
             placeholder="••••••••"
-            className={inputBase}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onFocus={() => setTouched(true)}
+            inputSize="lg"
+            iconLeft={<Lock size={16} />}
           />
         </div>
-      </div>
 
-      <div>
-        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
-          Повторите
-        </label>
-        <div className="relative">
-          <Lock
-            size={16}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-ink-faint)]"
-          />
-          <input
+        <div>
+          <label className="mb-1.5 block text-xs font-medium tracking-wide text-[var(--color-fg-secondary)] uppercase">
+            Повторите
+          </label>
+          <Input
             type="password"
             name="confirmPassword"
             required
             minLength={8}
+            autoComplete="new-password"
             placeholder="••••••••"
-            className={inputBase}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            inputSize="lg"
+            iconLeft={<Lock size={16} />}
           />
         </div>
-      </div>
 
-      {error && (
-        <motion.div
-          initial={{ opacity: 0, y: -4 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+        {touched && !allChecksPass && (
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+            {checks.map((c) => (
+              <li
+                key={c.label}
+                className={cn(
+                  'flex items-center gap-1.5',
+                  c.ok ? 'text-[var(--color-success)]' : 'text-[var(--color-fg-tertiary)]',
+                )}
+              >
+                <span
+                  className={cn(
+                    'flex size-3.5 items-center justify-center rounded-full transition-colors',
+                    c.ok
+                      ? 'bg-[var(--color-success)] text-white'
+                      : 'border border-[var(--color-border-strong)]',
+                  )}
+                >
+                  {c.ok && <Check size={9} strokeWidth={3.5} />}
+                </span>
+                {c.label}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {error && (
+          <div className="flex items-start gap-2 rounded-[var(--radius-md)] border border-[var(--color-danger)]/20 bg-[var(--color-danger-soft)] px-3 py-2.5 text-sm text-[var(--color-danger)]">
+            <AlertCircle size={16} className="mt-0.5 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {!token && (
+          <div className="flex items-start gap-2 rounded-[var(--radius-md)] border border-[var(--color-warning)]/20 bg-[var(--color-warning-soft)] px-3 py-2.5 text-sm text-[var(--color-warning)]">
+            <AlertCircle size={16} className="mt-0.5 shrink-0" />
+            <span>Токен не найден — открой ссылку из письма.</span>
+          </div>
+        )}
+
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          fullWidth
+          loading={isPending}
+          disabled={!canSubmit}
+          iconRight={!isPending ? <ArrowRight size={16} /> : undefined}
         >
-          <AlertCircle size={16} className="mt-0.5 shrink-0" />
-          <span>{error}</span>
-        </motion.div>
-      )}
+          {isPending ? 'Сохраняем…' : 'Сохранить'}
+        </Button>
+      </form>
 
-      <button
-        type="submit"
-        disabled={isPending || !token}
-        className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[var(--color-ink)] to-[var(--color-ink-soft)] text-sm font-semibold text-[var(--color-canvas)] shadow-[var(--shadow-md)] transition-all hover:shadow-[var(--shadow-lg)] active:scale-[0.98] disabled:opacity-60"
-      >
-        {isPending && <Loader2 size={16} className="animate-spin" />}
-        {isPending ? 'Сохраняем…' : 'Сохранить'}
-      </button>
-    </motion.form>
+      <p className="mt-8 text-center text-sm text-[var(--color-fg-secondary)]">
+        Вернуться ко{' '}
+        <Link
+          href="/sign-in"
+          className="font-medium text-[var(--color-fg-primary)] hover:underline"
+        >
+          входу
+        </Link>
+      </p>
+    </div>
   );
 }

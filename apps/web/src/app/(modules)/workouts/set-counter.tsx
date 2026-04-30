@@ -1,6 +1,9 @@
 'use client';
 
+import { Minus, Plus } from 'lucide-react';
 import { useState, useTransition } from 'react';
+
+import { Button } from '@/components/ui/button';
 
 import { addSetAction } from './actions';
 
@@ -41,18 +44,19 @@ export function SetCounter({ exerciseId }: { exerciseId: string }) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex items-center gap-5">
+    <div className="flex flex-col items-center gap-5">
+      <div className="flex items-center gap-6">
         <button
           type="button"
           onClick={dec}
           disabled={value <= 0}
           aria-label="Уменьшить"
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-panel)] text-2xl font-semibold text-[var(--color-ink)] transition hover:bg-[var(--color-canvas)] disabled:opacity-40"
+          className="flex size-14 items-center justify-center rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-subtle)] text-[var(--color-fg-primary)] transition-all hover:border-[var(--color-border-default)] hover:bg-[var(--color-bg-hover)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
         >
-          −
+          <Minus size={22} strokeWidth={2.6} />
         </button>
-        <div className="min-w-[6rem] text-center">
+
+        <div className="min-w-[7rem] text-center">
           <input
             type="number"
             min={0}
@@ -62,35 +66,36 @@ export function SetCounter({ exerciseId }: { exerciseId: string }) {
               const n = Number(e.target.value);
               if (Number.isFinite(n)) setValue(Math.max(0, Math.min(MAX_REPS, Math.floor(n))));
             }}
-            className="w-full bg-transparent text-center text-5xl font-extrabold tabular-nums focus:outline-none"
+            className="w-full bg-transparent text-center text-6xl leading-none font-semibold tracking-tight tabular-nums text-[var(--color-fg-primary)] focus:outline-none md:text-7xl"
             aria-label="Количество повторений"
           />
-          <div className="mt-1 text-xs text-[var(--color-ink-soft)]">повторений</div>
+          <div className="mt-2 text-[10px] tracking-widest text-[var(--color-fg-tertiary)] uppercase">
+            повторений
+          </div>
         </div>
+
         <button
           type="button"
           onClick={inc}
           disabled={value >= MAX_REPS}
           aria-label="Увеличить"
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-panel)] text-2xl font-semibold text-[var(--color-ink)] transition hover:bg-[var(--color-canvas)] disabled:opacity-40"
+          className="flex size-14 items-center justify-center rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-subtle)] text-[var(--color-fg-primary)] transition-all hover:border-[var(--color-border-default)] hover:bg-[var(--color-bg-hover)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
         >
-          +
+          <Plus size={22} strokeWidth={2.6} />
         </button>
       </div>
 
-      <button
-        type="button"
+      <Button
+        variant="primary"
+        size="lg"
+        loading={isPending}
+        disabled={value <= 0}
         onClick={submit}
-        disabled={isPending || value <= 0}
-        className="rounded-xl px-6 py-2.5 text-sm font-medium text-white shadow-[var(--shadow-sm)] transition hover:opacity-90 disabled:opacity-50"
-        style={{
-          background: 'linear-gradient(135deg, var(--color-workout-from), var(--color-workout-to))',
-        }}
       >
         Добавить подход
-      </button>
+      </Button>
 
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-xs text-[var(--color-danger)]">{error}</p>}
     </div>
   );
 }

@@ -1,5 +1,7 @@
 'use client';
 
+import { Activity } from 'lucide-react';
+
 export type HeatmapDay = {
   date: string; // YYYY-MM-DD
   count: number;
@@ -12,9 +14,10 @@ export function Heatmap({ days }: { days: HeatmapDay[] }) {
   const max = Math.max(1, ...days.map((d) => d.reps));
 
   return (
-    <section className="rounded-2xl bg-[var(--color-surface)] p-5 shadow-[var(--shadow-sm)]">
-      <header className="mb-3">
-        <h2 className="text-sm font-semibold text-[var(--color-ink)]">Последние 14 дней</h2>
+    <section className="rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] p-5 md:p-6">
+      <header className="mb-3 flex items-center gap-2 text-[10px] font-medium tracking-widest text-[var(--color-fg-tertiary)] uppercase">
+        <Activity size={12} strokeWidth={2.4} />
+        Последние 14 дней
       </header>
 
       <div className="flex flex-wrap gap-1.5">
@@ -37,17 +40,13 @@ function DayDot({ day, max }: { day: HeatmapDay; max: number }) {
   return (
     <div
       title={title}
-      className="flex h-9 w-9 items-center justify-center rounded-md border border-[var(--color-border)] text-[10px] font-medium tabular-nums"
+      className="flex size-9 items-center justify-center rounded-lg border border-[var(--color-border-subtle)] text-[10px] font-medium tabular-nums"
       style={{
         background:
           day.reps === 0
-            ? 'var(--color-panel)'
-            : `linear-gradient(135deg, color-mix(in srgb, var(--color-workout-from) ${Math.round(
-                intensity * 100,
-              )}%, var(--color-panel)), color-mix(in srgb, var(--color-workout-to) ${Math.round(
-                intensity * 100,
-              )}%, var(--color-panel)))`,
-        color: intensity > 0.5 ? '#fff' : 'var(--color-ink-soft)',
+            ? 'var(--color-bg-subtle)'
+            : `color-mix(in srgb, var(--color-accent-workouts) ${Math.round(intensity * 100)}%, var(--color-bg-subtle))`,
+        color: intensity > 0.5 ? '#fff' : 'var(--color-fg-secondary)',
       }}
     >
       {dayNum}

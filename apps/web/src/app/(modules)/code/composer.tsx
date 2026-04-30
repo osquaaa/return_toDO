@@ -1,6 +1,10 @@
 'use client';
 
+import { Plus } from 'lucide-react';
 import { useRef, useState, useTransition } from 'react';
+import { toast } from 'sonner';
+
+import { Button } from '@/components/ui/button';
 
 import { createSnippetAction } from './actions';
 
@@ -49,6 +53,7 @@ export function Composer() {
       if (r.ok) {
         reset();
         setOpen(false);
+        toast.success('Сниппет создан');
       } else {
         setError(r.error);
       }
@@ -63,15 +68,20 @@ export function Composer() {
           setOpen(true);
           setTimeout(() => codeRef.current?.focus(), 0);
         }}
-        className="w-full rounded-2xl border-2 border-dashed border-[var(--color-border)] py-3 text-sm text-[var(--color-ink-soft)] hover:border-[var(--color-ink-soft)]"
+        className="group flex w-full items-center gap-3 rounded-2xl border border-dashed border-[var(--color-border-default)] bg-[var(--color-bg-elevated)]/50 px-4 py-3 text-left text-sm transition-all hover:border-[var(--color-fg-tertiary)] hover:bg-[var(--color-bg-elevated)]"
       >
-        + Новый сниппет
+        <span className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] text-[var(--color-brand-fg)]">
+          <Plus size={14} strokeWidth={2.6} />
+        </span>
+        <span className="text-[var(--color-fg-secondary)] group-hover:text-[var(--color-fg-primary)]">
+          Новый сниппет…
+        </span>
       </button>
     );
   }
 
   return (
-    <div className="space-y-2 rounded-2xl bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
+    <div className="space-y-2 rounded-3xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] p-4 shadow-[var(--shadow-sm)]">
       <div className="flex flex-wrap gap-2 sm:flex-nowrap">
         <input
           type="text"
@@ -79,12 +89,12 @@ export function Composer() {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Название (опц.)"
           maxLength={200}
-          className="min-w-0 flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-2 text-sm focus:border-[var(--color-code-to)] focus:outline-none"
+          className="min-w-0 flex-1 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] px-3 py-2 text-sm text-[var(--color-fg-primary)] outline-none placeholder:text-[var(--color-fg-tertiary)] focus:border-[var(--color-accent-code)]"
         />
         <select
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
-          className="rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-2 text-sm focus:border-[var(--color-code-to)] focus:outline-none"
+          className="rounded-xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] px-3 py-2 text-sm text-[var(--color-fg-primary)] outline-none focus:border-[var(--color-accent-code)]"
         >
           {LANGUAGES.map((l) => (
             <option key={l.value} value={l.value}>
@@ -98,33 +108,31 @@ export function Composer() {
         value={code}
         onChange={(e) => setCode(e.target.value)}
         rows={10}
-        placeholder="Вставьте код…"
-        className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-2 font-mono text-xs leading-relaxed focus:border-[var(--color-code-to)] focus:outline-none"
+        placeholder="Вставь код…"
+        className="w-full rounded-xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] px-3 py-2 font-mono text-xs leading-relaxed text-[var(--color-fg-primary)] outline-none focus:border-[var(--color-accent-code)]"
         spellCheck={false}
       />
-      {error && <p className="text-xs text-red-600">{error}</p>}
-      <div className="flex justify-end gap-2">
-        <button
-          type="button"
+      {error && <p className="text-xs text-[var(--color-danger)]">{error}</p>}
+      <div className="flex justify-end gap-2 pt-1">
+        <Button
+          variant="ghost"
+          size="md"
           onClick={() => {
             reset();
             setOpen(false);
           }}
-          className="rounded-xl px-4 py-2 text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
         >
           Отмена
-        </button>
-        <button
-          type="button"
-          disabled={isPending || !code.trim()}
+        </Button>
+        <Button
+          variant="primary"
+          size="md"
+          loading={isPending}
+          disabled={!code.trim()}
           onClick={submit}
-          className="rounded-xl px-4 py-2 text-sm font-medium text-white shadow-[var(--shadow-sm)] transition hover:opacity-90 disabled:opacity-50"
-          style={{
-            background: 'linear-gradient(135deg, var(--color-code-from), var(--color-code-to))',
-          }}
         >
           Создать
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -1,6 +1,10 @@
 'use client';
 
+import { Plus, ShoppingBag } from 'lucide-react';
 import { useId, useRef, useState, useTransition } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 import { addItemAction } from './actions';
 
@@ -32,56 +36,61 @@ export function Composer({ suggestions }: { suggestions: string[] }) {
   };
 
   return (
-    <div className="rounded-2xl bg-[var(--color-surface)] p-3 shadow-[var(--shadow-sm)]">
+    <div className="space-y-2">
       <div className="flex flex-wrap gap-2 sm:flex-nowrap">
-        <input
-          ref={nameRef}
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              submit();
-            }
-          }}
-          placeholder="Что добавить?"
-          list={listId}
-          className="min-w-0 flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-2 text-sm focus:border-[var(--color-shopping-to)] focus:outline-none"
-          autoFocus
-        />
-        <datalist id={listId}>
-          {suggestions.map((s) => (
-            <option key={s} value={s} />
-          ))}
-        </datalist>
-        <input
-          type="text"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              submit();
-            }
-          }}
-          placeholder="Кол-во (опц.)"
-          className="w-28 rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-2 text-sm focus:border-[var(--color-shopping-to)] focus:outline-none"
-        />
-        <button
+        <div className="min-w-0 flex-1">
+          <Input
+            ref={nameRef}
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                submit();
+              }
+            }}
+            placeholder="Что добавить?"
+            list={listId}
+            inputSize="md"
+            iconLeft={<ShoppingBag size={14} />}
+            autoFocus
+          />
+          <datalist id={listId}>
+            {suggestions.map((s) => (
+              <option key={s} value={s} />
+            ))}
+          </datalist>
+        </div>
+        <div className="w-28 shrink-0">
+          <Input
+            type="text"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                submit();
+              }
+            }}
+            placeholder="Кол-во"
+            inputSize="md"
+          />
+        </div>
+        <Button
           type="button"
-          disabled={isPending || !name.trim()}
+          variant="primary"
+          size="md"
+          loading={isPending}
+          disabled={!name.trim()}
           onClick={submit}
-          className="rounded-xl px-4 py-2 text-sm font-medium text-white shadow-[var(--shadow-sm)] transition hover:opacity-90 disabled:opacity-50"
-          style={{
-            background:
-              'linear-gradient(135deg, var(--color-shopping-from), var(--color-shopping-to))',
-          }}
+          iconLeft={!isPending ? <Plus size={14} /> : undefined}
+          className="shrink-0"
         >
-          +
-        </button>
+          Добавить
+        </Button>
       </div>
-      {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
+      {error && <p className="text-xs text-[var(--color-danger)]">{error}</p>}
     </div>
   );
 }

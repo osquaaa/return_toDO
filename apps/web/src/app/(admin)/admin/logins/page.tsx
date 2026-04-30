@@ -1,7 +1,11 @@
+import { ArrowLeft, ArrowRight, Check, LogIn, Search, X } from 'lucide-react';
 import Link from 'next/link';
 
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { requireAdminContext } from '@/lib/admin/guard';
 import { listLoginHistory } from '@/lib/admin/login-history';
+import { cn } from '@/lib/cn';
 
 export const metadata = { title: 'Админ — История логинов' };
 export const dynamic = 'force-dynamic';
@@ -35,104 +39,133 @@ export default async function AdminLoginsPage({
   };
 
   return (
-    <div className="space-y-4">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">История логинов</h1>
-        <p className="text-sm text-[var(--color-ink-soft)]">
-          Жёлтым / красным подсвечены подозрительные IP (5+ неудачных попыток за час).
+    <div className="mx-auto max-w-5xl space-y-6">
+      <header className="space-y-1">
+        <div className="flex items-center gap-2 text-[10px] font-medium tracking-widest text-[var(--color-fg-tertiary)] uppercase">
+          <LogIn size={12} strokeWidth={2.4} />
+          Админ
+        </div>
+        <h1 className="text-balance text-[32px] leading-[1.05] font-semibold tracking-tight text-[var(--color-fg-primary)] md:text-[44px]">
+          Логины
+        </h1>
+        <p className="pt-1 text-sm text-[var(--color-fg-secondary)] md:text-base">
+          Подсвечены подозрительные IP (5+ неудачных попыток за час).
         </p>
       </header>
 
-      <form className="flex flex-wrap items-center gap-3" method="get">
-        <input
-          type="search"
-          name="search"
-          defaultValue={search}
-          placeholder="Email или IP…"
-          className="min-w-[240px] flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-from)]"
-        />
+      <form className="flex flex-wrap items-center gap-2" method="get">
+        <div className="relative h-10 min-w-[240px] flex-1">
+          <Search
+            size={14}
+            className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[var(--color-fg-tertiary)]"
+          />
+          <input
+            type="search"
+            name="search"
+            defaultValue={search}
+            placeholder="Email или IP…"
+            className="h-full w-full rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] pr-3.5 pl-9 text-sm text-[var(--color-fg-primary)] outline-none transition-colors placeholder:text-[var(--color-fg-tertiary)] focus:border-[var(--color-fg-tertiary)]"
+          />
+        </div>
         <select
           name="status"
           defaultValue={status}
-          className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm"
+          className="h-10 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-3 text-sm text-[var(--color-fg-primary)] outline-none focus:border-[var(--color-fg-tertiary)]"
         >
           <option value="all">Все</option>
           <option value="success">Успешные</option>
           <option value="failed">Неудачные</option>
         </select>
-        <button
-          type="submit"
-          className="rounded-xl bg-[var(--color-brand-from)] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
-        >
+        <Button type="submit" variant="primary" size="md">
           Фильтр
-        </button>
+        </Button>
       </form>
 
-      <div className="overflow-x-auto rounded-2xl bg-[var(--color-surface)] shadow-[var(--shadow-sm)]">
-        <table className="min-w-full text-sm">
-          <thead className="bg-[var(--color-panel)] text-left text-xs uppercase text-[var(--color-ink-soft)]">
-            <tr>
-              <th className="px-3 py-2">Когда</th>
-              <th className="px-3 py-2">Email</th>
-              <th className="px-3 py-2">Успех</th>
-              <th className="px-3 py-2">Причина</th>
-              <th className="px-3 py-2">IP</th>
-              <th className="px-3 py-2">User Agent</th>
-            </tr>
-          </thead>
-          <tbody>
-            {result.rows.map((r) => {
-              const rowClass = r.suspicious ? (r.success ? 'bg-amber-50' : 'bg-red-50') : '';
-              return (
+      <div className="overflow-hidden rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)]">
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm">
+            <thead>
+              <tr className="border-b border-[var(--color-border-subtle)] bg-[var(--color-bg-subtle)]/50 text-left text-[10px] font-medium tracking-widest text-[var(--color-fg-tertiary)] uppercase">
+                <th className="px-4 py-3">Когда</th>
+                <th className="px-4 py-3">Email</th>
+                <th className="px-4 py-3">Успех</th>
+                <th className="px-4 py-3">Причина</th>
+                <th className="px-4 py-3">IP</th>
+                <th className="px-4 py-3">User Agent</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.rows.map((r) => (
                 <tr
                   key={r.id}
-                  className={`border-t border-[var(--color-border)] align-top ${rowClass}`}
+                  className={cn(
+                    'border-b border-[var(--color-border-subtle)] last:border-b-0',
+                    r.suspicious && r.success && 'bg-[var(--color-warning-soft)]',
+                    r.suspicious && !r.success && 'bg-[var(--color-danger-soft)]',
+                  )}
                 >
-                  <td className="px-3 py-2 font-mono text-xs">
+                  <td className="px-4 py-3 font-mono text-xs text-[var(--color-fg-secondary)]">
                     {new Date(r.attemptedAt).toLocaleString('ru-RU')}
                   </td>
-                  <td className="px-3 py-2 font-mono text-xs">
+                  <td className="px-4 py-3">
                     {r.userId ? (
                       <Link
                         href={`/admin/users/${r.userId}`}
-                        className="text-[var(--color-brand-from)] underline"
+                        className="font-mono text-xs text-[var(--color-fg-primary)] hover:underline"
                       >
                         {r.email}
                       </Link>
                     ) : (
-                      r.email
-                    )}
-                  </td>
-                  <td className={`px-3 py-2 text-xs ${r.success ? '' : 'text-red-700'}`}>
-                    {r.success ? '✓' : '✗'}
-                  </td>
-                  <td className="px-3 py-2 text-xs text-red-700">{r.failureReason ?? ''}</td>
-                  <td className="px-3 py-2 font-mono text-xs">
-                    {r.ipAddress ?? ''}
-                    {r.suspicious && (
-                      <span className="ml-1 rounded bg-red-200 px-1 text-[10px] font-medium text-red-900">
-                        SUSPICIOUS
+                      <span className="font-mono text-xs text-[var(--color-fg-primary)]">
+                        {r.email}
                       </span>
                     )}
                   </td>
-                  <td className="max-w-[280px] truncate px-3 py-2 text-xs text-[var(--color-ink-soft)]">
+                  <td className="px-4 py-3">
+                    {r.success ? (
+                      <span className="inline-flex size-5 items-center justify-center rounded-md bg-[var(--color-success-soft)] text-[var(--color-success)]">
+                        <Check size={11} strokeWidth={3} />
+                      </span>
+                    ) : (
+                      <span className="inline-flex size-5 items-center justify-center rounded-md bg-[var(--color-danger-soft)] text-[var(--color-danger)]">
+                        <X size={11} strokeWidth={3} />
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-[var(--color-danger)]">
+                    {r.failureReason ?? ''}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="font-mono text-xs text-[var(--color-fg-secondary)]">
+                      {r.ipAddress ?? ''}
+                    </span>
+                    {r.suspicious && (
+                      <Badge variant="danger" size="sm" className="ml-1.5">
+                        SUSPICIOUS
+                      </Badge>
+                    )}
+                  </td>
+                  <td className="max-w-[280px] truncate px-4 py-3 text-xs text-[var(--color-fg-tertiary)]">
                     {r.userAgent ?? ''}
                   </td>
                 </tr>
-              );
-            })}
-            {result.rows.length === 0 && (
-              <tr>
-                <td colSpan={6} className="px-3 py-8 text-center text-[var(--color-ink-soft)]">
-                  Нет записей.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              ))}
+              {result.rows.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="px-4 py-12 text-center text-sm text-[var(--color-fg-secondary)]"
+                  >
+                    Нет записей.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div className="flex items-center justify-between text-sm text-[var(--color-ink-soft)]">
+      <div className="flex items-center justify-between text-sm text-[var(--color-fg-secondary)]">
         <div>
           Страница {result.page} / {totalPages} · всего {result.total}
         </div>
@@ -140,17 +173,19 @@ export default async function AdminLoginsPage({
           {result.page > 1 && (
             <Link
               href={buildHref(result.page - 1)}
-              className="rounded-lg border border-[var(--color-border)] px-3 py-1 hover:bg-[var(--color-canvas)]"
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-3 text-sm font-medium text-[var(--color-fg-secondary)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-primary)]"
             >
-              ← Назад
+              <ArrowLeft size={14} />
+              Назад
             </Link>
           )}
           {result.page < totalPages && (
             <Link
               href={buildHref(result.page + 1)}
-              className="rounded-lg border border-[var(--color-border)] px-3 py-1 hover:bg-[var(--color-canvas)]"
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-3 text-sm font-medium text-[var(--color-fg-secondary)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-primary)]"
             >
-              Вперёд →
+              Вперёд
+              <ArrowRight size={14} />
             </Link>
           )}
         </div>

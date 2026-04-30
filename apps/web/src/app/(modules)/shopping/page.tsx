@@ -1,3 +1,5 @@
+import { ShoppingBag } from 'lucide-react';
+
 import { requireUser } from '@/lib/auth/session';
 import {
   countItemsByTrip,
@@ -39,25 +41,25 @@ export default async function ShoppingPage() {
     position: it.position,
   }));
 
+  const doneCount = itemRows.filter((it) => it.isDone).length;
+
   return (
-    <div className="mx-auto max-w-3xl space-y-6 p-6">
-      <header className="flex items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Покупки</h1>
-          {trip && (
-            <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
-              {trip.name} · {itemRows.length} {pluralItems(itemRows.length)}
-            </p>
-          )}
+    <div className="mx-auto max-w-3xl space-y-5 px-4 py-5 md:px-8 md:py-10">
+      <header className="space-y-1">
+        <div className="flex items-center gap-2 text-[10px] font-medium tracking-widest text-[var(--color-fg-tertiary)] uppercase">
+          <ShoppingBag size={12} strokeWidth={2.4} />
+          Покупки
         </div>
-        <span
-          className="hidden h-10 w-10 rounded-full sm:block"
-          style={{
-            background:
-              'linear-gradient(135deg, var(--color-shopping-from), var(--color-shopping-to))',
-          }}
-          aria-hidden
-        />
+        <h1 className="text-balance text-[32px] leading-[1.05] font-semibold tracking-tight text-[var(--color-fg-primary)] md:text-[44px]">
+          {trip ? trip.name : 'Список'}
+        </h1>
+        <p className="pt-1 text-sm text-[var(--color-fg-secondary)] md:text-base">
+          {trip
+            ? itemRows.length === 0
+              ? 'Поход начат — добавь первую позицию.'
+              : `${doneCount} из ${itemRows.length} ${pluralItems(itemRows.length)} куплено.`
+            : 'Начни новый поход и собери список под него.'}
+        </p>
       </header>
 
       {trip ? (
@@ -68,10 +70,7 @@ export default async function ShoppingPage() {
           suggestions={suggestions}
         />
       ) : (
-        <div className="rounded-2xl bg-[var(--color-surface)] p-8 text-center shadow-[var(--shadow-sm)]">
-          <p className="mb-4 text-[var(--color-ink-soft)]">Активного похода нет.</p>
-          <StartTripButton />
-        </div>
+        <StartTripButton />
       )}
 
       {historyRows.length > 0 && <HistoryPanel rows={historyRows} />}

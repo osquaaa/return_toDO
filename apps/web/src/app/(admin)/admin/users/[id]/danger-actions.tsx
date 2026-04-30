@@ -1,7 +1,13 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { AlertTriangle, LogOut, Shield, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useState, useTransition } from 'react';
+import { toast } from 'sonner';
+
+import { Button } from '@/components/ui/button';
+import { ConfirmDialog, Dialog } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 
 import { deleteUserAction, forceLogoutAction, updateUserRoleAction } from './actions';
 
@@ -10,111 +16,159 @@ type Props = { userId: string; email: string; role: string; isSelf: boolean };
 export function DangerActions({ userId, email, role, isSelf }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmLogout, setConfirmLogout] = useState(false);
+  const [confirmRole, setConfirmRole] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const [confirmPhrase, setConfirmPhrase] = useState('');
 
   const expected = `DELETE ${email}`;
-
-  const doForceLogout = () => {
-    if (!confirm('Разлогинить этого пользователя?')) return;
-    startTransition(async () => {
-      const r = await forceLogoutAction(userId);
-      setError(r.ok ? null : r.error);
-    });
-  };
-
-  const doToggleRole = () => {
-    const newRole = role === 'admin' ? 'user' : 'admin';
-    if (!confirm(`Сменить роль на "${newRole}"?`)) return;
-    startTransition(async () => {
-      const r = await updateUserRoleAction(userId, newRole);
-      setError(r.ok ? null : r.error);
-    });
-  };
-
-  const doDelete = () => {
-    startTransition(async () => {
-      const r = await deleteUserAction(userId, confirmPhrase);
-      if (!r.ok) {
-        setError(r.error);
-        return;
-      }
-      setError(null);
-      setShowConfirm(false);
-      router.push('/admin/users');
-    });
-  };
+  const newRole = role === 'admin' ? 'user' : 'admin';
 
   return (
-    <section className="rounded-2xl border border-red-300 bg-red-50/40 p-4">
-      <h2 className="mb-3 font-medium text-red-900">Опасные действия</h2>
-      {error && <p className="mb-3 text-sm text-red-700">{error}</p>}
+    <section className="rounded-3xl border border-[var(--color-danger)]/30 bg-[var(--color-danger-soft)]/40 p-5 md:p-6">
+      <header className="mb-4 flex items-center gap-3">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-danger-soft)] text-[var(--color-danger)]">
+          <AlertTriangle size={16} />
+        </span>
+        <div>
+          <h2 className="text-base font-semibold tracking-tight text-[var(--color-fg-primary)]">
+            Опасные действия
+          </h2>
+          <p className="text-sm text-[var(--color-fg-secondary)]">
+            Отменить большинство из них нельзя.
+          </p>
+        </div>
+      </header>
+
       <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={doForceLogout}
+        <Button
+          variant="secondary"
+          size="md"
+          iconLeft={<LogOut size={14} />}
           disabled={isPending}
-          className="rounded-xl border border-red-300 bg-white px-3 py-1.5 text-sm hover:bg-red-100 disabled:opacity-50"
+          onClick={() => setConfirmLogout(true)}
         >
           Force logout
-        </button>
+        </Button>
         {!isSelf && (
-          <button
-            type="button"
-            onClick={doToggleRole}
+          <Button
+            variant="secondary"
+            size="md"
+            iconLeft={<Shield size={14} />}
             disabled={isPending}
-            className="rounded-xl border border-red-300 bg-white px-3 py-1.5 text-sm hover:bg-red-100 disabled:opacity-50"
+            onClick={() => setConfirmRole(true)}
           >
-            Сменить роль ({role === 'admin' ? 'снять админа' : 'сделать админом'})
-          </button>
+            {role === 'admin' ? 'Снять админа' : 'Сделать админом'}
+          </Button>
         )}
         {!isSelf && (
-          <button
-            type="button"
-            onClick={() => setShowConfirm(true)}
+          <Button
+            variant="danger"
+            size="md"
+            iconLeft={<Trash2 size={14} />}
             disabled={isPending}
-            className="rounded-xl bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+            onClick={() => setDeleteOpen(true)}
           >
             Удалить юзера
-          </button>
+          </Button>
         )}
       </div>
 
-      {showConfirm && (
-        <div className="mt-4 rounded-xl border border-red-300 bg-white p-3">
-          <p className="text-sm">
-            Введи <code className="rounded bg-[var(--color-canvas)] px-1">{expected}</code> для
-            подтверждения:
-          </p>
-          <input
-            type="text"
-            value={confirmPhrase}
-            onChange={(e) => setConfirmPhrase(e.target.value)}
-            className="mt-2 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm focus:outline-none"
-          />
-          <div className="mt-2 flex gap-2">
-            <button
-              type="button"
-              onClick={doDelete}
-              disabled={isPending || confirmPhrase !== expected}
-              className="rounded-xl bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 disabled:opacity-50"
-            >
-              Удалить
-            </button>
-            <button
-              type="button"
+      <ConfirmDialog
+        open={confirmLogout}
+        onClose={() => setConfirmLogout(false)}
+        title="Разлогинить пользователя?"
+        description="Все активные сессии будут прерваны."
+        confirmLabel="Разлогинить"
+        variant="danger"
+        loading={isPending}
+        onConfirm={async () => {
+          startTransition(async () => {
+            const r = await forceLogoutAction(userId);
+            setConfirmLogout(false);
+            if (r.ok) toast.success('Сессии прерваны');
+            else toast.error(r.error);
+          });
+        }}
+      />
+
+      <ConfirmDialog
+        open={confirmRole}
+        onClose={() => setConfirmRole(false)}
+        title={`Сменить роль на «${newRole}»?`}
+        description="Это даст или отнимет доступ к админке."
+        confirmLabel="Сменить"
+        variant="danger"
+        loading={isPending}
+        onConfirm={async () => {
+          startTransition(async () => {
+            const r = await updateUserRoleAction(userId, newRole);
+            setConfirmRole(false);
+            if (r.ok) toast.success('Роль изменена');
+            else toast.error(r.error);
+          });
+        }}
+      />
+
+      <Dialog open={deleteOpen} onClose={() => setDeleteOpen(false)} title="Удалить юзера">
+        <div className="space-y-4">
+          <div className="flex items-start gap-2 rounded-2xl border border-[var(--color-danger)]/20 bg-[var(--color-danger-soft)] px-3 py-2.5 text-sm text-[var(--color-danger)]">
+            <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+            <span>Вместе с юзером удалятся все его данные. Действие необратимо.</span>
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs font-medium tracking-wide text-[var(--color-fg-secondary)] uppercase">
+              Подтверждение
+            </label>
+            <p className="mb-2 text-xs text-[var(--color-fg-secondary)]">
+              Введи{' '}
+              <code className="rounded bg-[var(--color-bg-subtle)] px-1 py-0.5 font-mono text-[11px]">
+                {expected}
+              </code>
+              :
+            </p>
+            <Input
+              type="text"
+              value={confirmPhrase}
+              onChange={(e) => setConfirmPhrase(e.target.value)}
+              inputSize="md"
+              autoFocus
+            />
+          </div>
+          <div className="flex justify-end gap-2 pt-1">
+            <Button
+              variant="ghost"
+              size="md"
               onClick={() => {
-                setShowConfirm(false);
+                setDeleteOpen(false);
                 setConfirmPhrase('');
               }}
-              className="rounded-xl border border-[var(--color-border)] bg-white px-3 py-1.5 text-sm hover:bg-[var(--color-canvas)]"
             >
               Отмена
-            </button>
+            </Button>
+            <Button
+              variant="danger"
+              size="md"
+              loading={isPending}
+              disabled={confirmPhrase !== expected}
+              onClick={() => {
+                startTransition(async () => {
+                  const r = await deleteUserAction(userId, confirmPhrase);
+                  if (r.ok) {
+                    toast.success('Юзер удалён');
+                    setDeleteOpen(false);
+                    router.push('/admin/users');
+                  } else {
+                    toast.error(r.error);
+                  }
+                });
+              }}
+            >
+              Удалить
+            </Button>
           </div>
         </div>
-      )}
+      </Dialog>
     </section>
   );
 }

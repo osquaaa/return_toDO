@@ -1,6 +1,11 @@
 'use client';
 
+import { Dumbbell, Plus, RotateCcw } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
+
+import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/dialog';
 
 import { ExerciseTabs, type ExerciseTab } from './exercise-tabs';
 import { SetCounter } from './set-counter';
@@ -29,6 +34,8 @@ export function WorkoutsRoot({
 }) {
   const [activeId, setActiveId] = useState<string | null>(exercises[0]?.id ?? null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
+  const [clearing, setClearing] = useState(false);
 
   const heatmapDays: HeatmapDay[] = useMemo(() => buildHeatmap(last14days), [last14days]);
 
@@ -37,28 +44,29 @@ export function WorkoutsRoot({
     [todaySets, activeId],
   );
 
-  const onClearToday = () => {
-    if (!activeId) return;
-    if (!confirm('Сбросить сегодняшние подходы по этому упражнению?')) return;
-    void clearTodayAction(activeId);
-  };
-
   if (exercises.length === 0) {
     return (
       <>
-        <div className="rounded-2xl bg-[var(--color-surface)] p-8 text-center shadow-[var(--shadow-sm)]">
-          <p className="mb-4 text-[var(--color-ink-soft)]">Список упражнений пуст.</p>
-          <button
-            type="button"
+        <div className="flex flex-col items-center gap-4 rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-6 py-16 text-center">
+          <div className="flex size-16 items-center justify-center rounded-3xl bg-[var(--color-accent-workouts-soft)]">
+            <Dumbbell size={28} strokeWidth={2} className="text-[var(--color-accent-workouts)]" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-lg font-semibold tracking-tight text-[var(--color-fg-primary)]">
+              Список упражнений пуст
+            </h3>
+            <p className="max-w-xs text-sm text-[var(--color-fg-secondary)]">
+              Добавь хотя бы одно упражнение — приседания, отжимания или что душе угодно.
+            </p>
+          </div>
+          <Button
+            variant="primary"
+            size="md"
+            iconLeft={<Plus size={14} />}
             onClick={() => setModalOpen(true)}
-            className="rounded-xl px-5 py-2 text-sm font-medium text-white shadow-[var(--shadow-sm)] transition hover:opacity-90"
-            style={{
-              background:
-                'linear-gradient(135deg, var(--color-workout-from), var(--color-workout-to))',
-            }}
           >
             Добавить упражнение
-          </button>
+          </Button>
         </div>
         {modalOpen && <AddExerciseModal onClose={() => setModalOpen(false)} />}
       </>
@@ -75,22 +83,25 @@ export function WorkoutsRoot({
       />
 
       {activeId && (
-        <div className="rounded-2xl bg-[var(--color-surface)] p-5 shadow-[var(--shadow-sm)]">
+        <div className="rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] p-5 md:p-6">
           <SetCounter exerciseId={activeId} />
 
-          <div className="mt-5">
+          <div className="mt-6 border-t border-[var(--color-border-subtle)] pt-5">
             <TodayList sets={setsForActive} />
           </div>
 
-          <div className="mt-4 flex justify-end">
-            <button
-              type="button"
-              onClick={onClearToday}
-              className="text-xs text-[var(--color-ink-faint)] hover:text-red-600"
-            >
-              Сбросить сегодня
-            </button>
-          </div>
+          {setsForActive.length > 0 && (
+            <div className="mt-3 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setConfirmClear(true)}
+                className="inline-flex h-7 items-center gap-1 rounded-lg px-2 text-xs text-[var(--color-fg-tertiary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-danger)]"
+              >
+                <RotateCcw size={11} />
+                Сбросить сегодня
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -98,6 +109,25 @@ export function WorkoutsRoot({
       <Heatmap days={heatmapDays} />
 
       {modalOpen && <AddExerciseModal onClose={() => setModalOpen(false)} />}
+
+      <ConfirmDialog
+        open={confirmClear}
+        onClose={() => setConfirmClear(false)}
+        title="Сбросить сегодняшние подходы?"
+        description="Все подходы по этому упражнению за сегодня будут удалены."
+        confirmLabel="Сбросить"
+        variant="danger"
+        loading={clearing}
+        onConfirm={async () => {
+          if (!activeId) return;
+          setClearing(true);
+          const r = await clearTodayAction(activeId);
+          setClearing(false);
+          setConfirmClear(false);
+          if (r.ok) toast.success('Сегодня сброшено');
+          else toast.error(r.error);
+        }}
+      />
     </div>
   );
 }

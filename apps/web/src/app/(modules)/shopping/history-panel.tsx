@@ -1,6 +1,11 @@
 'use client';
 
-import { useTransition } from 'react';
+import { History, RefreshCw } from 'lucide-react';
+import { useState, useTransition } from 'react';
+import { toast } from 'sonner';
+
+import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/dialog';
 
 import { repeatTripAction } from './actions';
 
@@ -24,41 +29,64 @@ function fmt(iso: string | null): string {
 
 export function HistoryPanel({ rows }: { rows: HistoryRow[] }) {
   const [isPending, startTransition] = useTransition();
+  const [target, setTarget] = useState<HistoryRow | null>(null);
 
   return (
     <section className="space-y-3 pt-2">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--color-ink-soft)]">
+      <div className="flex items-center gap-2 text-[10px] font-medium tracking-widest text-[var(--color-fg-tertiary)] uppercase">
+        <History size={12} strokeWidth={2.4} />
         История
-      </h2>
+      </div>
       <ul className="space-y-2">
         {rows.map((r) => (
           <li
             key={r.id}
-            className="flex items-center gap-3 rounded-2xl bg-[var(--color-surface)] px-4 py-3 shadow-[var(--shadow-sm)]"
+            className="flex items-center gap-3 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-4 py-3 transition-colors hover:border-[var(--color-border-default)]"
           >
-            <div className="flex-1 min-w-0">
+            <div className="min-w-0 flex-1">
               <div className="flex items-baseline gap-2">
-                <span className="truncate text-sm font-medium">{r.name}</span>
-                <span className="text-xs text-[var(--color-ink-faint)]">{fmt(r.completedAt)}</span>
+                <span className="truncate text-sm font-medium text-[var(--color-fg-primary)]">
+                  {r.name}
+                </span>
+                <span className="shrink-0 text-xs text-[var(--color-fg-tertiary)]">
+                  {fmt(r.completedAt)}
+                </span>
               </div>
-              <div className="mt-0.5 text-xs text-[var(--color-ink-soft)]">
+              <div className="mt-0.5 text-xs text-[var(--color-fg-secondary)]">
                 {r.counts.done} из {r.counts.total} {r.counts.total === 1 ? 'позиция' : 'позиций'}
               </div>
             </div>
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="sm"
+              iconLeft={<RefreshCw size={12} />}
               disabled={isPending}
-              onClick={() => {
-                if (confirm(`Повторить «${r.name}»?`))
-                  startTransition(async () => void (await repeatTripAction(r.id)));
-              }}
-              className="rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-1.5 text-xs hover:border-[var(--color-shopping-to)] disabled:opacity-60"
+              onClick={() => setTarget(r)}
             >
               Повторить
-            </button>
+            </Button>
           </li>
         ))}
       </ul>
+
+      <ConfirmDialog
+        open={!!target}
+        onClose={() => setTarget(null)}
+        title={`Повторить «${target?.name ?? ''}»?`}
+        description="Создадим новый поход с теми же позициями."
+        confirmLabel="Повторить"
+        loading={isPending}
+        onConfirm={async () => {
+          if (!target) return;
+          const id = target.id;
+          startTransition(async () => {
+            const r = await repeatTripAction(id);
+            setTarget(null);
+            if (r.ok) toast.success('Поход создан');
+            else toast.error(r.error);
+          });
+        }}
+      />
     </section>
   );
 }
