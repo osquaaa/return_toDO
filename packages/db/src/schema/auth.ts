@@ -1,5 +1,14 @@
 import { sql } from 'drizzle-orm';
-import { pgEnum, pgTable, text, timestamp, uuid, index, uniqueIndex } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  index,
+  uniqueIndex,
+} from 'drizzle-orm/pg-core';
 
 import { genId } from '../id';
 
@@ -10,7 +19,7 @@ export const users = pgTable(
   {
     id: uuid('id').primaryKey().$defaultFn(genId),
     email: text('email').notNull(),
-    emailVerified: timestamp('email_verified', { withTimezone: true, mode: 'date' }),
+    emailVerified: boolean('email_verified').notNull().default(false),
     name: text('name'),
     image: text('image'),
     role: userRoleEnum('role').notNull().default('user'),

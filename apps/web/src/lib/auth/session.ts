@@ -7,7 +7,7 @@ export type UserWithRole = {
   email: string;
   name: string | null;
   image?: string | null;
-  emailVerified: boolean | Date | null;
+  emailVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
   role: 'user' | 'admin';
@@ -22,7 +22,7 @@ export async function getCurrentUser(): Promise<UserWithRole | null> {
     email: String(u.email),
     name: (u.name as string | null) ?? null,
     image: (u.image as string | null) ?? null,
-    emailVerified: (u.emailVerified as Date | boolean | null) ?? null,
+    emailVerified: Boolean(u.emailVerified),
     createdAt: u.createdAt instanceof Date ? u.createdAt : new Date(u.createdAt as string),
     updatedAt: u.updatedAt instanceof Date ? u.updatedAt : new Date(u.updatedAt as string),
     role: (u.role as 'user' | 'admin') ?? 'user',
