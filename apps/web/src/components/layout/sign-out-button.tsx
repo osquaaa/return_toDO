@@ -1,20 +1,13 @@
 'use client';
 
-import { LogOut } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
-
-import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export function SignOutButton() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      loading={isPending}
-      aria-label="Выйти"
+    <button
       onClick={() =>
         startTransition(async () => {
           await fetch('/api/auth/sign-out', { method: 'POST' });
@@ -22,9 +15,10 @@ export function SignOutButton() {
           router.refresh();
         })
       }
-      className="!size-7 !p-0"
+      disabled={isPending}
+      className="text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] disabled:opacity-50"
     >
-      {!isPending && <LogOut size={14} />}
-    </Button>
+      Выйти
+    </button>
   );
 }
