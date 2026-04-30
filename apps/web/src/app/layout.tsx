@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Manrope, JetBrains_Mono } from 'next/font/google';
 
 import './globals.css';
@@ -20,6 +20,15 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'LETget · Списки и заметки',
   description: 'Лаконично. Понятно. На каждый день.',
+  manifest: '/manifest.webmanifest',
+  icons: {
+    icon: '/icons/icon.svg',
+    apple: '/icons/icon.svg',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#1a1410',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
