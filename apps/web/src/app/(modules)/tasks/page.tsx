@@ -3,7 +3,6 @@ import { listTasksQuerySchema } from '@letget/lib/zod/tasks';
 import { requireUser } from '@/lib/auth/session';
 import { listTasks } from '@/lib/tasks/queries';
 
-import { TaskFilters } from './task-filters';
 import { TaskList } from './task-list';
 import { TasksHero } from './tasks-hero';
 
@@ -52,8 +51,7 @@ export default async function TasksPage({
   return (
     <div className="mx-auto max-w-3xl space-y-5 px-4 py-5 md:px-8 md:py-10">
       <TasksHero name={user.name} stats={stats} />
-      <TaskFilters initialFilter={opts.filter} initialQuery={opts.q ?? ''} />
-      <TaskList items={serialized} />
+      <TaskList items={serialized} filter={opts.filter} query={opts.q ?? ''} />
     </div>
   );
 }
