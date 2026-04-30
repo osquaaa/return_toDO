@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Manrope, JetBrains_Mono } from 'next/font/google';
 
+import { SwRegister } from '@/components/pwa/sw-register';
+
 import './globals.css';
 
 const manrope = Manrope({
@@ -34,7 +36,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={`${manrope.variable} ${jetbrains.variable}`}>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <SwRegister />
+        {children}
+      </body>
     </html>
   );
 }
