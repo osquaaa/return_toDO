@@ -53,22 +53,29 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-        before: async (user) => {
+        before: ((user: unknown) => {
           // Better Auth sometimes passes Date fields as ISO strings depending on
           // the request path (server action vs API route). Drizzle's `mode: 'date'`
           // timestamp columns expect actual Date objects — convert here.
           const u = user as Record<string, unknown>;
-          const toDate = (v: unknown): Date | undefined =>
-            v == null ? undefined : v instanceof Date ? v : new Date(v as string);
+          const toDate = (v: unknown): Date | null =>
+            v == null
+              ? null
+              : v instanceof Date
+                ? v
+                : typeof v === 'string' || typeof v === 'number'
+                  ? new Date(v)
+                  : null;
           return {
             data: {
-              ...user,
+              ...u,
               createdAt: toDate(u.createdAt) ?? new Date(),
               updatedAt: toDate(u.updatedAt) ?? new Date(),
-              emailVerified: toDate(u.emailVerified) ?? null,
+              emailVerified: toDate(u.emailVerified),
             },
           };
-        },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        }) as any,
         after: async (user) => {
           // Lazy-import avoids circular module init at app boot.
           const { createDbClient } = await import('@letget/db/client');
