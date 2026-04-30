@@ -53,16 +53,19 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-        before: async (user) => ({
-          data: { ...user, role: resolveRoleForEmail(user.email) },
-        }),
         after: async (user) => {
-          // Seed preferences + default workout exercises. Lazy-import avoids
-          // circular module init at app boot.
+          // Lazy-import avoids circular module init at app boot.
           const { createDbClient } = await import('@letget/db/client');
+          const { users } = await import('@letget/db/schema');
+          const { eq } = await import('drizzle-orm');
           const { seedNewUser } = await import('./seed-new-user');
           const { db: hookDb } = createDbClient();
+
           await seedNewUser(hookDb, user.id);
+
+          if (resolveRoleForEmail(user.email) === 'admin') {
+            await hookDb.update(users).set({ role: 'admin' }).where(eq(users.id, user.id));
+          }
         },
       },
     },
