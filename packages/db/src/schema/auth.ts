@@ -50,6 +50,9 @@ export const sessions = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' })
       .notNull()
       .default(sql`now()`),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'date' })
+      .notNull()
+      .default(sql`now()`),
   },
   (t) => ({
     tokenIdx: uniqueIndex('sessions_token_idx').on(t.token),
