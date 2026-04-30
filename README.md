@@ -75,12 +75,12 @@ legacy/         Старая версия v1 (reference)
 
 - ✅ **Plan 1:** Foundation — монорепо + БД + скелеты
 - ✅ **Plan 2:** Auth + Migration v1 — Better Auth, sessions, Telegram link, v1→v2 import
-- ⏳ Plan 3: Tasks module
-- ⏳ Plan 4: Shopping + Code + Workouts
-- ⏳ Plan 5: Telegram bot (commands + push)
-- ⏳ Plan 6: Admin panel
-- ⏳ Plan 7: Design polish + PWA + e2e
-- ⏳ Plan 8: Deploy + Ops (VPS, nginx, ssl, бэкапы)
+- ✅ **Plan 3:** Tasks module
+- ✅ **Plan 4:** Shopping + Code + Workouts
+- ✅ **Plan 5:** Telegram bot (commands + push)
+- ✅ **Plan 6:** Admin panel
+- ✅ **Plan 7:** Design polish + PWA + e2e
+- ✅ **Plan 8:** Deploy + Ops (VPS, nginx, ssl, бэкапы)
 
 ## Auth flows (post Plan 2)
 
@@ -115,6 +115,100 @@ curl "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo"
 ```
 
 Telegram передаёт секрет в заголовке `x-telegram-bot-api-secret-token`. Бот сверяет и при несовпадении возвращает 401. Если секрет не задан — бот логирует warning и принимает все запросы (для локальной отладки за туннелем).
+
+## Deployment to VPS
+
+Прод-домен: `letget.spassonic.ru` (89.208.85.246). Артефакты деплоя в `infra/`.
+
+**Server pre-state:** Ubuntu, nginx, certbot, docker, pnpm, Node 20+, PM2 уже стоят. Юзер `ubuntu` имеет ssh-доступ + sudo на nginx/certbot. Существующий Redis на `localhost:6379` (используем `db=3`).
+
+### Первый деплой (one-time)
+
+```bash
+# 1. SSH на VPS
+ssh ubuntu@89.208.85.246
+
+# 2. Клонировать репо в /var/www/letget
+sudo mkdir -p /var/www/letget && sudo chown ubuntu:ubuntu /var/www/letget
+git clone https://github.com/osquaaa/return_toDO.git /var/www/letget
+cd /var/www/letget
+
+# 3. Создать пароль для Postgres (это значение пойдёт в db_password.prod.txt И в DB_PASSWORD)
+openssl rand -hex 24 > infra/docker/db_password.prod.txt
+chmod 600 infra/docker/db_password.prod.txt
+
+# 4. Запустить интерактивный setup-env (попросит DB_PASSWORD из шага 3,
+#    RESEND key, TELEGRAM_BOT_TOKEN, ADMIN_EMAIL; auth и webhook secrets сгенерит сам)
+bash infra/deploy/setup-env.sh
+
+# 5. Поднять Postgres (docker)
+cd infra/docker && docker compose -f docker-compose.prod.yml up -d
+cd ../..
+
+# 6. Указать DNS letget.spassonic.ru → 89.208.85.246, дождаться пропагейшна,
+#    затем установить nginx vhost + получить SSL
+sudo bash infra/deploy/setup-nginx.sh
+
+# 7. Первый деплой: install + migrate + build + pm2
+bash infra/deploy/deploy.sh
+
+# 8. Авто-старт PM2 при ребуте
+pm2 startup systemd
+# (выполнить команду которую он распечатает)
+pm2 save
+
+# 9. Ротация логов PM2
+pm2 install pm2-logrotate
+pm2 set pm2-logrotate:retain 14
+pm2 set pm2-logrotate:compress true
+
+# 10. Зарегистрировать webhook у Telegram (TOKEN и WEBHOOK_SECRET из .env.production)
+source /var/www/letget/.env.production
+curl -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
+  -H "Content-Type: application/json" \
+  -d "{\"url\":\"https://letget.spassonic.ru/api/telegram/webhook\",\"secret_token\":\"${TELEGRAM_WEBHOOK_SECRET}\",\"drop_pending_updates\":true}"
+
+# 11. Бэкапы по cron — добавить в crontab юзера ubuntu
+mkdir -p ~/logs/letget
+crontab -e
+# вставить строку:
+# 0 3 * * * /var/www/letget/infra/deploy/backup.sh >> ~/logs/letget/backup.log 2>&1
+```
+
+### Регулярный деплой
+
+Из `/var/www/letget` на VPS:
+
+```bash
+bash infra/deploy/deploy.sh
+```
+
+Скрипт делает: `git pull` → `pnpm install --frozen-lockfile` → `pnpm db:migrate` (с `.env.production` подтянутым) → `pnpm -r build` → `pm2 reload`. В конце печатает `pm2 status`.
+
+### Бэкапы
+
+`infra/deploy/backup.sh` дампит Postgres из контейнера через `pg_dump`, гзипает, кладёт в `~/backups/letget/letget-YYYYMMDD-HHMM.sql.gz`. Хранит последние 14 дней.
+
+Cron-строка:
+
+```
+0 3 * * * /var/www/letget/infra/deploy/backup.sh >> ~/logs/letget/backup.log 2>&1
+```
+
+Шифрование бэкапов at rest — out of scope для Phase 1, запланировано на Phase 1.5.
+
+### Файлы и их роли
+
+| Файл                                   | Назначение                                                               |
+| -------------------------------------- | ------------------------------------------------------------------------ |
+| `infra/docker/docker-compose.prod.yml` | Postgres 16 контейнер (5440:5432, localhost only, secret-based password) |
+| `infra/docker/db_password.prod.txt`    | Пароль БД (gitignored, создаётся локально на сервере)                    |
+| `infra/deploy/nginx-letget.conf`       | nginx vhost (443 → 3040 web, /api/telegram/webhook → 3041 bot)           |
+| `infra/deploy/setup-nginx.sh`          | Копирует vhost + certbot SSL + reload nginx                              |
+| `infra/deploy/ecosystem.config.cjs`    | PM2 конфиг (letget-web на 3040, letget-bot на 3041)                      |
+| `infra/deploy/setup-env.sh`            | Интерактивно создаёт `.env.production` (chmod 600, owner ubuntu)         |
+| `infra/deploy/deploy.sh`               | Главный скрипт деплоя (pull → install → migrate → build → pm2 reload)    |
+| `infra/deploy/backup.sh`               | Дамп Postgres + ротация 14 дней                                          |
 
 ## License
 
