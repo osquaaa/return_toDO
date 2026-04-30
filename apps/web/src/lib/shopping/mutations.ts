@@ -191,11 +191,11 @@ export async function repeatTrip(
       })
       .returning();
 
-    // Copy unfinished items, fresh positions
+    // Copy ALL items as a fresh shopping list (reset to isDone=false).
     const sourceItems = await tx
       .select()
       .from(shoppingItems)
-      .where(and(eq(shoppingItems.tripId, sourceTripId), eq(shoppingItems.isDone, false)))
+      .where(eq(shoppingItems.tripId, sourceTripId))
       .orderBy(shoppingItems.position);
 
     if (sourceItems.length > 0) {
