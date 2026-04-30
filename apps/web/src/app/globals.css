@@ -39,6 +39,11 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
+  --motion-fast: 120ms;
+  --motion-base: 220ms;
+  --motion-slow: 360ms;
+  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
   --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(120, 100, 80, 0.06);
   --shadow-md:
     0 1px 0 rgba(0, 0, 0, 0.04), 0 4px 10px -4px rgba(120, 100, 80, 0.12),
@@ -97,8 +102,25 @@
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
+    animation-duration: 0ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: 0ms !important;
+  }
+}
+
+@layer utilities {
+  .hover-lift {
+    transition:
+      transform var(--motion-fast) var(--motion-ease-out),
+      box-shadow var(--motion-fast) var(--motion-ease-out);
+  }
+  .hover-lift:hover {
+    transform: translateY(-1px);
+  }
+  .press-scale {
+    transition: transform var(--motion-fast) var(--motion-ease-out);
+  }
+  .press-scale:active {
+    transform: scale(0.98);
   }
 }
