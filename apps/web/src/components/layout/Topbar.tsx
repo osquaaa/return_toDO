@@ -4,8 +4,6 @@ import Link from 'next/link';
 import { Avatar } from '@/components/ui/avatar';
 import { getCurrentUser } from '@/lib/auth/session';
 
-import { SignOutButton } from './sign-out-button';
-
 export async function Topbar() {
   const user = await getCurrentUser();
   return (
@@ -35,10 +33,14 @@ export async function Topbar() {
           )}
 
           {/* Desktop sidebar already shows the user card — only show on mobile/tablet here */}
-          <div className="flex h-9 items-center gap-2 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] pr-1 pl-1 lg:hidden">
-            <Avatar name={user.name} email={user.email} size="sm" />
-            <SignOutButton />
-          </div>
+          <Link href="/settings" aria-label="Профиль и настройки" className="lg:hidden">
+            <Avatar
+              name={user.name}
+              email={user.email}
+              size="sm"
+              className="ring-2 ring-[var(--color-border-subtle)] ring-offset-2 ring-offset-[var(--color-bg-app)] transition-all hover:ring-[var(--color-fg-tertiary)]"
+            />
+          </Link>
         </div>
       )}
     </header>

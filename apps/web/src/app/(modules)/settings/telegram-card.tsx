@@ -1,7 +1,10 @@
 'use client';
 
-import { CheckCircle2, Send } from 'lucide-react';
+import { CheckCircle2, ExternalLink, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type Status = { linked: false } | { linked: true; username: string | null; linkedAt: string };
 
@@ -32,82 +35,75 @@ export function TelegramCard() {
     return () => clearInterval(id);
   }, [linkInfo]);
 
-  // Derive: hide link card once Telegram is linked.
   const showLinkInfo = !status?.linked && linkInfo;
 
   if (!status) {
+    return <Skeleton className="h-10 w-48" />;
+  }
+
+  if (status.linked) {
     return (
-      <section className="rounded-3xl border border-[var(--color-border)]/60 bg-[var(--color-surface)] p-6 shadow-[var(--shadow-sm)]">
-        <div className="flex items-center gap-2.5">
-          <div className="flex size-8 items-center justify-center rounded-xl bg-[var(--color-canvas)]">
-            <Send size={16} strokeWidth={2.2} className="text-[var(--color-ink-soft)]" />
+      <div className="space-y-3">
+        <div className="flex items-center gap-2.5 rounded-xl border border-[var(--color-success)]/20 bg-[var(--color-success-soft)] px-3.5 py-2.5">
+          <CheckCircle2 size={16} className="shrink-0 text-[var(--color-success)]" />
+          <div className="min-w-0 flex-1">
+            <div className="text-sm font-medium text-[var(--color-fg-primary)]">Подключён</div>
+            <div className="truncate font-mono text-xs text-[var(--color-fg-secondary)]">
+              @{status.username ?? 'unknown'}
+            </div>
           </div>
-          <h2 className="text-base font-semibold tracking-tight">Telegram</h2>
         </div>
-        <p className="mt-3 text-sm text-[var(--color-ink-soft)]">Загрузка…</p>
-      </section>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={async () => {
+            if (!confirm('Отвязать Telegram?')) return;
+            await fetch('/api/telegram/unlink', { method: 'POST' });
+            await refresh();
+          }}
+        >
+          Отвязать
+        </Button>
+      </div>
+    );
+  }
+
+  if (showLinkInfo && linkInfo) {
+    return (
+      <div className="space-y-3">
+        <div className="rounded-xl border border-[var(--color-accent-code)]/20 bg-[var(--color-accent-code-soft)] px-3.5 py-3">
+          <div className="text-sm font-medium text-[var(--color-fg-primary)]">
+            Жмите «Start» в открывшемся боте
+          </div>
+          <div className="mt-1 text-xs text-[var(--color-fg-secondary)]">
+            Эта страница обновится автоматически. Ссылка живёт 10 минут.
+          </div>
+        </div>
+        <a
+          href={linkInfo.deepLink}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] px-4 text-sm font-semibold text-[var(--color-brand-fg)] shadow-[var(--shadow-sm)] transition-all hover:shadow-[var(--shadow-md)] active:scale-[0.98]"
+        >
+          <Send size={14} />
+          Открыть бота
+          <ExternalLink size={12} />
+        </a>
+      </div>
     );
   }
 
   return (
-    <section className="rounded-3xl border border-[var(--color-border)]/60 bg-[var(--color-surface)] p-6 shadow-[var(--shadow-sm)]">
-      <header className="flex items-center gap-2.5">
-        <div className="flex size-8 items-center justify-center rounded-xl bg-[var(--color-canvas)]">
-          <Send size={16} strokeWidth={2.2} className="text-[var(--color-ink-soft)]" />
-        </div>
-        <h2 className="text-base font-semibold tracking-tight">Telegram</h2>
-        {status.linked && (
-          <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
-            <CheckCircle2 size={12} strokeWidth={2.4} />
-            подключено
-          </span>
-        )}
-      </header>
-
-      {status.linked ? (
-        <div className="mt-4 space-y-3">
-          <p className="text-sm">
-            Привязан как{' '}
-            <span className="font-mono font-medium">@{status.username ?? 'unknown'}</span>
-          </p>
-          <button
-            onClick={async () => {
-              await fetch('/api/telegram/unlink', { method: 'POST' });
-              await refresh();
-            }}
-            className="rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-1.5 text-sm font-medium text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]"
-          >
-            Отвязать
-          </button>
-        </div>
-      ) : showLinkInfo && linkInfo ? (
-        <div className="mt-4 space-y-3">
-          <p className="text-sm text-[var(--color-ink-soft)]">
-            Открой ссылку и нажми «Start» в боте:
-          </p>
-          <a
-            href={linkInfo.deepLink}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-br from-[var(--color-ink)] to-[var(--color-ink-soft)] px-4 text-sm font-semibold text-[var(--color-canvas)] shadow-[var(--shadow-sm)] transition-all hover:shadow-[var(--shadow-md)]"
-          >
-            <Send size={14} />
-            Открыть бота
-          </a>
-          <p className="text-xs text-[var(--color-ink-faint)]">Ссылка живёт 10 минут.</p>
-        </div>
-      ) : (
-        <button
-          onClick={async () => {
-            const r = await fetch('/api/telegram/link-token', { method: 'POST' });
-            setLinkInfo((await r.json()) as { deepLink: string });
-          }}
-          className="mt-4 inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-br from-[var(--color-ink)] to-[var(--color-ink-soft)] px-4 text-sm font-semibold text-[var(--color-canvas)] shadow-[var(--shadow-sm)] transition-all hover:shadow-[var(--shadow-md)]"
-        >
-          <Send size={14} />
-          Подключить Telegram
-        </button>
-      )}
-    </section>
+    <Button
+      variant="primary"
+      size="md"
+      iconLeft={<Send size={14} />}
+      onClick={async () => {
+        const r = await fetch('/api/telegram/link-token', { method: 'POST' });
+        setLinkInfo((await r.json()) as { deepLink: string });
+      }}
+    >
+      Подключить Telegram
+    </Button>
   );
 }
