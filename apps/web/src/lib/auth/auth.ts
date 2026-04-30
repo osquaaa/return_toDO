@@ -1,6 +1,8 @@
 import { betterAuth } from 'better-auth';
 import bcrypt from 'bcryptjs';
 
+import { genId } from '@letget/db';
+
 import { env } from '../env';
 import { sendEmail } from '../email/client';
 import { verifyEmailTemplate, resetPasswordTemplate } from '../email/templates';
@@ -16,6 +18,11 @@ export const auth = betterAuth({
   database: adapter,
   baseURL: env.APP_URL,
   secret: env.BETTER_AUTH_SECRET,
+  advanced: {
+    database: {
+      generateId: () => genId(),
+    },
+  },
   user: {
     additionalFields: {
       role: { type: 'string', defaultValue: 'user', input: false },
