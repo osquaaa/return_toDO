@@ -14,3 +14,4 @@ dist/
 build/
 *.tsbuildinfo
 infra/docker/db_password.txt
+infra/docker/db_password.prod.txt
