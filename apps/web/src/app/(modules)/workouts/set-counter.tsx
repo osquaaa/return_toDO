@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 
 import { addSetAction } from './actions';
 
@@ -10,13 +10,16 @@ const MAX_REPS = 9_999;
 export function SetCounter({ exerciseId }: { exerciseId: string }) {
   const [value, setValue] = useState(DEFAULT_REPS);
   const [error, setError] = useState<string | null>(null);
+  const [prevExerciseId, setPrevExerciseId] = useState(exerciseId);
   const [isPending, startTransition] = useTransition();
 
-  // Reset to default when exercise changes
-  useEffect(() => {
+  // Reset to default when exercise changes (storing during render is the
+  // recommended React pattern for syncing state with props without an effect).
+  if (prevExerciseId !== exerciseId) {
+    setPrevExerciseId(exerciseId);
     setValue(DEFAULT_REPS);
     setError(null);
-  }, [exerciseId]);
+  }
 
   const dec = () => setValue((v) => Math.max(0, v - 1));
   const inc = () => setValue((v) => Math.min(MAX_REPS, v + 1));

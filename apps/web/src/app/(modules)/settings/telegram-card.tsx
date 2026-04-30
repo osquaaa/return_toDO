@@ -14,7 +14,15 @@ export function TelegramCard() {
   };
 
   useEffect(() => {
-    void refresh();
+    let cancelled = false;
+    void (async () => {
+      const r = await fetch('/api/telegram/status');
+      const data = (await r.json()) as Status;
+      if (!cancelled) setStatus(data);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -23,9 +31,8 @@ export function TelegramCard() {
     return () => clearInterval(id);
   }, [linkInfo]);
 
-  useEffect(() => {
-    if (status?.linked) setLinkInfo(null);
-  }, [status]);
+  // Derive: hide link card once Telegram is linked.
+  const showLinkInfo = !status?.linked && linkInfo;
 
   if (!status) {
     return (
@@ -53,7 +60,7 @@ export function TelegramCard() {
             Отвязать
           </button>
         </div>
-      ) : linkInfo ? (
+      ) : showLinkInfo && linkInfo ? (
         <div className="mt-3 space-y-3">
           <p className="text-sm">Открой ссылку и нажми «Start» в боте:</p>
           <a
