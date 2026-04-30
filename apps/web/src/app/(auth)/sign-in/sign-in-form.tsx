@@ -1,15 +1,14 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { AlertCircle, Loader2, Lock, Mail } from 'lucide-react';
+import { AlertCircle, ArrowRight, Lock, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 
-import { signIn } from './actions';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
-const inputBase =
-  'w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] py-2.5 pl-10 pr-3 text-sm text-[var(--color-ink)] outline-none transition-colors placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-ink-soft)] focus:bg-[var(--color-surface)]';
+import { signIn } from './actions';
 
 export function SignInForm() {
   const router = useRouter();
@@ -17,88 +16,115 @@ export function SignInForm() {
   const [error, setError] = useState<string | null>(null);
 
   return (
-    <motion.form
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      onSubmit={(e) => {
-        e.preventDefault();
-        const fd = new FormData(e.currentTarget);
-        startTransition(async () => {
-          const res = await signIn(Object.fromEntries(fd));
-          if (!res.ok) setError(res.error);
-          else router.push('/');
-        });
-      }}
-      className="space-y-4"
-    >
-      <div>
-        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
-          Email
-        </label>
-        <div className="relative">
-          <Mail
-            size={16}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-ink-faint)]"
-          />
-          <input
+    <div>
+      <div className="mb-10 flex items-center gap-2.5 lg:hidden">
+        <div className="flex size-9 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] shadow-[var(--shadow-sm)]">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" />
+            <path d="M20 2v4" />
+            <path d="M22 4h-4" />
+            <circle cx="4" cy="20" r="2" />
+          </svg>
+        </div>
+        <span className="text-base font-semibold tracking-tight">LETget</span>
+      </div>
+
+      <div className="mb-8">
+        <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-fg-primary)]">
+          С возвращением
+        </h1>
+        <p className="mt-2 text-sm text-[var(--color-fg-secondary)]">
+          Войди чтобы продолжить работу со своими списками.
+        </p>
+      </div>
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const fd = new FormData(e.currentTarget);
+          startTransition(async () => {
+            const res = await signIn(Object.fromEntries(fd));
+            if (!res.ok) setError(res.error);
+            else router.push('/');
+          });
+        }}
+        className="space-y-4"
+      >
+        <div>
+          <label className="mb-1.5 block text-xs font-medium tracking-wide text-[var(--color-fg-secondary)] uppercase">
+            Email
+          </label>
+          <Input
             type="email"
             name="email"
             required
             autoComplete="email"
             placeholder="you@example.com"
-            className={inputBase}
+            inputSize="lg"
+            iconLeft={<Mail size={16} />}
           />
         </div>
-      </div>
-      <div>
-        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
-          Пароль
-        </label>
-        <div className="relative">
-          <Lock
-            size={16}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-ink-faint)]"
-          />
-          <input
+
+        <div>
+          <div className="mb-1.5 flex items-center justify-between">
+            <label className="block text-xs font-medium tracking-wide text-[var(--color-fg-secondary)] uppercase">
+              Пароль
+            </label>
+            <Link
+              href="/forgot-password"
+              className="text-xs text-[var(--color-fg-secondary)] hover:text-[var(--color-fg-primary)]"
+            >
+              Забыл?
+            </Link>
+          </div>
+          <Input
             type="password"
             name="password"
             required
             autoComplete="current-password"
             placeholder="••••••••"
-            className={inputBase}
+            inputSize="lg"
+            iconLeft={<Lock size={16} />}
           />
         </div>
-      </div>
 
-      {error && (
-        <motion.div
-          initial={{ opacity: 0, y: -4 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+        {error && (
+          <div className="flex items-start gap-2 rounded-[var(--radius-md)] border border-[var(--color-danger)]/20 bg-[var(--color-danger-soft)] px-3 py-2.5 text-sm text-[var(--color-danger)]">
+            <AlertCircle size={16} className="mt-0.5 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          fullWidth
+          loading={isPending}
+          iconRight={!isPending ? <ArrowRight size={16} /> : undefined}
         >
-          <AlertCircle size={16} className="mt-0.5 shrink-0" />
-          <span>{error}</span>
-        </motion.div>
-      )}
+          {isPending ? 'Входим…' : 'Войти'}
+        </Button>
+      </form>
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[var(--color-ink)] to-[var(--color-ink-soft)] text-sm font-semibold text-[var(--color-canvas)] shadow-[var(--shadow-md)] transition-all hover:shadow-[var(--shadow-lg)] active:scale-[0.98] disabled:opacity-60"
-      >
-        {isPending && <Loader2 size={16} className="animate-spin" />}
-        {isPending ? 'Входим…' : 'Войти'}
-      </button>
-
-      <div className="flex items-center justify-between pt-1 text-xs text-[var(--color-ink-soft)]">
-        <Link href="/forgot-password" className="hover:text-[var(--color-ink)]">
-          Забыл пароль
+      <p className="mt-8 text-center text-sm text-[var(--color-fg-secondary)]">
+        Нет аккаунта?{' '}
+        <Link
+          href="/sign-up"
+          className="font-medium text-[var(--color-fg-primary)] hover:underline"
+        >
+          Создать
         </Link>
-        <Link href="/sign-up" className="font-medium text-[var(--color-ink)] hover:underline">
-          Создать аккаунт →
-        </Link>
-      </div>
-    </motion.form>
+      </p>
+    </div>
   );
 }
