@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 
 import { SwRegister } from '@/components/pwa/sw-register';
+import { SystemThemeWatcher } from '@/components/pwa/system-theme-watcher';
 
 import './globals.css';
 
@@ -22,7 +23,7 @@ export const viewport: Viewport = {
 
 // Static, build-time string — no user input. Runs before paint to set data-theme
 // from localStorage to prevent FOUC when switching between light/dark modes.
-const themeInitScript = `(function(){try{var t=localStorage.getItem('letget:theme')||'system';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
+const themeInitScript = `(function(){try{var p=localStorage.getItem('letget:theme')||'system';var t=p==='system'?(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):p;var r=document.documentElement;r.setAttribute('data-theme',t);r.dataset.themePref=p;}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="antialiased">
         <SwRegister />
+        <SystemThemeWatcher />
         {children}
       </body>
     </html>

@@ -8,7 +8,7 @@ import { SidebarNav } from './sidebar-nav';
 export async function Sidebar() {
   const user = await getCurrentUser();
   return (
-    <aside className="hidden w-[260px] shrink-0 flex-col border-r border-[var(--color-border-subtle)] bg-[var(--color-bg-app)] lg:flex">
+    <aside className="sticky top-0 hidden h-dvh w-[260px] shrink-0 flex-col border-r border-[var(--color-border-subtle)] bg-[var(--color-bg-app)] lg:flex">
       <div className="flex items-center gap-2.5 px-5 pt-5 pb-3">
         <div className="relative flex size-9 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] shadow-[var(--shadow-sm)]">
           <Sparkles size={16} strokeWidth={2.6} className="text-[var(--color-brand-fg)]" />
