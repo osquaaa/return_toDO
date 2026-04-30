@@ -1,5 +1,7 @@
 'use client';
 
+import { motion } from 'framer-motion';
+import { AlertCircle, Check, Circle, Loader2, Lock, Mail, User } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState, useTransition } from 'react';
@@ -18,8 +20,8 @@ function checkPassword(pwd: string, confirm: string): Check[] {
   ];
 }
 
-const inputCls =
-  'mt-1 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-ink-soft)]';
+const inputBase =
+  'w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-canvas)] py-2.5 pl-10 pr-3 text-sm text-[var(--color-ink)] outline-none transition-colors placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-ink-soft)] focus:bg-[var(--color-surface)]';
 
 export function SignUpForm() {
   const router = useRouter();
@@ -39,7 +41,10 @@ export function SignUpForm() {
   const canSubmit = name.trim().length > 0 && email.includes('@') && allChecksPass && !isPending;
 
   return (
-    <form
+    <motion.form
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       onSubmit={(e) => {
         e.preventDefault();
         setTouched(true);
@@ -52,92 +57,138 @@ export function SignUpForm() {
       }}
       className="space-y-4"
     >
-      <label className="block">
-        <span className="text-sm font-medium text-[var(--color-ink)]">Имя</span>
-        <input
-          name="name"
-          required
-          autoComplete="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className={inputCls}
-        />
-      </label>
+      <div>
+        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
+          Имя
+        </label>
+        <div className="relative">
+          <User
+            size={16}
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-ink-faint)]"
+          />
+          <input
+            name="name"
+            required
+            autoComplete="name"
+            placeholder="Как тебя называть"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className={inputBase}
+          />
+        </div>
+      </div>
 
-      <label className="block">
-        <span className="text-sm font-medium text-[var(--color-ink)]">Email</span>
-        <input
-          type="email"
-          name="email"
-          required
-          autoComplete="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={inputCls}
-        />
-      </label>
+      <div>
+        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
+          Email
+        </label>
+        <div className="relative">
+          <Mail
+            size={16}
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-ink-faint)]"
+          />
+          <input
+            type="email"
+            name="email"
+            required
+            autoComplete="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={inputBase}
+          />
+        </div>
+      </div>
 
-      <label className="block">
-        <span className="text-sm font-medium text-[var(--color-ink)]">Пароль</span>
-        <input
-          type="password"
-          name="password"
-          required
-          autoComplete="new-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onFocus={() => setTouched(true)}
-          className={inputCls}
-        />
-      </label>
+      <div>
+        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
+          Пароль
+        </label>
+        <div className="relative">
+          <Lock
+            size={16}
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-ink-faint)]"
+          />
+          <input
+            type="password"
+            name="password"
+            required
+            autoComplete="new-password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onFocus={() => setTouched(true)}
+            className={inputBase}
+          />
+        </div>
+      </div>
 
-      <label className="block">
-        <span className="text-sm font-medium text-[var(--color-ink)]">Повторите пароль</span>
-        <input
-          type="password"
-          name="confirmPassword"
-          required
-          autoComplete="new-password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className={inputCls}
-        />
-      </label>
+      <div>
+        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--color-ink-soft)]">
+          Повторите пароль
+        </label>
+        <div className="relative">
+          <Lock
+            size={16}
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-ink-faint)]"
+          />
+          <input
+            type="password"
+            name="confirmPassword"
+            required
+            autoComplete="new-password"
+            placeholder="••••••••"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className={inputBase}
+          />
+        </div>
+      </div>
 
       {touched && !allChecksPass && (
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+        <motion.ul
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs"
+        >
           {checks.map((c) => (
             <li
               key={c.label}
-              className={c.ok ? 'text-emerald-600' : 'text-[var(--color-ink-soft)]'}
+              className={`flex items-center gap-1.5 ${c.ok ? 'text-emerald-600' : 'text-[var(--color-ink-soft)]'}`}
             >
-              <span className="mr-1">{c.ok ? '✓' : '○'}</span>
+              {c.ok ? <Check size={12} strokeWidth={3} /> : <Circle size={12} strokeWidth={2} />}
               {c.label}
             </li>
           ))}
-        </ul>
+        </motion.ul>
       )}
 
       {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-          {error}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+        >
+          <AlertCircle size={16} className="mt-0.5 shrink-0" />
+          <span>{error}</span>
+        </motion.div>
       )}
 
       <button
         type="submit"
         disabled={!canSubmit}
-        className="w-full rounded-2xl bg-[var(--color-ink)] py-2.5 text-sm font-medium text-[var(--color-canvas)] transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[var(--color-ink)] to-[var(--color-ink-soft)] text-sm font-semibold text-[var(--color-canvas)] shadow-[var(--shadow-md)] transition-all hover:shadow-[var(--shadow-lg)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
       >
+        {isPending && <Loader2 size={16} className="animate-spin" />}
         {isPending ? 'Создаём…' : 'Создать аккаунт'}
       </button>
 
-      <p className="text-center text-sm text-[var(--color-ink-soft)]">
+      <p className="pt-1 text-center text-xs text-[var(--color-ink-soft)]">
         Уже есть аккаунт?{' '}
-        <Link href="/sign-in" className="font-medium text-[var(--color-ink)] underline">
-          Войти
+        <Link href="/sign-in" className="font-medium text-[var(--color-ink)] hover:underline">
+          Войти →
         </Link>
       </p>
-    </form>
+    </motion.form>
   );
 }
