@@ -5,6 +5,7 @@ import { listTasks } from '@/lib/tasks/queries';
 
 import { TaskFilters } from './task-filters';
 import { TaskList } from './task-list';
+import { TasksHero } from './tasks-hero';
 
 export const metadata = { title: 'Задачи — LETget' };
 export const dynamic = 'force-dynamic';
@@ -25,7 +26,15 @@ export default async function TasksPage({
   const opts = parsed.success ? parsed.data : { filter: 'active' as const };
   const items = await listTasks(user.id, opts);
 
-  // Serialize Date → ISO for client components.
+  const allTasks = await listTasks(user.id, { filter: 'all' });
+  const stats = {
+    total: allTasks.length,
+    done: allTasks.filter((t) => t.isDone).length,
+    pinned: allTasks.filter((t) => t.isPinned).length,
+    overdue: allTasks.filter((t) => !t.isDone && t.deadline && new Date(t.deadline) < new Date())
+      .length,
+  };
+
   const serialized = items.map((t) => ({
     id: t.id,
     userId: t.userId,
@@ -41,11 +50,8 @@ export default async function TasksPage({
   }));
 
   return (
-    <div className="mx-auto max-w-3xl space-y-4 p-6">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">Задачи</h1>
-        <span className="text-sm text-[var(--color-ink-soft)]">{items.length} в списке</span>
-      </header>
+    <div className="mx-auto max-w-3xl space-y-6 px-4 py-6 md:px-8 md:py-10">
+      <TasksHero name={user.name} stats={stats} />
       <TaskFilters initialFilter={opts.filter} initialQuery={opts.q ?? ''} />
       <TaskList items={serialized} />
     </div>

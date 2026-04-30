@@ -1,9 +1,13 @@
 'use client';
 
+import { Check, Clock, Pin, PinOff, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
-import { TaskEditor } from './task-editor';
+import { Checkbox } from '@/components/ui/checkbox';
+import { cn } from '@/lib/cn';
+
 import { deleteTaskAction, toggleDoneAction, togglePinAction, updateTaskAction } from './actions';
+import { TaskEditor } from './task-editor';
 
 export type TaskRow = {
   id: string;
@@ -19,14 +23,46 @@ export type TaskRow = {
   deletedAt: string | null;
 };
 
-function fmtDeadline(iso: string | null): string | null {
+const WEEKDAY_SHORT = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+const MONTH_SHORT = [
+  'янв',
+  'фев',
+  'мар',
+  'апр',
+  'мая',
+  'июн',
+  'июл',
+  'авг',
+  'сен',
+  'окт',
+  'ноя',
+  'дек',
+];
+
+function fmtDeadline(iso: string | null): { label: string; relative: string } | null {
   if (!iso) return null;
-  return new Date(iso).toLocaleString('ru-RU', {
-    day: '2-digit',
-    month: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const d = new Date(iso);
+  const now = new Date();
+  const startOfToday = new Date(now);
+  startOfToday.setHours(0, 0, 0, 0);
+  const startOfTomorrow = new Date(startOfToday);
+  startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
+  const startOfDayAfter = new Date(startOfTomorrow);
+  startOfDayAfter.setDate(startOfDayAfter.getDate() + 1);
+
+  const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+
+  let relative: string;
+  if (d < now) {
+    const minsAgo = Math.round((now.getTime() - d.getTime()) / 60_000);
+    if (minsAgo < 60) relative = `${minsAgo} мин назад`;
+    else if (minsAgo < 60 * 24) relative = `${Math.round(minsAgo / 60)} ч назад`;
+    else relative = `${Math.round(minsAgo / 60 / 24)} дн назад`;
+  } else if (d < startOfTomorrow) relative = 'сегодня';
+  else if (d < startOfDayAfter) relative = 'завтра';
+  else relative = `${WEEKDAY_SHORT[d.getDay()]} ${d.getDate()} ${MONTH_SHORT[d.getMonth()]}`;
+
+  return { label: time, relative };
 }
 
 export function TaskItem({
@@ -42,7 +78,7 @@ export function TaskItem({
 
   if (editing) {
     return (
-      <li className="rounded-2xl bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
+      <li className="rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] p-4 shadow-[var(--shadow-sm)]">
         <TaskEditor
           initialHtml={task.contentHtml}
           initialDeadline={task.deadline}
@@ -57,71 +93,102 @@ export function TaskItem({
     );
   }
 
-  const deadlineFmt = fmtDeadline(task.deadline);
+  const deadline = fmtDeadline(task.deadline);
   const overdue = !!task.deadline && !task.isDone && new Date(task.deadline) < new Date();
 
-  // contentHtml is sanitized server-side via DOMPurify in lib/sanitize.ts before storage,
-  // so rendering here is safe.
   return (
     <li
-      className={`group flex items-start gap-3 rounded-2xl bg-[var(--color-surface)] p-3 shadow-[var(--shadow-sm)] ${
-        task.isPinned ? 'border-l-4 border-[var(--color-tasks-from)]' : ''
-      }`}
+      className={cn(
+        'group relative flex items-start gap-3 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-3.5 py-3 transition-colors hover:border-[var(--color-border-default)]',
+        task.isPinned && 'border-l-[3px] border-l-[var(--color-accent-tasks)]',
+        task.isDone && 'opacity-60',
+      )}
     >
-      <input
-        type="checkbox"
-        checked={selected}
-        onChange={onToggleSelect}
-        onClick={(e) => e.stopPropagation()}
-        className="mt-1 size-4 cursor-pointer"
-        aria-label="Выбрать"
-      />
+      {/* Bulk select checkbox — visible on hover or when selected */}
+      <div
+        className={cn(
+          'flex h-5 shrink-0 items-center transition-opacity',
+          selected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100',
+        )}
+      >
+        <Checkbox
+          size="sm"
+          accent="brand"
+          checked={selected}
+          onChange={onToggleSelect}
+          onClick={(e) => e.stopPropagation()}
+          aria-label="Выбрать"
+        />
+      </div>
+
+      {/* Big done circle */}
       <button
         type="button"
         onClick={() => void toggleDoneAction(task.id)}
-        className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border ${
+        className={cn(
+          'mt-px flex size-5 shrink-0 items-center justify-center rounded-full border-2 transition-all',
           task.isDone
-            ? 'border-[var(--color-tasks-to)] bg-[var(--color-tasks-to)] text-white'
-            : 'border-[var(--color-border)]'
-        }`}
-        aria-label="Отметить выполненным"
+            ? 'border-[var(--color-accent-tasks)] bg-[var(--color-accent-tasks)]'
+            : 'border-[var(--color-border-strong)] bg-transparent hover:border-[var(--color-accent-tasks)]',
+        )}
+        aria-label={task.isDone ? 'Снять отметку' : 'Отметить выполненным'}
       >
-        {task.isDone ? '✓' : ''}
+        <Check
+          size={12}
+          strokeWidth={3.5}
+          className={cn(
+            'text-white transition-all',
+            task.isDone ? 'scale-100 opacity-100' : 'scale-50 opacity-0',
+          )}
+        />
       </button>
+
+      {/* Body */}
       <div
         onClick={() => setEditing(true)}
-        className={`flex-1 cursor-text ${task.isDone ? 'opacity-60 line-through' : ''}`}
+        className={cn('min-w-0 flex-1 cursor-text', task.isDone && 'line-through')}
       >
         <div
-          className="prose prose-sm max-w-none"
+          className="prose prose-sm max-w-none break-words text-[var(--color-fg-primary)] [&_a]:text-[var(--color-accent-code)] [&_a]:underline [&_p]:my-0 [&_ul]:my-0.5 [&_ol]:my-0.5"
+          // contentHtml is DOMPurify-sanitized in lib/sanitize.ts before storage.
           dangerouslySetInnerHTML={{ __html: task.contentHtml }}
         />
-        {deadlineFmt && (
+        {deadline && (
           <div
-            className={`mt-1 text-xs ${overdue ? 'text-red-600' : 'text-[var(--color-ink-soft)]'}`}
+            className={cn(
+              'mt-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium',
+              overdue
+                ? 'bg-[var(--color-danger-soft)] text-[var(--color-danger)]'
+                : 'bg-[var(--color-bg-subtle)] text-[var(--color-fg-secondary)]',
+            )}
           >
-            ⏰ {deadlineFmt}
+            <Clock size={11} strokeWidth={2.5} />
+            <span>
+              {deadline.relative} · {deadline.label}
+            </span>
           </div>
         )}
       </div>
-      <div className="flex shrink-0 gap-1 opacity-0 group-hover:opacity-100">
+
+      {/* Hover actions */}
+      <div className="flex shrink-0 items-center gap-0.5 opacity-0 transition-opacity group-hover:opacity-100">
         <button
           type="button"
           onClick={() => void togglePinAction(task.id)}
-          className="text-sm hover:text-[var(--color-ink)]"
-          title={task.isPinned ? 'Открепить' : 'Закрепить'}
+          className="flex size-7 items-center justify-center rounded-lg text-[var(--color-fg-tertiary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-primary)]"
+          aria-label={task.isPinned ? 'Открепить' : 'Закрепить'}
         >
-          {task.isPinned ? '📍' : '📌'}
+          {task.isPinned ? <PinOff size={14} /> : <Pin size={14} />}
         </button>
         <button
           type="button"
           onClick={() => {
             if (confirm('Удалить задачу?')) void deleteTaskAction(task.id);
           }}
-          className="text-sm hover:text-red-600"
-          title="Удалить"
+          className="flex size-7 items-center justify-center rounded-lg text-[var(--color-fg-tertiary)] hover:bg-[var(--color-danger-soft)] hover:text-[var(--color-danger)]"
+          aria-label="Удалить"
         >
-          🗑
+          <Trash2 size={14} />
         </button>
       </div>
     </li>
