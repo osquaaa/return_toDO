@@ -9,13 +9,15 @@ import { SignOutButton } from './sign-out-button';
 export async function Topbar() {
   const user = await getCurrentUser();
   return (
-    <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-[var(--color-border-subtle)] bg-[var(--color-bg-app)]/85 px-4 backdrop-blur-xl md:h-16 md:px-6">
-      {/* Mobile-only brand mark */}
-      <Link href="/tasks" className="flex items-center gap-2 md:hidden">
-        <span className="flex size-8 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] shadow-[var(--shadow-sm)]">
-          <Sparkles size={14} strokeWidth={2.5} className="text-[var(--color-brand-fg)]" />
+    <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-[var(--color-border-subtle)] bg-[var(--color-bg-app)]/80 px-4 backdrop-blur-xl md:h-16 md:px-6">
+      {/* Mobile-only brand mark; on desktop sidebar holds the brand */}
+      <Link href="/tasks" className="flex items-center gap-2 lg:hidden">
+        <span className="flex size-8 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] shadow-[var(--shadow-xs)]">
+          <Sparkles size={14} strokeWidth={2.6} className="text-[var(--color-brand-fg)]" />
         </span>
-        <span className="text-base font-semibold tracking-tight">LETget</span>
+        <span className="text-base font-semibold tracking-tight text-[var(--color-fg-primary)]">
+          LETget
+        </span>
       </Link>
 
       <div className="flex-1" />
@@ -25,17 +27,16 @@ export async function Topbar() {
           {user.role === 'admin' && (
             <Link
               href="/admin"
-              className="hidden h-9 items-center gap-1.5 rounded-xl bg-gradient-to-br from-[var(--color-brand-from)] to-[var(--color-brand-to)] px-3 text-xs font-semibold text-[var(--color-brand-fg)] shadow-[var(--shadow-sm)] transition-transform hover:scale-105 active:scale-100 sm:flex"
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] px-2.5 text-xs font-medium text-[var(--color-fg-secondary)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-fg-primary)]"
             >
-              <ShieldCheck size={14} />
-              Админ
+              <ShieldCheck size={14} className="text-[var(--color-brand-from)]" />
+              <span className="hidden sm:inline">Админ</span>
             </Link>
           )}
-          <div className="flex h-9 items-center gap-2 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] pr-1 pl-1.5">
+
+          {/* Desktop sidebar already shows the user card — only show on mobile/tablet here */}
+          <div className="flex h-9 items-center gap-2 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-elevated)] pr-1 pl-1 lg:hidden">
             <Avatar name={user.name} email={user.email} size="sm" />
-            <span className="hidden max-w-[120px] truncate text-sm font-medium text-[var(--color-fg-primary)] lg:inline">
-              {user.name ?? user.email}
-            </span>
             <SignOutButton />
           </div>
         </div>
