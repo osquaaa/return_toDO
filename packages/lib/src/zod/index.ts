@@ -6,3 +6,4 @@ export * from './code';
 export * from './workouts';
 export * from './notifications';
 export * from './habits';
+export * from './finance';
